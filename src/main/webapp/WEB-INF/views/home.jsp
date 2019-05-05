@@ -75,11 +75,14 @@
     </ol>
     <div class="carousel-inner" role="listbox">
         <div class="item active">
-            <a href="<spring:url value="/jobOfferList" />">
-            <img class="first-slide" src="<c:url value="/resources/images/jobOffers2.jpg" /> " width="100%" height="500" alt="First slide"> </a>
+            <img class="first-slide" src="<c:url value="/resources/images/jobOffers.jpg" /> " width="100%"  alt="First slide">
+                <div class="carousel-caption">
+                    <h2 style="color:black;">Check out our hot new job offers!</h2>
+                    <p><a class="btn btn-lg btn-warning" href="<spring:url value="/jobOfferList" />" role="button">Job Offers</a></p>
+                </div>
         </div>
         <div class="item">
-            <img class="second-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Second slide">
+            <img class="second-slide" src="<c:url value="/resources/images/IT.png" /> alt="Second slide">
             <div class="container">
                 <div class="carousel-caption">
                     <h1>Another example headline.</h1>
@@ -119,22 +122,25 @@
     <!-- Three columns of text below the carousel -->
     <div class="row">
         <div class="col-lg-4">
-            <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
-            <h2>Heading</h2>
+        <a href="<spring:url value="/jobOfferList" />">
+            <img class="img-circle" src="<c:url value="/resources/images/IT.png" />" alt="Generic placeholder image" width="140" height="140"></a>
+            <h2>IT</h2>
             <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
-            <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+            <p><a class="btn btn-default" href="#" role="button">View IT offers &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
-            <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
-            <h2>Heading</h2>
+        <a href="<spring:url value="/jobOfferList" />">
+            <img class="img-circle" src="<c:url value="/resources/images/financial.jpg" />" alt="Generic placeholder image" width="140" height="140"></a>
+            <h2>Financial</h2>
             <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
-            <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+            <p><a class="btn btn-default" href="#" role="button">View financial offers &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
-            <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
-            <h2>Heading</h2>
+        <a href="<spring:url value="/jobOfferList" />">
+            <img class="img-circle" src="<c:url value="/resources/images/logistics.jpg" />" alt="Generic placeholder image" width="140" height="140"></a>
+            <h2>Logistic</h2>
             <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-            <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+            <p><a class="btn btn-default" href="#" role="button">View logistic offers &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
     </div><!-- /.row -->
 
