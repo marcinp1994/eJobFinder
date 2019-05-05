@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact name="eJobFinder">
+    <output-path>$PROJECT_DIR$/out/artifacts/eJobFinder</output-path>
+    <root id="root" />
+  </artifact>
+</component>
