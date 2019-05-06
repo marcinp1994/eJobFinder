@@ -1,7 +1,6 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@include file="/WEB-INF/views/template/header.jsp" %>
 
-
 <div class="container-wrapper">
     <div class="container">
         <div class="page-header">
@@ -19,7 +18,8 @@
                                                              value="IT" />IT</label>
             <label class="checkbox-inline"><form:radiobutton path="category" id="category"
                                                              value="financial" />Financial</label>
-            <label class="checkbox-inline"><form:radiobutton path="category" id="category"                                                            value="logistic" />Logistic</label>
+            <label class="checkbox-inline"><form:radiobutton path="category" id="category"
+                                                            value="logistic" />Logistic</label>
         </div>
 
         <div class="form-group">
@@ -30,6 +30,12 @@
         <div class="form-group">
             <label for="position">Position</label>
             <form:input path="position" id="position" class="form-Control"/>
+        </div>
+
+        <div class="form-group">
+            <label for="location">Location</label>
+            <form:input path="location.Country" id="country" class="form-Control"/>
+            <form:input path="location.City" id="city" class="form-Control"/>
         </div>
 
         <div class="form-group">
@@ -87,37 +93,5 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script src="<c:url value="/resources/js/editor.js" />"></script>
-<script type="text/javascript">
-$(document).ready( function() {
-$("#txtEditor").Editor();
-$("input:submit").click(function(){
-$('#txtEditorContent').text($('#txtEditor').Editor("getText"));});});
-</script>
+<script type="text/javascript" src="<c:url value="/resources/js/addJobOffer.js" />"></script>
 
-<script type="text/javascript">
-$(document).ready( function() {
-$("#txtEditor2").Editor();
-$("input:submit").click(function(){
-$('#txtEditorContent2').text($('#txtEditor2').Editor("getText"));});});
-</script>
-
-<script type="text/javascript">
-$(document).ready( function() {
-$("#txtEditor3").Editor();
-$("input:submit").click(function(){
-$('#txtEditorContent3').text($('#txtEditor3').Editor("getText"));});});
-</script>
-
-<script type="text/javascript">
-$(document).ready( function() {
-$("#txtEditor4").Editor();
-$("input:submit").click(function(){
-$('#txtEditorContent4').text($('#txtEditor4').Editor("getText"));});});
-</script>
-
-<script type="text/javascript">
-$(document).ready( function() {
-$("#txtEditor5").Editor();
-$("input:submit").click(function(){
-$('#txtEditorContent5').text($('#txtEditor5').Editor("getText"));});});
-</script>

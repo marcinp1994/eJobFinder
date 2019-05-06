@@ -17,10 +17,17 @@ import java.util.List;
 public class JobOfferDaoImpl implements JobOfferDao {
 
     @Autowired
-    SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
     @Override
     public void addJobOffer(JobOffer jobOffer) {
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(jobOffer);
+        session.flush();
+    }
+
+    @Override
+    public void editJobOffer(JobOffer jobOffer) {
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(jobOffer);
         session.flush();

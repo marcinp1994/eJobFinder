@@ -3,7 +3,6 @@ package com.ejobfinder.model;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,7 +14,7 @@ public class Employer {
     private String companyName;
     private String email;
     private String phoneNumber;
-    @OneToMany(mappedBy = "employer", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "employer", fetch = FetchType.EAGER)
     private List<JobOffer> jobOffers;
 
     public String getEmployerId() {

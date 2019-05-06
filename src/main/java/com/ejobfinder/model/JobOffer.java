@@ -1,11 +1,13 @@
 package com.ejobfinder.model;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Transactional
 public class JobOffer {
 
     @Id
@@ -22,15 +24,17 @@ public class JobOffer {
     private String responsibilities;
     private String preferredSkills;
     private String benefits;
-    private String location;
     private String additionalInfo;
     private Date date;
     private String tags;
     @Transient
     private MultipartFile companyLogo;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn()
     private Employer employer;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn()
+    private Location location;
 
 
     public String getPosition() {
@@ -137,14 +141,6 @@ public class JobOffer {
         this.benefits = benefits;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     public Date getDate() {
         return date;
     }
@@ -175,6 +171,14 @@ public class JobOffer {
 
     public void setCompanyLogo(MultipartFile companyLogo) {
         this.companyLogo = companyLogo;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
 }

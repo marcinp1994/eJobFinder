@@ -8,6 +8,8 @@ public interface JobOfferDao {
 
     void addJobOffer(JobOffer jobOffer);
 
+    void editJobOffer(JobOffer jobOffer);
+
     JobOffer getJobOfferById(String id);
 
     List<JobOffer> getAllJobOffers();
