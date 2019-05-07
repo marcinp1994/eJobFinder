@@ -1,7 +1,7 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@include file="/WEB-INF/views/template/header.jsp" %>
 
-<div class="container-wrapper">
+<div class="container-wrapper" style="background-color:white;">
     <div class="container">
         <div class="page-header">
             <h1>Add job offer</h1>
@@ -33,6 +33,11 @@
         </div>
 
         <div class="form-group">
+            <label for="expirationDate">Expiration Date:</label>
+            <form:input type="date" path="expirationDate" id="expirationDate"/>
+        </div>
+
+        <div class="form-group">
             <label for="location">Location</label>
             <form:input path="location.Country" id="country" class="form-Control"/>
             <form:input path="location.City" id="city" class="form-Control"/>
@@ -50,7 +55,7 @@
 
        <div class="form-group">
         <label for="description">Description</label>
-       <textarea id="txtEditor" name="txtEditor"/></textarea>
+       <textarea style="background-color:orange;" id="txtEditor" name="txtEditor"/></textarea>
        <form:textarea path="description" id="txtEditorContent" name="txtEditorContent" hidden="hidden"/>
        </div>
 
@@ -88,6 +93,9 @@
         <a href="<c:url value="/employer/${jobOffer.employer.employerId}/jobOfferInventory/addJobOffer" />" class="btn btn-default">Cancel</a>
     </form:form>
 
+<br/>
+<br/>
+<br/>
 
 <%@include file="/WEB-INF/views/template/footer.jsp" %>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

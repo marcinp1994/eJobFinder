@@ -26,7 +26,7 @@
 </head>
 <!-- NAVBAR
 ================================================== -->
-<body>
+<body style="background-color:#F5F5F5;">
 <div class="navbar-wrapper">
     <div class="container">
 

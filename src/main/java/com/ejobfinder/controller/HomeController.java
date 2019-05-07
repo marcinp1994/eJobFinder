@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -58,7 +59,15 @@ public class HomeController {
     @RequestMapping("/jobOfferList/viewJobOffer/{jobId}")
     public String viewJobOffer(@PathVariable String jobId, Model model) {
         JobOffer jobOffer = jobOfferDao.getJobOfferById(jobId);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+        String expirationDate = formatter.format(jobOffer.getExpirationDate());
+        Location jobLocation = jobOffer.getLocation();
+        String location = jobLocation.getCountry().concat(" - ").concat(jobLocation.getCity());
+
         model.addAttribute(jobOffer);
+        model.addAttribute("expirationDate", expirationDate);
+        model.addAttribute("location", location);
         return "viewJobOffer";
     }
 

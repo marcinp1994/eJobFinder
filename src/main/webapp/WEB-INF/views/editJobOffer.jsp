@@ -2,7 +2,7 @@
 <%@include file="/WEB-INF/views/template/header.jsp" %>
 
 
-<div class="container-wrapper">
+<div class="container-wrapper" style="background-color:white;">
     <div class="container">
         <div class="page-header">
             <h1>Edit Job Offer</h1>
@@ -13,6 +13,7 @@
         <form:form action="${pageContext.request.contextPath}/employer/${employerId}/jobOfferInventory/editJobOffer" method="post"
                    commandName="jobOffer" enctype="multipart/form-data">
         <form:hidden path="jobId" value="${jobOffer.jobId}" />
+        <form:hidden path="location.locationId" value="${jobOffer.location.locationId}" />
 
 <div class="form-group">
             <label for="category">Category</label>
@@ -32,6 +33,11 @@
         <div class="form-group">
             <label for="position">Position</label>
             <form:input path="position" id="position" class="form-Control" value="${jobOffer.position}"/>
+        </div>
+
+        <div class="form-group">
+            <label for="expirationDate">Expiration Date:</label>
+            <form:input type="date" path="expirationDate" id="expirationDate"/>
         </div>
 
         <div class="form-group">
@@ -90,6 +96,10 @@
         <a href="<c:url value="/employer/${jobOffer.employer.employerId}/jobOfferInventory" />" class="btn btn-default">Cancel</a>
         </form:form>
 
+        <br/>
+        <br/>
+        <br/>
+
 
         <%@include file="/WEB-INF/views/template/footer.jsp" %>
         <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
@@ -99,7 +109,7 @@
         $(document).ready(function() {
 
         $("#txtEditor").Editor();
-        $("#txtEditor").Editor("setText", '${jobOffer.description}');
+        $("#txtEditor").Editor("setText", '${jobOffer.responsibilities}');
         $("input:submit").click(function(){
         $('#txtEditorContent').text($('#txtEditor').Editor("getText"));});
 

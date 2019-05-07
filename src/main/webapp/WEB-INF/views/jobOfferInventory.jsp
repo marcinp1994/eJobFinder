@@ -40,5 +40,8 @@
 
         <a href="<spring:url value="/employer/${employerId}/jobOfferInventory/addJobOffer" />" class="btn btn-primary">Add Job Offer</a>
 
+        <br/>
+        <br/>
+        <br/>
 <%@include file="/WEB-INF/views/template/footer.jsp" %>
 

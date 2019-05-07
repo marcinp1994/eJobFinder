@@ -56,15 +56,12 @@ public class Location {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Location location = (Location) o;
-        return Objects.equals(locationId, location.locationId) &&
-                Objects.equals(Country, location.Country) &&
-                Objects.equals(City, location.City) &&
-                Objects.equals(jobOffers, location.jobOffers);
+        return Objects.equals(Country, location.Country) &&
+                Objects.equals(City, location.City);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(locationId, Country, City, jobOffers);
+        return Objects.hash(Country, City);
     }
-
 }

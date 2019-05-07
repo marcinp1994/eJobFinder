@@ -1,12 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%--
-  Created by IntelliJ IDEA.
-  User: Le
-  Date: 1/2/2016
-  Time: 5:14 PM
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -144,22 +138,11 @@
         </div><!-- /.col-lg-4 -->
     </div><!-- /.row -->
 
-    <!-- FOOTER -->
-    <footer>
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>&copy; 2015 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-    </footer>
-
-</div><!-- /.container -->
-
-
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>window.jQuery ||
-document.write('<script src="<c:url value="/resources/js/jquery-1.11.3.min.js" />"><\/script>')</script>
-<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+        <br/>
+        <br/>
+        <br/>
+    <!-- Footer -->
+<%@include file="/WEB-INF/views/template/footer.jsp" %>
 
 </body>
 </html>

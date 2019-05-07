@@ -1,5 +1,7 @@
 package com.ejobfinder.model;
 
+import com.sun.istack.internal.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,27 +15,41 @@ public class JobOffer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String jobId;
+    @NotNull
     private String position;
+    @NotNull
     private String companyName;
+    @NotNull
     private String shortDescription;
+    @NotNull
     private String description;
+    @NotNull
     private String salary;
+    @NotNull
     private String category;
     private String jobOfferStatus;
+    @NotNull
     private String requirements;
+    @NotNull
     private String responsibilities;
+    @NotNull
     private String preferredSkills;
+    @NotNull
     private String benefits;
     private String additionalInfo;
-    private Date date;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull
+    private Date expirationDate;
     private String tags;
     @Transient
+    @NotNull
     private MultipartFile companyLogo;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn()
     private Employer employer;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn()
+    @NotNull
     private Location location;
 
 
@@ -141,12 +157,12 @@ public class JobOffer {
         this.benefits = benefits;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getExpirationDate() {
+        return expirationDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
     public String getAdditionalInfo() {

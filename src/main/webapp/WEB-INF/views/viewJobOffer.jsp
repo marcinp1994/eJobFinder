@@ -2,7 +2,6 @@
 <%@include file="/WEB-INF/views/template/header.jsp"%>
 <link href="<c:url value="/resources/css/main.css" />" rel="stylesheet">
 
-
 <div class="container-wrapper">
     <div class="container">
         <div class="page-header">
@@ -20,17 +19,38 @@
                 </div>
 
                 <div class="col-md-5">
-                    <h3>${jobOffer.position}</h3>
-                    <p>${jobOffer.companyName}</p>
+                    <h3><b>Position:</b> ${jobOffer.position}</h3>
+                    <p><b>Company Name:</b> ${jobOffer.companyName}</p>
+                    <p><b>Expiration Date:</b> ${expirationDate}</p>
+                    <p><b>Location:</b> ${location}</p>
+                    <p><b>Job ID:</b> ${jobOffer.jobId}</p>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-8">
-                    <h3>${jobOffer.description}</h3>
-                </div>
-            </div>
+            <br/>
+            <br/>
+
+                    <h4><b>Job Description</b></h4>
+                    <p style="font-size:15px;">${jobOffer.description}</p>
+                    <br/>
+                    <br/>
+                    <h4><b>Responsibilities:</b></h4>
+                    <p style="font-size:15px;">${jobOffer.responsibilities}</p>
+                    <br/>
+                    <br/>
+                    <h4><b>Job Requirements:</b></h4>
+                    <p style="font-size:15px;">${jobOffer.requirements}</p>
+                    <br/>
+                    <br/>
+                    <h4><b>Preferred Skills:</b></h4>
+                    <p style="font-size:15px;">${jobOffer.preferredSkills}</p>
+                    <br/>
+                    <br/>
+                    <h4><b>Benefits</b></h4>
+                    <p style="font-size:15px;">${jobOffer.benefits}</p>
        </div>
-
+        <br/>
+        <br/>
+        <br/>
 <%@include file="/WEB-INF/views/template/footer.jsp"%>
 

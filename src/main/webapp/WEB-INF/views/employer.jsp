@@ -15,6 +15,9 @@
 
         <p>Here you can view, check and modify all your job offers!</p>
 
+        <br/>
+        <br/>
+        <br/>
 
  <%@include file="/WEB-INF/views/template/footer.jsp" %>
 

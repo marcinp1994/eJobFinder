@@ -29,6 +29,7 @@ public class JobOfferDaoImpl implements JobOfferDao {
     @Override
     public void editJobOffer(JobOffer jobOffer) {
         Session session = sessionFactory.getCurrentSession();
+        session.evict(jobOffer);
         session.saveOrUpdate(jobOffer);
         session.flush();
     }
