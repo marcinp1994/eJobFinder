@@ -14,7 +14,6 @@
         <table class="table table-striped table-hover">
             <thead>
             <tr class="bg-success">
-                  <th>Status</th>
                   <th>Position</th>
                   <th>Company Name</th>
                   <th>Description</th>

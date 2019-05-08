@@ -18,6 +18,7 @@
     <link rel="icon" href="../../favicon.ico">
 
     <link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
+    <link href="<c:url value="/resources/css/carousel.css" />" rel="stylesheet">
     <link href="<c:url value="/resources/css/listGrid.css" />" rel="stylesheet">
     <link href="<c:url value="/resources/css/editor.css" />" type="text/css" rel="stylesheet"/>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -33,31 +34,30 @@
         <nav class="navbar navbar-inverse navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Project name</a>
+                    <a class="navbar-brand" href="<c:url value="/" /> ">Job Offer</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="<c:url value="/" />">Home</a></li>
+                        <li><a href="<c:url value="/" /> ">Home</a></li>
                         <li><a href="<c:url value="/jobOfferList" />">Job Offers</a></li>
                         <li><a href="#contact">Contact</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li class="dropdown-header">Nav header</li>
-                                <li><a href="#">Separated link</a></li>
-                                <li><a href="#">One more separated link</a></li>
-                            </ul>
-                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav pull-right">
+                    <li class="dropdown">
+                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Login<span class="caret"></span></a>
+                       <ul class="dropdown-menu">
+                          <li><a href="<c:url value="/employer/" />">Employer</a></li>
+                          <li role="separator" class="divider"></li>
+                          <li><a href="#">Candidate</a></li>
+                       </ul>
+                    </li>
                     </ul>
                 </div>
             </div>

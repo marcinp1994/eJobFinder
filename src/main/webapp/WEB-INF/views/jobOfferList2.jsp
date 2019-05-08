@@ -20,7 +20,7 @@
       <div class="item  col-xs-4 col-lg-4">
          <div class="thumbnail">
          <a href="<spring:url value="/jobOfferList/viewJobOffer/${jobOffer.jobId}" />">
-            <img class="group list-group-image" src="<c:url value="/resources/images/${jobOffer.jobId}.png" /> "  width="400" height="250" alt="image" /> </a>
+            <img class="group list-group-image" src="<c:url value="/resources/images/${jobOffer.jobId}.png" /> " width="400" height = "250" alt="image" /> </a>
             <div class="caption">
                 <h3><a class="group inner list-group-item-heading" href="<spring:url value="/jobOfferList/viewJobOffer/${jobOffer.jobId}" />">
                   ${jobOffer.position}

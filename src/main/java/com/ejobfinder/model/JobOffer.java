@@ -1,55 +1,55 @@
 package com.ejobfinder.model;
 
-import com.sun.istack.internal.NotNull;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
 @Transactional
 public class JobOffer {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String jobId;
-    @NotNull
+    @NotEmpty(message = "Position must not be empty!")
     private String position;
-    @NotNull
+    @NotEmpty(message = "Company Name must not be empty!")
     private String companyName;
-    @NotNull
+    @NotEmpty(message = "Short description must not be empty!")
     private String shortDescription;
-    @NotNull
+    @NotEmpty(message = "Description must not be empty!")
     private String description;
-    @NotNull
     private String salary;
     @NotNull
+    @NotEmpty(message = "Category must not be empty!")
     private String category;
     private String jobOfferStatus;
-    @NotNull
+    @NotEmpty(message = "Requirements must not be empty!")
     private String requirements;
-    @NotNull
+    @NotEmpty(message = "Responsibilities must not be empty!")
     private String responsibilities;
-    @NotNull
+    @NotEmpty(message = "Preferred skills must not be empty!")
     private String preferredSkills;
-    @NotNull
+    @NotEmpty(message = "Benefits must not be empty!")
     private String benefits;
     private String additionalInfo;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date expirationDate;
     private String tags;
     @Transient
-    @NotNull
+    @NotNull(message = "Company logo must not be null!")
     private MultipartFile companyLogo;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn()
     private Employer employer;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn()
-    @NotNull
+    @NotNull(message = "Location must not be null!")
     private Location location;
 
 

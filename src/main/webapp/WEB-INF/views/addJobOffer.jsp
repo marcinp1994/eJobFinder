@@ -14,6 +14,7 @@
 
         <div class="form-group">
             <label for="category">Category</label>
+            <form:errors path="category" cssStyle="color: red;" />
             <label class="checkbox-inline"><form:radiobutton path="category" id="category"
                                                              value="IT" />IT</label>
             <label class="checkbox-inline"><form:radiobutton path="category" id="category"
@@ -24,61 +25,72 @@
 
         <div class="form-group">
             <label class="control-label" for="companyLogo">Upload Company Logo</label>
+            <form:errors path="companyLogo" cssStyle="color: red;" />
             <form:input id="companyLogo" path="companyLogo" type="file" class="form:input-large" />
         </div>
 
         <div class="form-group">
             <label for="position">Position</label>
+            <form:errors path="position" cssStyle="color: red;" />
             <form:input path="position" id="position" class="form-Control"/>
         </div>
 
         <div class="form-group">
             <label for="expirationDate">Expiration Date:</label>
+             <form:errors path="expirationDate" cssStyle="color: red;" />
             <form:input type="date" path="expirationDate" id="expirationDate"/>
         </div>
 
         <div class="form-group">
             <label for="location">Location</label>
+            <form:errors path="location" cssStyle="color: red;" />
             <form:input path="location.Country" id="country" class="form-Control"/>
             <form:input path="location.City" id="city" class="form-Control"/>
         </div>
 
         <div class="form-group">
             <label for="companyName">Company Name</label>
+             <form:errors path="companyName" cssStyle="color: red;" />
             <form:input path="companyName" id="companyName" class="form-Control"/>
         </div>
 
         <div class="form-group green-border-focus">
           <label for="shortDescription">Short Description (on the Main Page)</label>
+           <form:errors path="shortDescription" cssStyle="color: red;" />
           <form:textarea path="shortDescription" id="shortDescription" class="form-control"  rows="3"/>
         </div>
 
        <div class="form-group">
         <label for="description">Description</label>
-       <textarea style="background-color:orange;" id="txtEditor" name="txtEditor"/></textarea>
+         <form:errors path="description" cssStyle="color: red;" />
+       <textarea id="txtEditor" name="txtEditor"/></textarea>
        <form:textarea path="description" id="txtEditorContent" name="txtEditorContent" hidden="hidden"/>
        </div>
 
        <div class="form-group">
         <label for="responsibilities">Responsibilities</label>
+         <form:errors path="responsibilities" cssStyle="color: red;" />
        <textarea id="txtEditor2" name="txtEditor2"/></textarea>
        <form:textarea path="responsibilities" id="txtEditorContent2" name="txtEditorContent2" hidden="hidden"/>
        </div>
 
        <div class="form-group">
         <label for="requirements">Job Requirements</label>
+         <form:errors path="requirements" cssStyle="color: red;" />
        <textarea id="txtEditor3" name="txtEditor3"/></textarea>
        <form:textarea path="requirements" id="txtEditorContent3" name="txtEditorContent3" hidden="hidden"/>
        </div>
 
        <div class="form-group">
         <label for="preferredSkills">Preferred Skills</label>
+        <form:errors path="preferredSkills" cssStyle="color: red;" />
        <textarea id="txtEditor4" name="txtEditor4"/></textarea>
        <form:textarea path="preferredSkills" id="txtEditorContent4" name="txtEditorContent4" hidden="hidden"/>
        </div>
 
        <div class="form-group">
         <label for="benefits">Benefits</label>
+        <form:errors path="benefits" cssStyle="color: red;" />
        <textarea id="txtEditor5" name="txtEditor5"/></textarea>
        <form:textarea path="benefits" id="txtEditorContent5" name="txtEditorContent5" hidden="hidden"/>
        </div>

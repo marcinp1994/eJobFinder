@@ -1,5 +1,6 @@
 package com.ejobfinder.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
@@ -13,7 +14,9 @@ public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String locationId;
+    @NotEmpty(message = "Country must not be empty!")
     private String Country;
+    @NotEmpty(message = "City must not be empty!")
     private String City;
 
     @OneToMany(mappedBy = "location", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

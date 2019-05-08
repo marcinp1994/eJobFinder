@@ -32,6 +32,7 @@
 
         <div class="form-group">
             <label for="position">Position</label>
+             <form:errors path="position" cssStyle="color: red;" />
             <form:input path="position" id="position" class="form-Control" value="${jobOffer.position}"/>
         </div>
 

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -79,6 +80,12 @@ public class HomeController {
         return "jobOfferInventory";
     }
 
+    @RequestMapping("/employer")
+    public String employerPage(Model model) {
+
+        return "employer";
+    }
+
     @RequestMapping("/employer/{employerId}/jobOfferInventory/addJobOffer")
     public String addJobOffer(@PathVariable String employerId, Model model) {
         JobOffer jobOffer = new JobOffer();
@@ -92,7 +99,11 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/employer/{employerId}/jobOfferInventory/addJobOffer", method = RequestMethod.POST)
-    public String addJobOfferPost(@PathVariable String employerId, @ModelAttribute("jobOffer") JobOffer jobOffer, HttpServletRequest request) {
+    public String addJobOfferPost(@PathVariable String employerId, @Valid @ModelAttribute("jobOffer") JobOffer jobOffer, BindingResult result, HttpServletRequest request) {
+
+        if (result.hasErrors()) {
+            return "addJobOffer";
+        }
         Employer employer = employerDao.getEmployerById(employerId);
         jobOffer.setEmployer(employer);
         if (jobOffer.getLocation() != null && jobOffer.getLocation().getCity() != null) {
@@ -149,7 +160,7 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/employer/{employerId}/jobOfferInventory/editJobOffer", method = RequestMethod.POST)
-    public String editProduct(@ModelAttribute("jobOffer") JobOffer jobOffer, @PathVariable String employerId, BindingResult result, Model model,
+    public String editProduct(@Valid @ModelAttribute("jobOffer") JobOffer jobOffer, BindingResult result, @PathVariable String employerId, Model model,
                               HttpServletRequest request) {
 
         if (result.hasErrors()) {
