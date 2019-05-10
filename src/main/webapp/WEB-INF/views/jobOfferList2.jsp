@@ -2,6 +2,9 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@include file="/WEB-INF/views/template/header.jsp"%>
 
+<br/>
+<br/>
+
 <div class="container-wrapper">
 <div class="container">
 <div class="page-header">

@@ -1,6 +1,8 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@include file="/WEB-INF/views/template/header.jsp" %>
 
+<br/>
+<br/>
 
 <div class="container-wrapper" style="background-color:white;">
     <div class="container">
@@ -18,43 +20,44 @@
 <div class="form-group">
             <label for="category">Category</label>
             <label class="checkbox-inline"><form:radiobutton path="category" id="category"
-                                                             value="IT" />IT</label>
+                                                             value="IT" required="required"/>IT</label>
             <label class="checkbox-inline"><form:radiobutton path="category" id="category"
-                                                             value="financial" />Financial</label>
+                                                             value="financial" required="required"/>Financial</label>
             <label class="checkbox-inline"><form:radiobutton path="category" id="category"
-                                                            value="logistic" />Logistic</label>
+                                                            value="logistic" required="required"/>Logistic</label>
+        <div class="help-block with-errors"></div>
         </div>
 
         <div class="form-group">
             <label class="control-label" for="companyLogo">Upload Company Logo</label>
-            <form:input id="companyLogo" path="companyLogo" type="file" class="form:input-large" />
+            <form:input id="companyLogo" path="companyLogo" type="file" class="form:input-large" required="required"/>
         </div>
 
         <div class="form-group">
             <label for="position">Position</label>
              <form:errors path="position" cssStyle="color: red;" />
-            <form:input path="position" id="position" class="form-Control" value="${jobOffer.position}"/>
+            <form:input path="position" id="position" class="form-Control" value="${jobOffer.position}" required="required" data-error="Please enter your Position."/>
         </div>
 
         <div class="form-group">
             <label for="expirationDate">Expiration Date:</label>
-            <form:input type="date" path="expirationDate" id="expirationDate"/>
+            <form:input type="date" class="form-control" path="expirationDate" id="expirationDate" required="required" data-error="Please enter your Expiration Date."/>
         </div>
 
         <div class="form-group">
             <label for="location">Location</label>
-            <form:input path="location.Country" id="country" class="form-Control" value="${jobOffer.location.country}"/>
-            <form:input path="location.City" id="city" class="form-Control" value="${jobOffer.location.city}"/>
+            <form:input path="location.Country" id="country" class="form-Control" value="${jobOffer.location.country}" required="required" data-error="Please enter your Country"/>
+            <form:input path="location.City" id="city" class="form-Control" value="${jobOffer.location.city}" required="required" data-error="Please enter your City."/>
         </div>
 
         <div class="form-group">
             <label for="companyName">Company Name</label>
-            <form:input path="companyName" id="companyName" class="form-Control" value="${jobOffer.companyName}"/>
+            <form:input path="companyName" id="companyName" class="form-Control" value="${jobOffer.companyName}" required="required" data-error="Please enter your Company Name."/>
         </div>
 
         <div class="form-group green-border-focus">
           <label for="shortDescription">Short Description (on the Main Page)</label>
-          <form:textarea path="shortDescription" id="shortDescription" class="form-control" value="${jobOffer.shortDescription}"  rows="3"/>
+          <form:textarea path="shortDescription" id="shortDescription" class="form-control" value="${jobOffer.shortDescription}"  rows="3" required="required" data-error="Please enter your Short Description"/>
         </div>
 
        <div class="form-group">
@@ -105,6 +108,7 @@
         <%@include file="/WEB-INF/views/template/footer.jsp" %>
         <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
         <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
         <script src="<c:url value="/resources/js/editor.js" />"></script>
         <script>
         $(document).ready(function() {

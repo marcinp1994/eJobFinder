@@ -2,7 +2,6 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <%@include file="/WEB-INF/views/template/header.jsp" %>
-<link href="<c:url value="/resources/css/main.css" />" rel="stylesheet">
 
 <!-- Carousel
 ================================================== -->
@@ -15,31 +14,30 @@
     </ol>
     <div class="carousel-inner" role="listbox">
         <div class="item active">
-            <img class="first-slide home-image" src="<c:url value="/resources/images/jobOffers2.jpg" />" height = "950" alt="First slide">
-
-                <div class="carousel-caption">
-                    <h2 style="color:black;">Check out our hot new job offers!</h2>
-                    <p><a class="btn btn-lg btn-warning" href="<spring:url value="/jobOfferList" />" role="button">Job Offers</a></p>
+                    <img class="first-slide" src="<c:url value="/resources/images/jobs3.jpg" />" alt="First slide">
+                    <div class="container">
+                        <div class="carousel-caption">
+                            <h1 style="color:red;"><b><font size="30">Job opportunities</font></b></h1>
+                            <p style="color:black;font-size:30px"><b>Looking for a job? We can do better, how about a career defining opportunity?  Just choose one of the category below.</b></p>
+                            <p><a class="btn btn-lg btn-warning"  href="<spring:url value="/jobOfferList" />" role="button">See hot jobs</a></p>
+                        </div>
+                    </div>
                 </div>
-        </div>
         <div class="item">
-            <img class="second-slide" src="<c:url value="/resources/images/IT.png" /> alt="Second slide">
+            <img class="second-slide" src="<c:url value="/resources/images/jobOffers2.jpg" />" alt="Second slide">
             <div class="container">
-                <div class="carousel-caption">
-                    <h1>Another example headline.</h1>
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                    <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
-                </div>
+                    <div class="carousel-caption">
+                        <p><a class="btn btn-lg btn-warning" href="#" role="button">See hot jobs</a></p>
+                    </div>
             </div>
         </div>
         <div class="item">
-            <img class="third-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Third slide">
+            <img class="third-slide" src="<c:url value="/resources/images/jobs5.jpg" />" alt="Third slide">
             <div class="container">
                 <div class="carousel-caption">
-                    <h1>One more for good measure.</h1>
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                    <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
-                </div>
+                    <div class="carousel-caption">
+                        <p><a class="btn btn-lg btn-warning" href="#" role="button">See hot jobs</a></p>
+                    </div>
             </div>
         </div>
     </div>

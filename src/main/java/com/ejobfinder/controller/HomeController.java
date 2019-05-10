@@ -99,11 +99,8 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/employer/{employerId}/jobOfferInventory/addJobOffer", method = RequestMethod.POST)
-    public String addJobOfferPost(@PathVariable String employerId, @Valid @ModelAttribute("jobOffer") JobOffer jobOffer, BindingResult result, HttpServletRequest request) {
+    public String addJobOfferPost(@PathVariable String employerId, @Valid @ModelAttribute("jobOffer") JobOffer jobOffer, BindingResult result, HttpServletRequest request, Model model) {
 
-        if (result.hasErrors()) {
-            return "addJobOffer";
-        }
         Employer employer = employerDao.getEmployerById(employerId);
         jobOffer.setEmployer(employer);
         if (jobOffer.getLocation() != null && jobOffer.getLocation().getCity() != null) {
@@ -112,6 +109,12 @@ public class HomeController {
                 jobOffer.setLocation(location);
             }
         }
+        if (result.hasErrors()) {
+            model.addAttribute("jobOffer", jobOffer);
+            model.addAttribute("location", jobOffer.getLocation());
+            return "addJobOffer";
+        }
+
         jobOfferDao.addJobOffer(jobOffer);
 
         MultipartFile companyLogo = jobOffer.getCompanyLogo();

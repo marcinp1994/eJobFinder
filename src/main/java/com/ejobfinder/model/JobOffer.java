@@ -21,20 +21,20 @@ public class JobOffer {
     private String companyName;
     @NotEmpty(message = "Short description must not be empty!")
     private String shortDescription;
-    @NotEmpty(message = "Description must not be empty!")
+    @NotNull
     private String description;
     private String salary;
     @NotNull
     @NotEmpty(message = "Category must not be empty!")
     private String category;
     private String jobOfferStatus;
-    @NotEmpty(message = "Requirements must not be empty!")
+    @NotNull
     private String requirements;
-    @NotEmpty(message = "Responsibilities must not be empty!")
+    @NotNull
     private String responsibilities;
-    @NotEmpty(message = "Preferred skills must not be empty!")
+    @NotNull
     private String preferredSkills;
-    @NotEmpty(message = "Benefits must not be empty!")
+    @NotNull
     private String benefits;
     private String additionalInfo;
     @NotNull
@@ -42,14 +42,12 @@ public class JobOffer {
     private Date expirationDate;
     private String tags;
     @Transient
-    @NotNull(message = "Company logo must not be null!")
     private MultipartFile companyLogo;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn()
     private Employer employer;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn()
-    @NotNull(message = "Location must not be null!")
     private Location location;
 
 

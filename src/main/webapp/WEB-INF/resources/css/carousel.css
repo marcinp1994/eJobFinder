@@ -3,10 +3,8 @@
 /* Padding below the footer and lighter body text */
 
 body {
-  padding-bottom: 40px;
+  padding-bottom: 0px;
   color: #5a5a5a;
-  background: whitesmoke;
-
 }
 
 
@@ -30,7 +28,6 @@ body {
 .navbar-wrapper .navbar {
   padding-right: 15px;
   padding-left: 15px;
-
 }
 .navbar-wrapper .navbar .container {
   width: auto;
@@ -42,19 +39,17 @@ body {
 
 /* Carousel base class */
 .carousel {
-  height: 800px;
-  margin-bottom: 60px;
+  height: 560px;
+  margin-bottom: 0px;
 }
 /* Since positioning the image, we need to help out the caption */
 .carousel-caption {
   z-index: 10;
-  top: 230px;
-  bottom: auto;
 }
 
 /* Declare heights because of positioning of img element */
 .carousel .item {
-  height: 800px;
+  height: 560px;
   background-color: #777;
 }
 .carousel-inner > .item > img {
@@ -62,9 +57,8 @@ body {
   top: 0;
   left: 0;
   min-width: 100%;
-  height: 800px;
+  height: 560px;
 }
-
 
 
 /* MARKETING CONTENT
@@ -74,6 +68,7 @@ body {
 .marketing .col-lg-4 {
   margin-bottom: 20px;
   text-align: center;
+  margin-top: 15px;
 }
 .marketing h2 {
   font-weight: normal;
@@ -105,7 +100,7 @@ body {
 @media (min-width: 768px) {
   /* Navbar positioning foo */
   .navbar-wrapper {
-    /*margin-top: 20px;*/
+    margin-top: 0px;
   }
   .navbar-wrapper .container {
     padding-right: 15px;
@@ -123,7 +118,7 @@ body {
 
   /* Bump up size of carousel content */
   .carousel-caption p {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-size: 21px;
     line-height: 1.4;
   }
