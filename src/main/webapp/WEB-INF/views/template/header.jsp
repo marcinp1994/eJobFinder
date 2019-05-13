@@ -55,14 +55,34 @@
                     </li>
                     </ul>
                     <ul class="nav navbar-nav pull-right">
-                    <li class="dropdown">
-                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Login<span class="caret"></span></a>
-                       <ul class="dropdown-menu">
-                          <li><a href="<c:url value="/employer/" />">Employer</a></li>
-                          <li role="separator" class="divider"></li>
-                          <li><a href="#">Candidate</a></li>
-                       </ul>
-                    </li>
+                        <c:if test="${pageContext.request.userPrincipal.name != null}">
+                            <li><a>Welcome: ${pageContext.request.userPrincipal.name}</a></li>
+                            <li><a href="<c:url value="/j_spring_security_logout" />">Logout</a></li>
+                            <c:if test="${pageContext.request.isUserInRole('ROLE_EMPLOYER')}">
+                                <li><a href="<c:url value="/employer" />">My Account</a></li>
+                            </c:if>
+                            <c:if test="${pageContext.request.isUserInRole('ROLE_USER')}">
+                                <li><a href="<c:url value="/candidate" />">MyAccount</a></li>
+                            </c:if>
+                        </c:if>
+                        <c:if test="${pageContext.request.userPrincipal.name  == null}">
+                            <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Login<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                            <li><a href="<c:url value="/employer/" />">Employer</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="<c:url value="/candidate/" />">Candidate</a></li>
+                            </ul>
+                            </li>
+                            <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Register<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                            <li><a href="<c:url value="/registerEmployer/" />">Employer</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="<c:url value="/registerCandidate/" />">Candidate</a></li>
+                            </ul>
+                            </li>
+                        </c:if>
                     </ul>
                 </div>
             </div>

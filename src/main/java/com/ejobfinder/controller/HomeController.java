@@ -1,17 +1,14 @@
 package com.ejobfinder.controller;
 
-import com.ejobfinder.dao.EmployerDao;
-import com.ejobfinder.dao.JobOfferDao;
-import com.ejobfinder.dao.LocationDao;
 import com.ejobfinder.model.JobOffer;
 import com.ejobfinder.model.Location;
+import com.ejobfinder.service.JobOfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,16 +20,8 @@ import java.util.List;
 @Controller
 public class HomeController {
 
-    private Path path;
-
     @Autowired
-    private JobOfferDao jobOfferDao;
-
-    @Autowired
-    private LocationDao locationDao;
-
-    @Autowired
-    private EmployerDao employerDao;
+    private JobOfferService jobOfferService;
 
     @RequestMapping("/")
     public String home() {
@@ -41,32 +30,32 @@ public class HomeController {
 
     @RequestMapping("/jobOfferList")
     public String getJobOffers(Model model){
-        List<JobOffer> jobOffers = jobOfferDao.getAllJobOffers();
+        List<JobOffer> jobOffers = jobOfferService.getAllJobOffers();
         model.addAttribute("jobOffers", jobOffers);
 
-        return "jobOfferList2";
+        return "jobOfferList";
     }
 
     @RequestMapping("/jobOfferList/{category}")
     public String getJobOffersForCategory(@PathVariable String category, Model model) {
-        List<JobOffer> jobOffers = jobOfferDao.getAllJobOffers();
-        List<JobOffer> jobOffersForCtegory = null;
+        List<JobOffer> jobOffers = jobOfferService.getAllJobOffers();
+        List<JobOffer> jobOffersForCategory = null;
         for (JobOffer jobOffer : jobOffers) {
             if (category.equalsIgnoreCase(jobOffer.getCategory())) {
-                if (jobOffersForCtegory == null) {
-                    jobOffersForCtegory = new ArrayList<>();
+                if (jobOffersForCategory == null) {
+                    jobOffersForCategory = new ArrayList<>();
                 }
-                jobOffersForCtegory.add(jobOffer);
+                jobOffersForCategory.add(jobOffer);
             }
         }
-        model.addAttribute("jobOffers", jobOffersForCtegory);
+        model.addAttribute("jobOffers", jobOffersForCategory);
 
-        return "jobOfferList2";
+        return "jobOfferList";
     }
 
     @RequestMapping("/jobOfferList/viewJobOffer/{jobId}")
     public String viewJobOffer(@PathVariable String jobId, Model model) {
-        JobOffer jobOffer = jobOfferDao.getJobOfferById(jobId);
+        JobOffer jobOffer = jobOfferService.getJobOfferById(jobId);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
         String expirationDate = formatter.format(jobOffer.getExpirationDate());

@@ -42,7 +42,8 @@
 
 
     <security:http auto-config="true">
-        <security:intercept-url pattern="/employer/**" access="ROLE_USER"/>
+        <security:intercept-url pattern="/employer/**" access="ROLE_EMPLOYER"/>
+        <security:intercept-url pattern="/candidate/**" access="ROLE_USER"/>
         <security:form-login
                 login-page="/login"
                 default-target-url="/employer/"
@@ -50,14 +51,14 @@
                 username-parameter="username"
                 password-parameter="password"/>
         <security:logout
-                logout-success-url="/login?logout"/>
+                logout-success-url="/"/>
     </security:http>
 
     <security:authentication-manager>
         <security:authentication-provider>
             <security:jdbc-user-service data-source-ref="dataSource"
                                         authorities-by-username-query="SELECT username, authority From authorities WHERE username = ?"
-                                        users-by-username-query="SELECT username, password, enabled FROM employer WHERE username = ?"/>
+                                        users-by-username-query="SELECT username, password, enabled FROM users WHERE username = ?"/>
         </security:authentication-provider>
     </security:authentication-manager>
 

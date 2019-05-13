@@ -1,14 +1,12 @@
 package com.ejobfinder.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Transactional
 public class Location {
 
     @Id

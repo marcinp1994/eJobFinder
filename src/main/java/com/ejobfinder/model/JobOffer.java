@@ -2,7 +2,6 @@ package com.ejobfinder.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
@@ -10,7 +9,6 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
-@Transactional
 public class JobOffer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -45,8 +43,8 @@ public class JobOffer {
     private MultipartFile companyLogo;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn()
-    private Employer employer;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Customer Customer;
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn()
     private Location location;
 
@@ -97,14 +95,6 @@ public class JobOffer {
 
     public void setJobId(String jobId) {
         this.jobId = jobId;
-    }
-
-    public Employer getEmployer() {
-        return employer;
-    }
-
-    public void setEmployer(Employer employer) {
-        this.employer = employer;
     }
 
     public String getCategory() {
@@ -195,4 +185,11 @@ public class JobOffer {
         this.location = location;
     }
 
+    public com.ejobfinder.model.Customer getCustomer() {
+        return Customer;
+    }
+
+    public void setCustomer(com.ejobfinder.model.Customer customer) {
+        Customer = customer;
+    }
 }

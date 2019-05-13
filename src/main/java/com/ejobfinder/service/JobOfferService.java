@@ -1,20 +1,23 @@
-package com.ejobfinder.dao;
+package com.ejobfinder.service;
 
 import com.ejobfinder.model.JobOffer;
 
 import java.util.List;
 
-public interface JobOfferDao {
+/**
+ * Created by Le on 1/25/2016.
+ */
+public interface JobOfferService {
 
     void addJobOffer(JobOffer jobOffer);
 
     void editJobOffer(JobOffer jobOffer);
 
-    JobOffer getJobOfferById(String id);
+    JobOffer getJobOfferById(String jobId);
 
     List<JobOffer> getAllJobOffers();
 
-    void deleteJobOffer(String id);
+    void deleteJobOffer(String jobId);
 
     List<JobOffer> getJobOffersByCustomerName(String name);
 

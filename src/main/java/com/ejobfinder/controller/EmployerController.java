@@ -1,14 +1,14 @@
 package com.ejobfinder.controller;
 
-import com.ejobfinder.dao.EmployerDao;
-import com.ejobfinder.dao.JobOfferDao;
-import com.ejobfinder.dao.LocationDao;
-import com.ejobfinder.model.Employer;
+import com.ejobfinder.model.Customer;
 import com.ejobfinder.model.JobOffer;
 import com.ejobfinder.model.Location;
+import com.ejobfinder.service.CustomerService;
+import com.ejobfinder.service.JobOfferService;
+import com.ejobfinder.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,28 +27,23 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-/**
- * Created by Le on 1/2/2016.
- */
-
 @Controller
 public class EmployerController {
 
     private Path path;
 
     @Autowired
-    private JobOfferDao jobOfferDao;
+    private CustomerService customerService;
 
     @Autowired
-    private LocationDao locationDao;
+    private JobOfferService jobOfferService;
 
     @Autowired
-    private EmployerDao employerDao;
-
+    private LocationService locationService;
 
     @RequestMapping("/employer/jobOfferInventory")
-    public String employerPageInventory(Model model) {
-        List<JobOffer> jobOffers = jobOfferDao.getJobOffersByEmployerName(getEmployerName());
+    public String employerPageInventory(@AuthenticationPrincipal User activeUser, Model model) {
+        List<JobOffer> jobOffers = jobOfferService.getJobOffersByCustomerName(activeUser.getUsername());
         model.addAttribute("jobOffers", jobOffers);
         return "jobOfferInventory";
     }
@@ -60,11 +55,11 @@ public class EmployerController {
     }
 
     @RequestMapping("/employer/jobOfferInventory/addJobOffer")
-    public String addJobOffer(Model model) {
+    public String addJobOffer(@AuthenticationPrincipal User activeUser, Model model) {
         JobOffer jobOffer = new JobOffer();
         Location location = new Location();
-        Employer employer = employerDao.getEmployerByName(getEmployerName());
-        jobOffer.setEmployer(employer);
+        Customer customer = customerService.getCustomerByUsername(activeUser.getUsername());
+        jobOffer.setCustomer(customer);
         model.addAttribute("jobOffer", jobOffer);
         model.addAttribute("location", location);
 
@@ -72,11 +67,12 @@ public class EmployerController {
     }
 
     @RequestMapping(value = "/employer/jobOfferInventory/addJobOffer", method = RequestMethod.POST)
-    public String addJobOfferPost(@Valid @ModelAttribute("jobOffer") JobOffer jobOffer, BindingResult result, HttpServletRequest request, Model model) {
-        Employer employer = employerDao.getEmployerByName(getEmployerName());
-        jobOffer.setEmployer(employer);
+    public String addJobOfferPost(@Valid @ModelAttribute("jobOffer") JobOffer jobOffer, BindingResult result,
+                                  @AuthenticationPrincipal User activeUser, HttpServletRequest request, Model model) {
+        Customer customer = customerService.getCustomerByUsername(activeUser.getUsername());
+        jobOffer.setCustomer(customer);
         if (jobOffer.getLocation() != null && jobOffer.getLocation().getCity() != null) {
-            Location location = locationDao.getLocationByCity(jobOffer.getLocation().getCity());
+            Location location = locationService.getLocationByCity(jobOffer.getLocation().getCity());
             if (location != null) {
                 jobOffer.setLocation(location);
             }
@@ -87,7 +83,7 @@ public class EmployerController {
             return "addJobOffer";
         }
 
-        jobOfferDao.addJobOffer(jobOffer);
+        jobOfferService.addJobOffer(jobOffer);
 
         MultipartFile companyLogo = jobOffer.getCompanyLogo();
         String rootDirectory = request.getSession().getServletContext().getRealPath("/");
@@ -106,7 +102,7 @@ public class EmployerController {
     }
 
     @RequestMapping(value = "/employer/jobOfferInventory/deleteJobOffer/{jobId}")
-    public String deleteJobOffer(@PathVariable String jobId, Model model, HttpServletRequest request) {
+    public String deleteJobOffer(@PathVariable String jobId, @AuthenticationPrincipal User activeUser, Model model, HttpServletRequest request) {
 
         String rootDirectory = request.getSession().getServletContext().getRealPath("/");
         path = Paths.get(rootDirectory + "\\WEB-INF\\resources\\images\\" + jobId + ".png");
@@ -119,14 +115,14 @@ public class EmployerController {
             }
         }
 
-        jobOfferDao.deleteJobOffer(jobId);
+        jobOfferService.deleteJobOffer(jobId);
 
         return "redirect:/employer/jobOfferInventory";
     }
 
     @RequestMapping("/employer/jobOfferInventory/editJobOffer/{jobId}")
     public String editJobOffer(@PathVariable("jobId") String jobId, Model model) {
-        JobOffer jobOffer = jobOfferDao.getJobOfferById(jobId);
+        JobOffer jobOffer = jobOfferService.getJobOfferById(jobId);
         model.addAttribute(jobOffer);
 
         return "editJobOffer";
@@ -134,7 +130,7 @@ public class EmployerController {
 
     @RequestMapping(value = "/employer/jobOfferInventory/editJobOffer", method = RequestMethod.POST)
     public String editProduct(@Valid @ModelAttribute("jobOffer") JobOffer jobOffer, BindingResult result, Model model,
-                              HttpServletRequest request) {
+                              HttpServletRequest request, @AuthenticationPrincipal User activeUser) {
 
         if (result.hasErrors()) {
             return "editJobOffer";
@@ -152,24 +148,14 @@ public class EmployerController {
             }
         }
 
-        if (jobOffer.getEmployer() == null) {
-            Employer employer = employerDao.getEmployerByName(getEmployerName());
-            jobOffer.setEmployer(employer);
+        if (jobOffer.getCustomer() == null) {
+            Customer customer = customerService.getCustomerByUsername(activeUser.getUsername());
+            jobOffer.setCustomer(customer);
         }
 
-        jobOfferDao.editJobOffer(jobOffer);
+        jobOfferService.editJobOffer(jobOffer);
 
         return "redirect:/employer/jobOfferInventory";
     }
 
-    private String getEmployerName() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = null;
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
-        return username;
-    }
 }
