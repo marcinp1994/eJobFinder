@@ -60,10 +60,10 @@ public class JobOfferDaoImpl implements JobOfferDao {
     }
 
     @Override
-    public List<JobOffer> getJobOffersByEmployerId(String employerId) {
+    public List<JobOffer> getJobOffersByEmployerName(String employerName) {
         List<JobOffer> jobOffersFromSpecificEmployer = null;
         for(JobOffer jobOffer : getAllJobOffers()){
-            if(jobOffer.getEmployer().getEmployerId().equals(employerId)){
+            if (jobOffer.getEmployer().getUsername().equals(employerName)) {
                 if(jobOffersFromSpecificEmployer == null){
                     jobOffersFromSpecificEmployer = new ArrayList<>();
                 }

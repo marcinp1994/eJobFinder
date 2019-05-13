@@ -1,4 +1,5 @@
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%><%@include file="/WEB-INF/views/template/header.jsp"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@include file="/WEB-INF/views/template/header.jsp"%>
 <link href="<c:url value="/resources/css/main.css" />" rel="stylesheet">
 	<div class="container-wrapper">
 		<div class="container">

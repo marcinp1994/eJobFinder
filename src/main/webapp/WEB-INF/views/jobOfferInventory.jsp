@@ -4,6 +4,10 @@
 <br/>
 <br/>
 
+<security:authorize access="isAuthenticated()">
+                <security:authentication property="principal.username" var="username"/>
+</security:authorize>
+
 <div class="container-wrapper">
     <div class="container">
         <div class="page-header">
@@ -29,16 +33,16 @@
                 <td>
                     <a href="<spring:url value="/jobOfferList/viewJobOffer/${jobOffer.jobId}" />">
                     <span class="glyphicon glyphicon-info-sign"></span></a>
-                    <a href="<spring:url value="/employer/${jobOffer.employer.employerId}/jobOfferInventory/deleteJobOffer/${jobOffer.jobId}" />">
+                    <a href="<spring:url value="/employer/jobOfferInventory/deleteJobOffer/${jobOffer.jobId}" />">
                     <span class="glyphicon glyphicon-trash"></span></a>
-                    <a href="<spring:url value="/employer/${jobOffer.employer.employerId}/jobOfferInventory/editJobOffer/${jobOffer.jobId}" />">
+                    <a href="<spring:url value="/employer/jobOfferInventory/editJobOffer/${jobOffer.jobId}" />">
                     <span class="glyphicon glyphicon-edit"></span></a>
                 </td>
             </tr>
             </c:forEach>
         </table>
 
-        <a href="<spring:url value="/employer/${employerId}/jobOfferInventory/addJobOffer" />" class="btn btn-primary">Add Job Offer</a>
+        <a href="<spring:url value="/employer/jobOfferInventory/addJobOffer" />" class="btn btn-primary">Add Job Offer</a>
 
         <br/>
         <br/>

@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -42,6 +43,16 @@
                         <li><a href="<c:url value="/" /> ">Home</a></li>
                         <li><a href="<c:url value="/jobOfferList" />">Job Offers</a></li>
                         <li><a href="#contact">Contact</a></li>
+                       <li class="dropdown">
+                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Category<span class="caret"></span></a>
+                       <ul class="dropdown-menu">
+                          <li><a href="<c:url value="/jobOfferList/IT/" />">IT</a></li>
+                          <li role="separator" class="divider"></li>
+                          <li><a href="<c:url value="/jobOfferList/Financial" />">Financial</a></li>
+                          <li role="separator" class="divider"></li>
+                          <li><a href="<c:url value="/jobOfferList/Logistic" />">Logistic</a></li>
+                       </ul>
+                    </li>
                     </ul>
                     <ul class="nav navbar-nav pull-right">
                     <li class="dropdown">

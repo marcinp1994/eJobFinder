@@ -3,27 +3,17 @@ package com.ejobfinder.controller;
 import com.ejobfinder.dao.EmployerDao;
 import com.ejobfinder.dao.JobOfferDao;
 import com.ejobfinder.dao.LocationDao;
-import com.ejobfinder.model.Employer;
 import com.ejobfinder.model.JobOffer;
 import com.ejobfinder.model.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,6 +47,23 @@ public class HomeController {
         return "jobOfferList2";
     }
 
+    @RequestMapping("/jobOfferList/{category}")
+    public String getJobOffersForCategory(@PathVariable String category, Model model) {
+        List<JobOffer> jobOffers = jobOfferDao.getAllJobOffers();
+        List<JobOffer> jobOffersForCtegory = null;
+        for (JobOffer jobOffer : jobOffers) {
+            if (category.equalsIgnoreCase(jobOffer.getCategory())) {
+                if (jobOffersForCtegory == null) {
+                    jobOffersForCtegory = new ArrayList<>();
+                }
+                jobOffersForCtegory.add(jobOffer);
+            }
+        }
+        model.addAttribute("jobOffers", jobOffersForCtegory);
+
+        return "jobOfferList2";
+    }
+
     @RequestMapping("/jobOfferList/viewJobOffer/{jobId}")
     public String viewJobOffer(@PathVariable String jobId, Model model) {
         JobOffer jobOffer = jobOfferDao.getJobOfferById(jobId);
@@ -72,123 +79,4 @@ public class HomeController {
         return "viewJobOffer";
     }
 
-    @RequestMapping("/employer/{employerId}/jobOfferInventory")
-    public String employerPage(@PathVariable String employerId, Model model) {
-        List<JobOffer> jobOffers = jobOfferDao.getJobOffersByEmployerId(employerId);
-        model.addAttribute("jobOffers", jobOffers);
-        model.addAttribute("employerId", employerId);
-        return "jobOfferInventory";
-    }
-
-    @RequestMapping("/employer")
-    public String employerPage(Model model) {
-
-        return "employer";
-    }
-
-    @RequestMapping("/employer/{employerId}/jobOfferInventory/addJobOffer")
-    public String addJobOffer(@PathVariable String employerId, Model model) {
-        JobOffer jobOffer = new JobOffer();
-        Location location = new Location();
-        Employer employer = employerDao.getEmployerById(employerId);
-        jobOffer.setEmployer(employer);
-        model.addAttribute("jobOffer", jobOffer);
-        model.addAttribute("location", location);
-
-        return "addJobOffer";
-    }
-
-    @RequestMapping(value = "/employer/{employerId}/jobOfferInventory/addJobOffer", method = RequestMethod.POST)
-    public String addJobOfferPost(@PathVariable String employerId, @Valid @ModelAttribute("jobOffer") JobOffer jobOffer, BindingResult result, HttpServletRequest request, Model model) {
-
-        Employer employer = employerDao.getEmployerById(employerId);
-        jobOffer.setEmployer(employer);
-        if (jobOffer.getLocation() != null && jobOffer.getLocation().getCity() != null) {
-            Location location = locationDao.getLocationByCity(jobOffer.getLocation().getCity());
-            if (location != null) {
-                jobOffer.setLocation(location);
-            }
-        }
-        if (result.hasErrors()) {
-            model.addAttribute("jobOffer", jobOffer);
-            model.addAttribute("location", jobOffer.getLocation());
-            return "addJobOffer";
-        }
-
-        jobOfferDao.addJobOffer(jobOffer);
-
-        MultipartFile companyLogo = jobOffer.getCompanyLogo();
-        String rootDirectory = request.getSession().getServletContext().getRealPath("/");
-        path = Paths.get(rootDirectory + "\\WEB-INF\\resources\\images\\" + jobOffer.getJobId() + ".png");
-
-        if (companyLogo != null && !companyLogo.isEmpty()) {
-            try {
-                companyLogo.transferTo(new File(path.toString()));
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException("Product image saving failed", e);
-            }
-        }
-
-        return "redirect:/employer/" + employerId + "/jobOfferInventory";
-    }
-
-    @RequestMapping(value = "/employer/{employerId}/jobOfferInventory/deleteJobOffer/{jobId}")
-    public String deleteJobOffer(@PathVariable String employerId, @PathVariable String jobId, Model model, HttpServletRequest request) {
-
-        String rootDirectory = request.getSession().getServletContext().getRealPath("/");
-        path = Paths.get(rootDirectory + "\\WEB-INF\\resources\\images\\" + jobId + ".png");
-
-        if (Files.exists(path)) {
-            try {
-                Files.delete(path);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        jobOfferDao.deleteJobOffer(jobId);
-
-        return "redirect:/employer/" + employerId + "/jobOfferInventory";
-    }
-
-    @RequestMapping("/employer/{employerId}/jobOfferInventory/editJobOffer/{jobId}")
-    public String editJobOffer(@PathVariable("jobId") String jobId, @PathVariable String employerId, Model model) {
-        JobOffer jobOffer = jobOfferDao.getJobOfferById(jobId);
-
-        model.addAttribute(jobOffer);
-        model.addAttribute(employerId);
-
-        return "editJobOffer";
-    }
-
-    @RequestMapping(value = "/employer/{employerId}/jobOfferInventory/editJobOffer", method = RequestMethod.POST)
-    public String editProduct(@Valid @ModelAttribute("jobOffer") JobOffer jobOffer, BindingResult result, @PathVariable String employerId, Model model,
-                              HttpServletRequest request) {
-
-        if (result.hasErrors()) {
-            return "editJobOffer";
-        }
-
-        MultipartFile productImage = jobOffer.getCompanyLogo();
-        String rootDirectory = request.getSession().getServletContext().getRealPath("/");
-        path = Paths.get(rootDirectory + "\\WEB-INF\\resources\\images\\" + jobOffer.getJobId() + ".png");
-
-        if (productImage != null && !productImage.isEmpty()) {
-            try {
-                productImage.transferTo(new File(path.toString()));
-            } catch (Exception e) {
-                throw new RuntimeException("Company logo saving failed", e);
-            }
-        }
-
-        if (jobOffer.getEmployer() == null) {
-            Employer employer = employerDao.getEmployerById(employerId);
-            jobOffer.setEmployer(employer);
-        }
-
-        jobOfferDao.editJobOffer(jobOffer);
-
-        return "redirect:/employer/" + employerId + "/jobOfferInventory";
-    }
 }

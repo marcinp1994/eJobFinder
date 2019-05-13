@@ -16,5 +16,5 @@ public interface JobOfferDao {
 
     void deleteJobOffer(String id);
 
-    List<JobOffer>  getJobOffersByEmployerId(String employerId);
+    List<JobOffer> getJobOffersByEmployerName(String name);
 }

@@ -2,52 +2,21 @@ package com.ejobfinder.model;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 @Entity
 @Transactional
 public class Employer {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String employerId;
-    private String companyName;
-    private String email;
-    private String phoneNumber;
+    private String username;
+    private String password;
+
     @OneToMany(mappedBy = "employer", fetch = FetchType.EAGER)
     private List<JobOffer> jobOffers;
-
-    public String getEmployerId() {
-        return employerId;
-    }
-
-    public void setEmployerId(String employerId) {
-        this.employerId = employerId;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
 
     public List<JobOffer> getJobOffers() {
         return jobOffers;
@@ -56,4 +25,22 @@ public class Employer {
     public void setJobOffers(List<JobOffer> jobOffers) {
         this.jobOffers = jobOffers;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+
 }

@@ -11,7 +11,7 @@
             <p class="lead">Fill the below information to add a job offer:</p>
         </div>
 
-        <form:form action="${pageContext.request.contextPath}/employer/${jobOffer.employer.employerId}/jobOfferInventory/addJobOffer" method="post"
+        <form:form action="${pageContext.request.contextPath}/employer/jobOfferInventory/addJobOffer" method="post"
                    commandName="jobOffer" enctype="multipart/form-data">
 
         <div class="form-group">
@@ -20,9 +20,9 @@
             <label class="checkbox-inline"><form:radiobutton path="category" id="category"
                                                              value="IT" required="required"/>IT</label>
             <label class="checkbox-inline"><form:radiobutton path="category" id="category"
-                                                             value="financial" required="required"/>Financial</label>
+                                                             value="Financial" required="required"/>Financial</label>
             <label class="checkbox-inline"><form:radiobutton path="category" id="category"
-                                                            value="logistic" required="required"/>Logistic</label>
+                                                            value="Logistic" required="required"/>Logistic</label>
         <div class="help-block with-errors"></div>
 
         </div>
@@ -106,7 +106,7 @@
 
         <br><br>
         <input type="submit" value="submit" class="btn btn-default">
-        <a href="<c:url value="/employer/${jobOffer.employer.employerId}/jobOfferInventory/addJobOffer" />" class="btn btn-default">Cancel</a>
+        <a href="<c:url value="/employer/jobOfferInventory/addJobOffer" />" class="btn btn-default">Cancel</a>
     </form:form>
 
 <br/>

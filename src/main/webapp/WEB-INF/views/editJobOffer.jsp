@@ -12,7 +12,7 @@
             <p class="lead">Please update the job offer information here:</p>
         </div>
 
-        <form:form action="${pageContext.request.contextPath}/employer/${employerId}/jobOfferInventory/editJobOffer" method="post"
+        <form:form action="${pageContext.request.contextPath}/employer/jobOfferInventory/editJobOffer" method="post"
                    commandName="jobOffer" enctype="multipart/form-data">
         <form:hidden path="jobId" value="${jobOffer.jobId}" />
         <form:hidden path="location.locationId" value="${jobOffer.location.locationId}" />
@@ -22,9 +22,9 @@
             <label class="checkbox-inline"><form:radiobutton path="category" id="category"
                                                              value="IT" required="required"/>IT</label>
             <label class="checkbox-inline"><form:radiobutton path="category" id="category"
-                                                             value="financial" required="required"/>Financial</label>
+                                                             value="Financial" required="required"/>Financial</label>
             <label class="checkbox-inline"><form:radiobutton path="category" id="category"
-                                                            value="logistic" required="required"/>Logistic</label>
+                                                            value="Logistic" required="required"/>Logistic</label>
         <div class="help-block with-errors"></div>
         </div>
 
@@ -97,7 +97,7 @@
 
         <br><br>
         <input type="submit" value="submit" class="btn btn-default">
-        <a href="<c:url value="/employer/${jobOffer.employer.employerId}/jobOfferInventory" />" class="btn btn-default">Cancel</a>
+        <a href="<c:url value="/employer/jobOfferInventory" />" class="btn btn-default">Cancel</a>
         </form:form>
 
         <br/>

@@ -7,7 +7,7 @@ import java.util.List;
 public interface EmployerDao {
     void addEmployer(Employer employer);
 
-    Employer getEmployerById(String id);
+    Employer getEmployerByName(String name);
 
     List<Employer> getAllEmployers();
 

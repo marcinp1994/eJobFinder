@@ -2,7 +2,6 @@ package com.ejobfinder.dao.impl;
 
 import com.ejobfinder.dao.EmployerDao;
 import com.ejobfinder.model.Employer;
-import com.ejobfinder.model.JobOffer;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -27,9 +26,9 @@ public class EmployerDaoImpl implements EmployerDao {
     }
 
     @Override
-    public Employer getEmployerById(String id) {
+    public Employer getEmployerByName(String name) {
         Session session = sessionFactory.getCurrentSession();
-        Employer employer = (Employer) session.get(Employer.class, id);
+        Employer employer = (Employer) session.get(Employer.class, name);
         session.flush();
 
         return employer;
@@ -47,7 +46,7 @@ public class EmployerDaoImpl implements EmployerDao {
     @Override
     public void deleteEmployer(String id) {
         Session session = sessionFactory.getCurrentSession();
-        session.delete(getEmployerById(id));
+        session.delete(getEmployerByName(id));
         session.flush();
     }
 }

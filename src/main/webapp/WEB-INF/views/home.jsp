@@ -61,25 +61,25 @@
     <!-- Three columns of text below the carousel -->
     <div class="row">
         <div class="col-lg-4">
-        <a href="<spring:url value="/jobOfferList" />">
+        <a href="<spring:url value="/jobOfferList/IT" />">
             <img class="img-circle" src="<c:url value="/resources/images/IT.png" />" alt="Generic placeholder image" width="140" height="140"></a>
             <h2>IT</h2>
             <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
-            <p><a class="btn btn-default" href="#" role="button">View IT offers &raquo;</a></p>
+            <p><a class="btn btn-default" href="<spring:url value="/jobOfferList/IT" />" role="button">View IT offers &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
-        <a href="<spring:url value="/jobOfferList" />">
+        <a href="<spring:url value="/jobOfferList/Financial" />">
             <img class="img-circle" src="<c:url value="/resources/images/financial.jpg" />" alt="Generic placeholder image" width="140" height="140"></a>
             <h2>Financial</h2>
             <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
-            <p><a class="btn btn-default" href="#" role="button">View financial offers &raquo;</a></p>
+            <p><a class="btn btn-default" href="<spring:url value="/jobOfferList/Financial" />" role="button">View financial offers &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
-        <a href="<spring:url value="/jobOfferList" />">
+        <a href="<spring:url value="/jobOfferList/Logistic" />">
             <img class="img-circle" src="<c:url value="/resources/images/logistics.jpg" />" alt="Generic placeholder image" width="140" height="140"></a>
             <h2>Logistic</h2>
             <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-            <p><a class="btn btn-default" href="#" role="button">View logistic offers &raquo;</a></p>
+            <p><a class="btn btn-default" href="<spring:url value="/jobOfferList/Logistic" />" role="button">View logistic offers &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
     </div><!-- /.row -->
 
