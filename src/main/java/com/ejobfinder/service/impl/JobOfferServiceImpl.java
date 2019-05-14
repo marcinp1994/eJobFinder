@@ -49,6 +49,11 @@ public class JobOfferServiceImpl implements JobOfferService {
     }
 
     @Override
+    public List<JobOffer> getJobOffersByCategory(String category) {
+        return jobOfferDao.getJobOffersByCategory(category);
+    }
+
+    @Override
     public List<JobOffer> getJobOffersByCustomerId(int id) {
         return jobOfferDao.getJobOffersByCustomerId(id);
     }

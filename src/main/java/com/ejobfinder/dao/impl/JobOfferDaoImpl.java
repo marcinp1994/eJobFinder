@@ -2,6 +2,7 @@ package com.ejobfinder.dao.impl;
 
 import com.ejobfinder.dao.JobOfferDao;
 import com.ejobfinder.model.JobOffer;
+import com.ejobfinder.model.Location;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Repository
@@ -55,6 +57,16 @@ public class JobOfferDaoImpl implements JobOfferDao {
     @Override
     public void deleteJobOffer(String id) {
         Session session = sessionFactory.getCurrentSession();
+        JobOffer jobOffer = getJobOfferById(id);
+        Location location = jobOffer.getLocation();
+
+        for (Iterator<JobOffer> i = location.getJobOffers().iterator(); i.hasNext(); ) {
+            JobOffer jobOffer1 = i.next();
+            if (jobOffer.equals(jobOffer1)) {
+                i.remove();
+            }
+        }
+        session.saveOrUpdate(location);
         session.delete(getJobOfferById(id));
         session.flush();
     }
@@ -87,5 +99,19 @@ public class JobOfferDaoImpl implements JobOfferDao {
         }
 
         return jobOffersFromSpecificCustomer;
+    }
+
+    @Override
+    public List<JobOffer> getJobOffersByCategory(String category) {
+        List<JobOffer> jobOffersForCategory = null;
+        for (JobOffer jobOffer : getAllJobOffers()) {
+            if (category.equalsIgnoreCase(jobOffer.getCategory())) {
+                if (jobOffersForCategory == null) {
+                    jobOffersForCategory = new ArrayList<>();
+                }
+                jobOffersForCategory.add(jobOffer);
+            }
+        }
+        return jobOffersForCategory;
     }
 }

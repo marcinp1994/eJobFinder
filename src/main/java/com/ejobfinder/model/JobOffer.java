@@ -7,9 +7,11 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 public class JobOffer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String jobId;
@@ -192,4 +194,35 @@ public class JobOffer {
     public void setCustomer(com.ejobfinder.model.Customer customer) {
         Customer = customer;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        JobOffer jobOffer = (JobOffer) o;
+        return Objects.equals(jobId, jobOffer.jobId) &&
+                Objects.equals(position, jobOffer.position) &&
+                Objects.equals(companyName, jobOffer.companyName) &&
+                Objects.equals(shortDescription, jobOffer.shortDescription) &&
+                Objects.equals(description, jobOffer.description) &&
+                Objects.equals(salary, jobOffer.salary) &&
+                Objects.equals(category, jobOffer.category) &&
+                Objects.equals(jobOfferStatus, jobOffer.jobOfferStatus) &&
+                Objects.equals(requirements, jobOffer.requirements) &&
+                Objects.equals(responsibilities, jobOffer.responsibilities) &&
+                Objects.equals(preferredSkills, jobOffer.preferredSkills) &&
+                Objects.equals(benefits, jobOffer.benefits) &&
+                Objects.equals(additionalInfo, jobOffer.additionalInfo) &&
+                Objects.equals(expirationDate, jobOffer.expirationDate) &&
+                Objects.equals(tags, jobOffer.tags) &&
+                Objects.equals(companyLogo, jobOffer.companyLogo) &&
+                Objects.equals(Customer, jobOffer.Customer) &&
+                Objects.equals(location, jobOffer.location);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(jobId, position, companyName, shortDescription, description, salary, category, jobOfferStatus, requirements, responsibilities, preferredSkills, benefits, additionalInfo, expirationDate, tags, companyLogo, Customer, location);
+    }
+
 }

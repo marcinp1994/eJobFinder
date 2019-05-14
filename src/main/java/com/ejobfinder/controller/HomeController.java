@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,16 +37,7 @@ public class HomeController {
 
     @RequestMapping("/jobOfferList/{category}")
     public String getJobOffersForCategory(@PathVariable String category, Model model) {
-        List<JobOffer> jobOffers = jobOfferService.getAllJobOffers();
-        List<JobOffer> jobOffersForCategory = null;
-        for (JobOffer jobOffer : jobOffers) {
-            if (category.equalsIgnoreCase(jobOffer.getCategory())) {
-                if (jobOffersForCategory == null) {
-                    jobOffersForCategory = new ArrayList<>();
-                }
-                jobOffersForCategory.add(jobOffer);
-            }
-        }
+        List<JobOffer> jobOffersForCategory = jobOfferService.getJobOffersByCategory(category);
         model.addAttribute("jobOffers", jobOffersForCategory);
 
         return "jobOfferList";
@@ -67,5 +57,4 @@ public class HomeController {
         model.addAttribute("location", location);
         return "viewJobOffer";
     }
-
 }

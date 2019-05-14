@@ -21,5 +21,7 @@ public interface JobOfferService {
 
     List<JobOffer> getJobOffersByCustomerName(String name);
 
+    List<JobOffer> getJobOffersByCategory(String category);
+
     List<JobOffer> getJobOffersByCustomerId(int id);
 }

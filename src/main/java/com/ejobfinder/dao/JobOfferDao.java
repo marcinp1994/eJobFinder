@@ -19,4 +19,6 @@ public interface JobOfferDao {
     List<JobOffer> getJobOffersByCustomerName(String name);
 
     List<JobOffer> getJobOffersByCustomerId(int id);
+
+    List<JobOffer> getJobOffersByCategory(String category);
 }
