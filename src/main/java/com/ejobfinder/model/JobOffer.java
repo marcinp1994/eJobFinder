@@ -47,7 +47,7 @@ public class JobOffer {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn()
     private Customer Customer;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn()
     private Location location;
     @OneToOne

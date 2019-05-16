@@ -13,10 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * Created by Le on 1/25/2016.
- */
-
 @Repository
 @Transactional
 public class CustomerDaoImpl implements CustomerDao {

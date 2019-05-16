@@ -4,9 +4,6 @@ import com.ejobfinder.model.JobOffer;
 
 import java.util.List;
 
-/**
- * Created by Le on 1/25/2016.
- */
 public interface JobOfferService {
 
     void addJobOffer(JobOffer jobOffer);

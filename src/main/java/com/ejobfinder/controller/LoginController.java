@@ -5,10 +5,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/**
- * Created by Le on 1/9/2016.
- */
-
 @Controller
 public class LoginController {
 

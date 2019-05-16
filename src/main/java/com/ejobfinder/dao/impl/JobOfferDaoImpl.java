@@ -66,6 +66,7 @@ public class JobOfferDaoImpl implements JobOfferDao {
                 i.remove();
             }
         }
+        jobOffer.setLocation(null);
         session.saveOrUpdate(location);
         session.delete(getJobOfferById(id));
         session.flush();

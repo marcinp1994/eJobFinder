@@ -12,10 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * Created by Le on 1/25/2016.
- */
-
 @Controller
 public class RegisterController {
 
