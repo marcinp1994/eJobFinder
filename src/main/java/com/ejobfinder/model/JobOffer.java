@@ -1,5 +1,6 @@
 package com.ejobfinder.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,6 +50,10 @@ public class JobOffer {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn()
     private Location location;
+    @OneToOne
+    @JoinColumn(name = "perfectEmployeeId")
+    @JsonIgnore
+    private PerfectEmployee perfectEmployee;
 
 
     public String getPosition() {

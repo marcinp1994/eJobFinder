@@ -37,6 +37,8 @@
                     <span class="glyphicon glyphicon-trash"></span></a>
                     <a href="<spring:url value="/employer/jobOfferInventory/editJobOffer/${jobOffer.jobId}" />">
                     <span class="glyphicon glyphicon-edit"></span></a>
+                    <a href="<spring:url value="/employer/jobOfferInventory/perfectEmployee/${jobOffer.jobId}" />">
+                    <span class="glyphicon glyphicon-user"></span></a>
                 </td>
             </tr>
             </c:forEach>

@@ -19,39 +19,39 @@
 
         <div class="form-group">
             <label for="name">Name</label>
-            <form:input path="name" id="name" class="form-Control"/>
+            <form:input path="name" id="name" class="form-Control" required="required" data-error="Please enter your Name."/>
         </div>
 
         <div class="form-group">
             <label for="name">Last Name</label>
-            <form:input path="lastName" id="name" class="form-Control"/>
+            <form:input path="lastName" id="name" class="form-Control" required="required" data-error="Please enter your Last Name."/>
         </div>
 
         <c:if test="${customerType == 'Employer'}">
         <div class="form-group">
             <label for="name">Company Name</label>
-            <form:input path="companyName" id="name" class="form-Control"/>
+            <form:input path="companyName" id="name" class="form-Control" required="required" data-error="Please enter your Company Name."/>
         </div>
         </c:if>
 
         <div class="form-group">
             <label for="email">Email</label>
-            <form:input path="customerEmail" id="email" class="form-Control"/>
+            <form:input path="customerEmail" id="email" class="form-Control" required="required" data-error="Please enter your Email."/>
         </div>
 
         <div class="form-group">
             <label for="phone">Phone</label>
-            <form:input path="customerPhone" id="phone" class="form-Control"/>
+            <form:input path="customerPhone" id="phone" class="form-Control" required="required" data-error="Please enter your Phone."/>
         </div>
 
         <div class="form-group">
             <label for="username">Username</label>
-            <form:input path="Username" id="username" class="form-Control"/>
+            <form:input path="Username" id="username" class="form-Control" required="required" data-error="Please enter your Username."/>
         </div>
 
         <div class="form-group">
             <label for="password">Password</label>
-            <form:password path="password" id="password" class="form-Control"/>
+            <form:password path="password" id="password" class="form-Control" required="required" data-error="Please enter your Password."/>
         </div>
 
 

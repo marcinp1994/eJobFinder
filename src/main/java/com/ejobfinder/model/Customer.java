@@ -1,5 +1,7 @@
 package com.ejobfinder.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -31,6 +33,7 @@ public class Customer implements Serializable {
     private String password;
 
     @OneToMany(mappedBy = "Customer", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     List<JobOffer> jobOffers;
 
     private boolean enabled;

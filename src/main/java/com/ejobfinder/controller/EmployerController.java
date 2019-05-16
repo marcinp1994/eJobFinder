@@ -6,6 +6,7 @@ import com.ejobfinder.model.Location;
 import com.ejobfinder.service.CustomerService;
 import com.ejobfinder.service.JobOfferService;
 import com.ejobfinder.service.LocationService;
+import com.ejobfinder.utils.TechnologiesConst;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
@@ -156,6 +157,15 @@ public class EmployerController {
         jobOfferService.editJobOffer(jobOffer);
 
         return "redirect:/employer/jobOfferInventory";
+    }
+
+    @RequestMapping("/employer/jobOfferInventory/perfectEmployee/{jobId}")
+    public String perfectEmployee(@PathVariable("jobId") String jobId, Model model) {
+        JobOffer jobOffer = jobOfferService.getJobOfferById(jobId);
+        model.addAttribute(jobOffer);
+        model.addAttribute("technologies", TechnologiesConst.TECHNOLOGY_LIST);
+
+        return "perfectEmployee";
     }
 
 }
