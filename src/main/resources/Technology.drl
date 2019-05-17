@@ -1,0 +1,23 @@
+template header
+
+name
+object
+conditional
+action
+
+package drools.templates;
+
+global com.ejobfinder.model.TechnologyRules technology;
+
+dialect "java"
+
+template "Technology"
+
+rule "@{row.rowNumber} - @{name}"
+when
+  @{object}(@{conditional})
+then
+  technology.score(@{action});
+end
+
+end template
