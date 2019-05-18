@@ -1,4 +1,3 @@
-
 package com.ejobfinder.utils;
 
 import java.text.SimpleDateFormat;

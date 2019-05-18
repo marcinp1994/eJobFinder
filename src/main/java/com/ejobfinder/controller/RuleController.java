@@ -1,7 +1,10 @@
 package com.ejobfinder.controller;
 
+import com.ejobfinder.model.Candidate;
+import com.ejobfinder.model.TechnologyFact;
 import com.ejobfinder.model.TechnologyRules;
 import com.ejobfinder.utils.Condition;
+import com.ejobfinder.utils.Condition.Operator;
 import com.ejobfinder.utils.DroolsUtility;
 import com.ejobfinder.utils.Rule;
 import org.kie.api.KieServices;
@@ -26,16 +29,15 @@ public class RuleController {
 
     @RequestMapping("/employer/jobOfferInventory/perfectEmployeeRules/{jobId}")
     public String rule(Model model, @PathVariable("jobId") String jobId) throws Exception {
+        TechnologyRules technologyRules1 = new TechnologyRules("Java", Operator.GREATER_THAN_OR_EQUAL_TO, 2.0, 3, Operator.GREATER_THAN_OR_EQUAL_TO, 2);
+        TechnologyRules technologyRules2 = new TechnologyRules("Spring", Operator.GREATER_THAN_OR_EQUAL_TO, 1.0, 2, Operator.GREATER_THAN_OR_EQUAL_TO, 3);
+        TechnologyRules technologyRules3 = new TechnologyRules("SQL", Operator.GREATER_THAN_OR_EQUAL_TO, 3.0, 3, Operator.GREATER_THAN_OR_EQUAL_TO, 1);
+        List<TechnologyRules> technologyRulesList = Arrays.asList(technologyRules1, technologyRules2, technologyRules3);
 
-        List<Rule> rules = new ArrayList<Rule>();
-        //Load each business rule
-        rules.add(createDiscountOverpriced());
-        rules.add(createDiscountOverpriced2());
+        List<Rule> rules = createRuleForTechnology(technologyRulesList);
 
         DroolsUtility utility = new DroolsUtility();
         utility.createRules(rules, "Technology.drl", jobId);
-
-        //Define the products to be processed using our rules
 
         return "candidate";
     }
@@ -52,87 +54,91 @@ public class RuleController {
 
         KieContainer container = kieServices.newKieContainer(kieServices.getRepository().getDefaultReleaseId());
         StatelessKieSession session = container.getKieBase().newStatelessKieSession();
-        //Create a session to operate Drools in memory
 
-        //Define the products to be processed using our rules
-        TechnologyRules technologyRules = new TechnologyRules("sdfg", 4);
-		/*
-		Now, the magic happens!
-		For each product to be processed, we have to face it over rules to get, or not, a discounted price.
-		*/
-        System.out.println("Applying over " + technologyRules.getName() + " with price $" + technologyRules.getLevel() + "...");
-        session.setGlobal("technology", technologyRules);
-        session.execute(technologyRules);
-        System.out.println("...price after review: $" + technologyRules.getScore());
+        Candidate candidate = new Candidate();
+        TechnologyFact technologyFact = new TechnologyFact("Java", 1, 5);
+        TechnologyFact technologyFact2 = new TechnologyFact("Spring", 1, 5);
+        TechnologyFact technologyFact3 = new TechnologyFact("SQL", 1, 5);
+        List<TechnologyFact> technologyFactList = Arrays.asList(technologyFact, technologyFact2, technologyFact3);
+        candidate.setTechnologyFacts(technologyFactList);
 
-        //Define the products to be processed using our rules
+        System.out.println("Technology name = '" + technologyFact.getName() + "' and level = '" + technologyFact.getLevel() + "' and years = '" + technologyFact.getYear() + "'.");
+        System.out.println("Technology name = '" + technologyFact2.getName() + "' and level = '" + technologyFact2.getLevel() + "' and years = '" + technologyFact2.getYear() + "'.");
+        System.out.println("Technology name = '" + technologyFact3.getName() + "' and level = '" + technologyFact3.getLevel() + "' and years = '" + technologyFact3.getYear() + "'.");
+
+        session.setGlobal("candidate", candidate);
+        session.execute(technologyFactList);
+        System.out.println("Candidate SCORE = '" + candidate.getScore() + "' points");
 
         return "candidate";
     }
 
     private static Rule createDiscountOverpriced() {
-        //First of all, we create a rule giving it a friendly name
         Rule rule = new Rule("technology adasd");
-        //Here we need to say what kind of object will be processed
-        rule.setDataObject(TechnologyRules.class.getName());
-
-        //As expected, a rule needs condition to exists. So, let's create it...
-
+        rule.setDataObject(TechnologyFact.class.getName());
         Condition condition1 = new Condition();
-        //What data, or property, will be checked
         condition1.setProperty("level");
-        //What kind of check to do
         condition1.setOperator(Condition.Operator.GREATER_THAN);
-        //What is the value to check
         condition1.setValue(5);
-
         Condition condition2 = new Condition();
-        //What data, or property, will be checked
         condition2.setProperty("name");
-        //What kind of check to do
         condition2.setOperator(Condition.Operator.EQUAL_TO);
-        //What is the value to check
         condition2.setValue("Java");
-
-        //Next, is needed to set rule's condition]
         rule.setConditions(Arrays.asList(condition1, condition2));
-        //Finally, this is what will be done when ours condition is satisfied
         rule.setAction("3");
-
         return rule;
     }
 
+    private List<Rule> createRuleForTechnology(List<TechnologyRules> technologyRulesList) {
+        int counter = 1;
+        List<Rule> rules = new ArrayList<>();
+        for (TechnologyRules technologyRule : technologyRulesList) {
+            Rule rule = new Rule("technology rule " + counter);
+            rule.setDataObject(TechnologyFact.class.getName());
+            List<Condition> conditionList = new ArrayList<>();
+            Condition condition = new Condition();
+            condition.setProperty("name");
+            condition.setOperator(Operator.EQUAL_TO);
+            condition.setValue(technologyRule.getName());
+            conditionList.add(condition);
+            if (technologyRule.getLevel() != 0) {
+                Condition condition2 = new Condition();
+                condition2.setProperty("level");
+                condition2.setOperator(technologyRule.getLevelOperator());
+                condition2.setValue(technologyRule.getLevel());
+                conditionList.add(condition2);
+            }
+            if (technologyRule.getYear() != 0) {
+                Condition condition3 = new Condition();
+                condition3.setProperty("year");
+                condition3.setOperator(technologyRule.getYearOperator());
+                condition3.setValue(technologyRule.getYear());
+                conditionList.add(condition3);
+            }
+            rule.setConditions(conditionList);
+            rule.setAction(String.valueOf(technologyRule.getScore()));
+            rules.add(rule);
+            counter++;
+        }
+        return rules;
+    }
+
     private static Rule createDiscountOverpriced2() {
-        //First of all, we create a rule giving it a friendly name
         Rule rule = new Rule("technology adasd");
-        //Here we need to say what kind of object will be processed
         rule.setDataObject(TechnologyRules.class.getName());
-
-        //As expected, a rule needs condition to exists. So, let's create it...
-
         Condition condition1 = new Condition();
-        //What data, or property, will be checked
         condition1.setProperty("level");
-        //What kind of check to do
         condition1.setOperator(Condition.Operator.GREATER_THAN);
-        //What is the value to check
         condition1.setValue(3);
-
         Condition condition2 = new Condition();
-        //What data, or property, will be checked
         condition2.setProperty("name");
-        //What kind of check to do
         condition2.setOperator(Condition.Operator.EQUAL_TO);
-        //What is the value to check
         condition2.setValue("Java");
 
-        //Next, is needed to set rule's condition]
         rule.setConditions(Arrays.asList(condition1, condition2));
-        //Finally, this is what will be done when ours condition is satisfied
         rule.setAction("2");
 
         return rule;
     }
-
 
 }

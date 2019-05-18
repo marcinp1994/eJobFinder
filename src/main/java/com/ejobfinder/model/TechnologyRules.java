@@ -1,19 +1,33 @@
 package com.ejobfinder.model;
 
+import com.ejobfinder.utils.Condition.Operator;
+
 public class TechnologyRules {
     private final String name;
-    private String yearOperator;
+    private Operator yearOperator;
     private double year;
     private int level;
-    private String levelOperator;
+    private Operator levelOperator;
     private int score;
 
+    public TechnologyRules(String name, Operator yearOperator, double year, int level, Operator levelOperator, int score) {
+        this.name = name;
+        this.yearOperator = yearOperator;
+        this.year = year;
+        this.level = level;
+        this.levelOperator = levelOperator;
+        this.score = score;
+    }
 
-    public String getYearOperator() {
+    public String getName() {
+        return name;
+    }
+
+    public Operator getYearOperator() {
         return yearOperator;
     }
 
-    public void setYearOperator(String yearOperator) {
+    public void setYearOperator(Operator yearOperator) {
         this.yearOperator = yearOperator;
     }
 
@@ -25,19 +39,6 @@ public class TechnologyRules {
         this.year = year;
     }
 
-    public String getLevelOperator() {
-        return levelOperator;
-    }
-
-    public void setLevelOperator(String levelOperator) {
-        this.levelOperator = levelOperator;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-
     public int getLevel() {
         return level;
     }
@@ -46,14 +47,12 @@ public class TechnologyRules {
         this.level = level;
     }
 
-    public TechnologyRules(String name, int level) {
-        this.name = name;
-        this.level = level;
-        this.score = 0;
+    public Operator getLevelOperator() {
+        return levelOperator;
     }
 
-    public void score(int score) {
-        this.score += score;
+    public void setLevelOperator(Operator levelOperator) {
+        this.levelOperator = levelOperator;
     }
 
     public int getScore() {

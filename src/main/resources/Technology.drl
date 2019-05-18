@@ -7,7 +7,9 @@ action
 
 package drools.templates;
 
-global com.ejobfinder.model.TechnologyRules technology;
+global com.ejobfinder.model.Candidate candidate
+import com.ejobfinder.model.TechnologyFact;
+
 
 dialect "java"
 
@@ -17,7 +19,7 @@ rule "@{row.rowNumber} - @{name}"
 when
   @{object}(@{conditional})
 then
-  technology.score(@{action});
+  candidate.score(@{action});
 end
 
 end template

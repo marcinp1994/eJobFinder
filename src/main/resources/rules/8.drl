@@ -1,19 +1,27 @@
 package drools.templates;
-global com.ejobfinder.model.TechnologyRules technology;
+global com.ejobfinder.model.Candidate candidate
+import com.ejobfinder.model.TechnologyFact;
 dialect "java"
 
-rule "1 - technology adasd"
+rule "2 - technology rule 3"
 when
-  com.ejobfinder.model.TechnologyRules((level >= 4.0) && (name == "Java"))
+  com.ejobfinder.model.TechnologyFact((name == "SQL") && (level >= 3) && (year >= 3.0))
 then
-  technology.score(2);
+  candidate.score(1);
 end
 
-rule "0 - technology adasd"
+rule "1 - technology rule 2"
 when
-  com.ejobfinder.model.TechnologyRules((level >= 5.0) && (name == "Java"))
+  com.ejobfinder.model.TechnologyFact((name == "Spring") && (level >= 2) && (year >= 1.0))
 then
-  technology.score(3);
+  candidate.score(3);
+end
+
+rule "0 - technology rule 1"
+when
+  com.ejobfinder.model.TechnologyFact((name == "Java") && (level >= 3) && (year >= 2.0))
+then
+  candidate.score(2);
 end
 
 

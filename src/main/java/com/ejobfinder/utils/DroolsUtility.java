@@ -10,12 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Utility to operate Drools on runtime.
- *
- * @author Gabriel Stelmach <gabriel_stelmach@hotmail.com>
- * @since 1.0
- */
 public class DroolsUtility {
 
     public void createRules(List<Rule> rules, String templatePath, String jobId) throws Exception {

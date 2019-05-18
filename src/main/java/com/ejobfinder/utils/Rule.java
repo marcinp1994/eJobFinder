@@ -101,7 +101,6 @@ public class Rule {
         }
 
         StringBuilder drl = new StringBuilder();
-        //For each condition of this rule, we create its textual representation
         for (int i = 0; i < conditions.size(); i++) {
             Condition condition = conditions.get(i);
             drl.append("(");
