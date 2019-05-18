@@ -7,12 +7,10 @@
     <div class="container">
         <div class="page-header">
             <h1>Candidate page</h1>
-            <p class="lead">This is the employer page!</p>
+            <p class="lead">This is the candidate page!</p>
         </div>
 
-        <h3>
-            <a href="<c:url value="/jobOfferList" />" >Job Offers</a>
-        </h3>
+        <a class="btn btn-primary" href="<c:url value="/jobOfferList" />" >Fill your profile</a>
 
         <br/>
         <br/>

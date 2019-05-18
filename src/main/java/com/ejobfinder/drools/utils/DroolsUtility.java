@@ -1,15 +1,23 @@
-package com.ejobfinder.utils;
+package com.ejobfinder.drools.utils;
 
+import com.ejobfinder.drools.Rule;
 import org.drools.core.spi.KnowledgeHelper;
 import org.drools.template.ObjectDataCompiler;
 import org.kie.api.KieServices;
+import org.kie.api.builder.KieBuilder;
 import org.kie.api.builder.KieFileSystem;
+import org.kie.api.io.Resource;
+import org.kie.api.io.ResourceType;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.StatelessKieSession;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class DroolsUtility {
 
     public void createRules(List<Rule> rules, String templatePath, String jobId) throws Exception {
@@ -35,6 +43,19 @@ public class DroolsUtility {
         Writer w = new BufferedWriter(osw);
         w.write(drl);
         w.close();
+    }
+
+    public StatelessKieSession loadSession(String jobId) {
+        KieServices kieServices = KieServices.Factory.get();
+        KieFileSystem kfs = kieServices.newKieFileSystem();
+        File file = new File("C:\\Users\\m.pudelko\\Desktop\\MAGISTERKA\\eJobFinder\\src\\main\\resources\\rules\\" + jobId + ".drl");
+        Resource resource = kieServices.getResources().newFileSystemResource(file).setResourceType(ResourceType.DRL);
+        kfs.write(resource);
+        KieBuilder kb = kieServices.newKieBuilder(kfs);
+        kb.buildAll();
+
+        KieContainer container = kieServices.newKieContainer(kieServices.getRepository().getDefaultReleaseId());
+        return container.getKieBase().newStatelessKieSession();
     }
 
     /**

@@ -13,7 +13,7 @@ import com.ejobfinder.model.TechnologyFact;
 
 dialect "java"
 
-template "Technology"
+template "Perfect Employee Rules"
 
 rule "@{row.rowNumber} - @{name}"
 when

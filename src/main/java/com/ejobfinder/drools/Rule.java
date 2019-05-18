@@ -1,5 +1,5 @@
 
-package com.ejobfinder.utils;
+package com.ejobfinder.drools;
 
 import java.util.ArrayList;
 import java.util.HashMap;

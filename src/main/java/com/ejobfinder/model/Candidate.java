@@ -5,6 +5,8 @@ import java.util.List;
 
 public class Candidate {
     private List<TechnologyFact> technologyFacts;
+    private Location location;
+
     private int score;
 
     public List<TechnologyFact> getTechnologyFacts() {

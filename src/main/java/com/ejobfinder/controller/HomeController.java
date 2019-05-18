@@ -53,4 +53,11 @@ public class HomeController {
         model.addAttribute("location", location);
         return "viewJobOffer";
     }
+
+    @RequestMapping("/candidate/{jobId}/apply")
+    public String jobOfferApply(@PathVariable String jobId, Model model) {
+        JobOffer jobOffer = jobOfferService.getJobOfferById(jobId);
+
+        return "candidate";
+    }
 }

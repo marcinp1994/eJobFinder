@@ -1,8 +1,8 @@
-package com.ejobfinder.model;
+package com.ejobfinder.model.rules;
 
-import com.ejobfinder.utils.Condition.Operator;
+import com.ejobfinder.drools.Condition.Operator;
 
-public class TechnologyRules {
+public class TechnologyRule {
     private final String name;
     private Operator yearOperator;
     private double year;
@@ -10,7 +10,7 @@ public class TechnologyRules {
     private Operator levelOperator;
     private int score;
 
-    public TechnologyRules(String name, Operator yearOperator, double year, int level, Operator levelOperator, int score) {
+    public TechnologyRule(String name, Operator yearOperator, double year, int level, Operator levelOperator, int score) {
         this.name = name;
         this.yearOperator = yearOperator;
         this.year = year;

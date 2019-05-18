@@ -1,17 +1,17 @@
 package drools.templates;
-global com.ejobfinder.model.TechnologyRules technology;
+global com.ejobfinder.model.rules.TechnologyRule technology;
 dialect "java"
 
 rule "1 - technology adasd"
 when
-  com.ejobfinder.model.TechnologyRules((level >= 4.0) && (name == "Java"))
+  com.ejobfinder.model.rules.TechnologyRule((level >= 4.0) && (name == "Java"))
 then
   technology.score(2);
 end
 
 rule "0 - technology adasd"
 when
-  com.ejobfinder.model.TechnologyRules((level >= 4.0) && (name == "Java"))
+  com.ejobfinder.model.rules.TechnologyRule((level >= 4.0) && (name == "Java"))
 then
   technology.score(3);
 end
