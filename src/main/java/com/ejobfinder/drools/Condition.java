@@ -189,6 +189,23 @@ public class Condition {
 
             throw new EnumConstantNotPresentException(Operator.class, "? (" + description + ")");
         }
+
+        /**
+         * Gets the operator related to operation.
+         *
+         * @param operation Operation for an operation.
+         * @return Type of operator.
+         * @throws EnumConstantNotPresentException When the operation is not related to a valid operator.
+         */
+        public static Operator fromOperation(String operation) throws EnumConstantNotPresentException {
+            for (Operator operator : Operator.values()) {
+                if (operator.getOperation().equals(operation)) {
+                    return operator;
+                }
+            }
+
+            throw new EnumConstantNotPresentException(Operator.class, "? (" + operation + ")");
+        }
     }
 
     /**

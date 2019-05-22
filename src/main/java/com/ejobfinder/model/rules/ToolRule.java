@@ -2,7 +2,7 @@ package com.ejobfinder.model.rules;
 
 import com.ejobfinder.drools.Condition.Operator;
 
-public class TechnologyRule {
+public class ToolRule {
     private String name;
     private Operator yearOperator;
     private double year;
@@ -10,11 +10,11 @@ public class TechnologyRule {
     private Operator levelOperator;
     private int score;
 
-    public TechnologyRule() {
+    public ToolRule() {
 
     }
 
-    public TechnologyRule(String name, Operator yearOperator, double year, int level, Operator levelOperator, int score) {
+    public ToolRule(String name, Operator yearOperator, double year, int level, Operator levelOperator, int score) {
         this.name = name;
         this.yearOperator = yearOperator;
         this.year = year;

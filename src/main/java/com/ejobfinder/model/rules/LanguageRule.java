@@ -2,22 +2,18 @@ package com.ejobfinder.model.rules;
 
 import com.ejobfinder.drools.Condition.Operator;
 
-public class TechnologyRule {
+public class LanguageRule {
     private String name;
-    private Operator yearOperator;
-    private double year;
-    private int level;
+    private String level;
     private Operator levelOperator;
     private int score;
 
-    public TechnologyRule() {
+    public LanguageRule() {
 
     }
 
-    public TechnologyRule(String name, Operator yearOperator, double year, int level, Operator levelOperator, int score) {
+    public LanguageRule(String name, String level, Operator levelOperator, int score) {
         this.name = name;
-        this.yearOperator = yearOperator;
-        this.year = year;
         this.level = level;
         this.levelOperator = levelOperator;
         this.score = score;
@@ -27,27 +23,11 @@ public class TechnologyRule {
         return name;
     }
 
-    public Operator getYearOperator() {
-        return yearOperator;
-    }
-
-    public void setYearOperator(Operator yearOperator) {
-        this.yearOperator = yearOperator;
-    }
-
-    public double getYear() {
-        return year;
-    }
-
-    public void setYear(double year) {
-        this.year = year;
-    }
-
-    public int getLevel() {
+    public String getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(String level) {
         this.level = level;
     }
 
