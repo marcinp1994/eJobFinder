@@ -9,6 +9,7 @@ package drools.templates;
 
 global com.ejobfinder.model.Candidate candidate
 import com.ejobfinder.model.TechnologyFact;
+import com.ejobfinder.model.SkillFact;
 
 
 dialect "java"

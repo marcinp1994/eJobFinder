@@ -13,6 +13,7 @@ import java.util.List;
 @Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class PerfectEmployeeRules implements Serializable {
     private int perfectEmployeeId;
+    private String jobId;
     private List<TechnologyRule> technologyRules;
     private List<SkillRule> skillRules;
     private List<ToolRule> toolRules;
@@ -133,5 +134,13 @@ public class PerfectEmployeeRules implements Serializable {
 
     public void setWorkingHoursRules(List<WorkingHoursRule> workingHoursRules) {
         this.workingHoursRules = workingHoursRules;
+    }
+
+    public String getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(String jobId) {
+        this.jobId = jobId;
     }
 }

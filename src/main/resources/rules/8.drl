@@ -1,27 +1,35 @@
 package drools.templates;
 global com.ejobfinder.model.Candidate candidate
 import com.ejobfinder.model.TechnologyFact;
+import com.ejobfinder.model.SkillFact;
 dialect "java"
 
-rule "2 - technology rule 3"
+rule "3 - Skill Rule"
 when
-  com.ejobfinder.model.TechnologyFact((name == "SQL") && (level >= 3) && (year >= 3.0))
-then
-  candidate.score(1);
-end
-
-rule "1 - technology rule 2"
-when
-  com.ejobfinder.model.TechnologyFact((name == "Spring") && (level >= 2) && (year >= 1.0))
+  com.ejobfinder.model.SkillFact((name == "Hands-On SQL Experience") && (level > 4))
 then
   candidate.score(3);
 end
 
-rule "0 - technology rule 1"
+rule "2 - Skill Rule"
 when
-  com.ejobfinder.model.TechnologyFact((name == "Java") && (level >= 3) && (year >= 2.0))
+  com.ejobfinder.model.SkillFact((name == "Experience With JavaScript") && (level >= 3))
 then
-  candidate.score(2);
+  candidate.score(1);
+end
+
+rule "1 - Technology Rule"
+when
+  com.ejobfinder.model.TechnologyFact((name == "C++") && (level >= 5) && (year > 5.5))
+then
+  candidate.score(4);
+end
+
+rule "0 - Technology Rule"
+when
+  com.ejobfinder.model.TechnologyFact((name == ".NET") && (level >= 2) && (year > 2.5))
+then
+  candidate.score(1);
 end
 
 

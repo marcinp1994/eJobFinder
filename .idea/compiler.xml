@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="eJobFinder" target="7" />
+      <module name="eJobFinder" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

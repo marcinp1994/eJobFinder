@@ -3,6 +3,7 @@ package com.ejobfinder.controller;
 import com.ejobfinder.model.Customer;
 import com.ejobfinder.model.JobOffer;
 import com.ejobfinder.model.Location;
+import com.ejobfinder.model.rules.PerfectEmployeeRules;
 import com.ejobfinder.service.CustomerService;
 import com.ejobfinder.service.JobOfferService;
 import com.ejobfinder.service.LocationService;
@@ -10,7 +11,6 @@ import com.ejobfinder.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -42,6 +42,9 @@ public class EmployerController {
 
     @Autowired
     private LocationService locationService;
+
+    @Autowired
+    private PerfectEmployeeRules perfectEmployeeRules;
 
     @RequestMapping("/employer/jobOfferInventory")
     public String employerPageInventory(@AuthenticationPrincipal User activeUser, Model model) {
@@ -163,6 +166,7 @@ public class EmployerController {
     @RequestMapping("/employer/jobOfferInventory/perfectEmployee/{jobId}")
     public String perfectEmployee(@PathVariable("jobId") String jobId, Model model, HttpServletRequest request) {
         JobOffer jobOffer = jobOfferService.getJobOfferById(jobId);
+        perfectEmployeeRules.setJobId(jobId);
         model.addAttribute(jobOffer);
 
         model.addAttribute("technologies", TechnologiesConst.TECHNOLOGY_LIST);
@@ -187,9 +191,6 @@ public class EmployerController {
         model.addAttribute("eduModes", EducationsConst.MODE_OF_STUDY_LIST);
 
         model.addAttribute("jobTitles", JobTitlesConst.JON_TITLE_LIST);
-
-        CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
-        model.addAttribute("token", token);
 
         return "perfectEmployee";
     }
