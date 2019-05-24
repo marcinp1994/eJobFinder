@@ -6,10 +6,11 @@ import com.ejobfinder.model.Location;
 import com.ejobfinder.service.CustomerService;
 import com.ejobfinder.service.JobOfferService;
 import com.ejobfinder.service.LocationService;
-import com.ejobfinder.utils.TechnologiesConst;
+import com.ejobfinder.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -160,10 +161,35 @@ public class EmployerController {
     }
 
     @RequestMapping("/employer/jobOfferInventory/perfectEmployee/{jobId}")
-    public String perfectEmployee(@PathVariable("jobId") String jobId, Model model) {
+    public String perfectEmployee(@PathVariable("jobId") String jobId, Model model, HttpServletRequest request) {
         JobOffer jobOffer = jobOfferService.getJobOfferById(jobId);
         model.addAttribute(jobOffer);
+
         model.addAttribute("technologies", TechnologiesConst.TECHNOLOGY_LIST);
+
+        model.addAttribute("skills", SkillsConst.SKILL_LIST);
+
+        model.addAttribute("tools", ToolsConst.TOOLS_LIST);
+
+        model.addAttribute("languages", LanguagesConst.LANGUAGE_LIST);
+        model.addAttribute("languages_levels", LanguagesConst.LANGUAGE_LEVELS);
+
+        model.addAttribute("locations", LocationsConst.LOCATION_LIST);
+
+        model.addAttribute("workingHours", WorkingHoursConst.VALUES_LIST);
+
+        model.addAttribute("typeOfContracts", TypeOfContractsConst.VALUES_LIST);
+
+        model.addAttribute("periods", PeriodOfNoticesConst.VALUES_LIST);
+
+        model.addAttribute("eduTitles", EducationsConst.PROFESSIONAL_TITLES_LIST);
+        model.addAttribute("eduFields", EducationsConst.FIELD_OF_STUDY_LIST);
+        model.addAttribute("eduModes", EducationsConst.MODE_OF_STUDY_LIST);
+
+        model.addAttribute("jobTitles", JobTitlesConst.JON_TITLE_LIST);
+
+        CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
+        model.addAttribute("token", token);
 
         return "perfectEmployee";
     }

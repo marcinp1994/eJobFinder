@@ -1,8 +1,17 @@
 package com.ejobfinder.model.rules;
 
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class PerfectEmployeeRules {
+@Component
+@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class PerfectEmployeeRules implements Serializable {
     private int perfectEmployeeId;
     private List<TechnologyRule> technologyRules;
     private List<SkillRule> skillRules;
@@ -15,6 +24,20 @@ public class PerfectEmployeeRules {
     private List<SalaryRule> salaryRules;
     private List<TypeOfContractRule> typeOfContractRules;
     private List<WorkingHoursRule> workingHoursRules;
+
+    public PerfectEmployeeRules() {
+        technologyRules = new ArrayList<TechnologyRule>();
+        skillRules = new ArrayList<SkillRule>();
+        toolRules = new ArrayList<ToolRule>();
+        languageRules = new ArrayList<LanguageRule>();
+        previousEmployerRules = new ArrayList<PreviousEmployerRule>();
+        locationRules = new ArrayList<LocationRule>();
+        periodOfNoticeRules = new ArrayList<PeriodOfNoticeRule>();
+        educationRules = new ArrayList<EducationRule>();
+        salaryRules = new ArrayList<SalaryRule>();
+        typeOfContractRules = new ArrayList<TypeOfContractRule>();
+        workingHoursRules = new ArrayList<WorkingHoursRule>();
+    }
 
     public int getPerfectEmployeeId() {
         return perfectEmployeeId;

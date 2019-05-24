@@ -28,14 +28,14 @@ public class TechnologyRulesServiceImpl implements TechnologyRulesService {
             if (technologyRule.getLevel() != 0) {
                 Condition condition2 = new Condition();
                 condition2.setProperty("level");
-                condition2.setOperator(technologyRule.getLevelOperator());
+                condition2.setOperator(Condition.Operator.GREATER_THAN_OR_EQUAL_TO);
                 condition2.setValue(technologyRule.getLevel());
                 conditionList.add(condition2);
             }
             if (technologyRule.getYear() != 0) {
                 Condition condition3 = new Condition();
                 condition3.setProperty("year");
-                condition3.setOperator(technologyRule.getYearOperator());
+                condition3.setOperator(Condition.Operator.GREATER_THAN_OR_EQUAL_TO);
                 condition3.setValue(technologyRule.getYear());
                 conditionList.add(condition3);
             }

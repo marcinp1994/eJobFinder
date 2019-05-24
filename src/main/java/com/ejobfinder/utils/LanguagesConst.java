@@ -44,4 +44,11 @@ public class LanguagesConst {
             , "Nepali"
             , "Somali"
     ));
+
+
+    public static final List<String> LANGUAGE_LEVELS = new ArrayList<>(Arrays.asList(
+            "A1", "A2", "B1", "B2", "C1", "C2"
+
+    ));
+
 }

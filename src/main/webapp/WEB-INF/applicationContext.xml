@@ -44,6 +44,7 @@
     <security:http auto-config="true">
         <security:intercept-url pattern="/employer/**" access="ROLE_EMPLOYER"/>
         <security:intercept-url pattern="/candidate/**" access="ROLE_USER"/>
+        <security:intercept-url pattern="/rule/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <security:form-login
                 login-page="/login"
                 default-target-url="/employer/"

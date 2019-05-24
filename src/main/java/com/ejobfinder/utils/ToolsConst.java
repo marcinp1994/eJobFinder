@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ToolsConst {
 
-    public static final List<String> TECHNOLOGY_LIST = new ArrayList<>(Arrays.asList(
+    public static final List<String> TOOLS_LIST = new ArrayList<>(Arrays.asList(
             "MS Office"
             , "AutoCad"
             , "SolidWorks"
