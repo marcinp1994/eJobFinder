@@ -1,5 +1,7 @@
 package com.ejobfinder.model;
 
+import com.ejobfinder.model.facts.TechnologyFact;
+
 import java.util.List;
 
 

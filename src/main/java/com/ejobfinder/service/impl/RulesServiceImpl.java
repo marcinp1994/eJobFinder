@@ -2,11 +2,10 @@ package com.ejobfinder.service.impl;
 
 import com.ejobfinder.drools.Condition;
 import com.ejobfinder.drools.Rule;
-import com.ejobfinder.model.SkillFact;
-import com.ejobfinder.model.TechnologyFact;
-import com.ejobfinder.model.rules.PerfectEmployeeRules;
-import com.ejobfinder.model.rules.SkillRule;
-import com.ejobfinder.model.rules.TechnologyRule;
+import com.ejobfinder.model.facts.SkillFact;
+import com.ejobfinder.model.facts.TechnologyFact;
+import com.ejobfinder.model.facts.WorkingHoursFact;
+import com.ejobfinder.model.rules.*;
 import com.ejobfinder.service.RulesService;
 import org.h2.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +77,83 @@ public class RulesServiceImpl implements RulesService {
             rules.add(rule);
         }
         return rules;
+    }
+
+    @Override
+    public List<Rule> createRulesForWorkingHours(List<WorkingHoursRule> workingHoursRuleList) {
+        List<Rule> rules = new ArrayList<>();
+        for (WorkingHoursRule workingHoursRule : workingHoursRuleList) {
+            if (workingHoursRule.getWorkingHours() != null) {
+                Rule rule = new Rule("Working Hours Rule");
+                rule.setDataObject(WorkingHoursFact.class.getName());
+                List<Condition> conditionList = new ArrayList<>();
+                Condition condition = new Condition();
+                condition.setProperty("workingHours");
+                condition.setOperator(workingHoursRule.getWorkingHoursOperator());
+                condition.setValue(workingHoursRule.getWorkingHours());
+                conditionList.add(condition);
+                rule.setConditions(conditionList);
+                rule.setAction(String.valueOf(workingHoursRule.getScore()));
+                rules.add(rule);
+            }
+        }
+        return rules;
+    }
+
+
+    public List<TechnologyRule> addTechnologyRule(TechnologyRule rule) {
+        perfectEmployeeRules.getTechnologyRules().add(rule);
+        return perfectEmployeeRules.getTechnologyRules();
+    }
+
+    public List<SkillRule> addSkillRule(SkillRule rule) {
+        perfectEmployeeRules.getSkillRules().add(rule);
+        return perfectEmployeeRules.getSkillRules();
+    }
+
+    public List<ToolRule> addToolRule(ToolRule rule) {
+        perfectEmployeeRules.getToolRules().add(rule);
+        return perfectEmployeeRules.getToolRules();
+    }
+
+    public List<LanguageRule> addLanguageRule(LanguageRule rule) {
+        perfectEmployeeRules.getLanguageRules().add(rule);
+        return perfectEmployeeRules.getLanguageRules();
+    }
+
+    public List<LocationRule> addLocationRule(LocationRule rule) {
+        perfectEmployeeRules.getLocationRules().add(rule);
+        return perfectEmployeeRules.getLocationRules();
+    }
+
+    public List<EducationRule> addEducationRule(EducationRule rule) {
+        perfectEmployeeRules.getEducationRules().add(rule);
+        return perfectEmployeeRules.getEducationRules();
+    }
+
+    public List<SalaryRule> addSalaryRule(SalaryRule rule) {
+        perfectEmployeeRules.getSalaryRules().add(rule);
+        return perfectEmployeeRules.getSalaryRules();
+    }
+
+    public List<PeriodOfNoticeRule> addPeriodOfNoticeRule(PeriodOfNoticeRule rule) {
+        perfectEmployeeRules.getPeriodOfNoticeRules().add(rule);
+        return perfectEmployeeRules.getPeriodOfNoticeRules();
+    }
+
+    public List<PreviousEmployerRule> addPreviousEmployerRule(PreviousEmployerRule rule) {
+        perfectEmployeeRules.getPreviousEmployerRules().add(rule);
+        return perfectEmployeeRules.getPreviousEmployerRules();
+    }
+
+    public List<TypeOfContractRule> addTypeOfContractRule(TypeOfContractRule rule) {
+        perfectEmployeeRules.getTypeOfContractRules().add(rule);
+        return perfectEmployeeRules.getTypeOfContractRules();
+    }
+
+    public List<WorkingHoursRule> addWorkingHoursRule(WorkingHoursRule rule) {
+        perfectEmployeeRules.getWorkingHoursRules().add(rule);
+        return perfectEmployeeRules.getWorkingHoursRules();
     }
 
     @Override

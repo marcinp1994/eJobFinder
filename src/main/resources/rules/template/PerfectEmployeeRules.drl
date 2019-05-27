@@ -8,8 +8,9 @@ action
 package drools.templates;
 
 global com.ejobfinder.model.Candidate candidate
-import com.ejobfinder.model.TechnologyFact;
-import com.ejobfinder.model.SkillFact;
+import com.ejobfinder.model.facts.TechnologyFact;
+import com.ejobfinder.model.facts.SkillFact;
+import com.ejobfinder.model.facts.WorkingHoursFact;
 
 
 dialect "java"

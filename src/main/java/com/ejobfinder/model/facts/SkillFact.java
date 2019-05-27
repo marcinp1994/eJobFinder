@@ -1,4 +1,4 @@
-package com.ejobfinder.model;
+package com.ejobfinder.model.facts;
 
 public class SkillFact {
     private String name;

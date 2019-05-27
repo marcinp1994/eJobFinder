@@ -4,7 +4,7 @@ import com.ejobfinder.drools.Condition.Operator;
 import com.ejobfinder.drools.Rule;
 import com.ejobfinder.drools.utils.DroolsUtility;
 import com.ejobfinder.model.Candidate;
-import com.ejobfinder.model.TechnologyFact;
+import com.ejobfinder.model.facts.TechnologyFact;
 import com.ejobfinder.model.rules.*;
 import com.ejobfinder.service.RulesService;
 import com.ejobfinder.utils.OperatorConverter;
@@ -81,7 +81,7 @@ public class RuleController {
         int scr = Integer.valueOf(score);
         int lvl = Integer.valueOf(level);
         TechnologyRule rule = new TechnologyRule(name, OperatorConverter.convertTextOperatorToSymbolicOperator(yearOperator), yearDouble, lvl, OperatorConverter.convertTextOperatorToSymbolicOperator(levelOperator), scr);
-        Integer newSize = addTechnologyRule(rule).size();
+        Integer newSize = rulesService.addTechnologyRule(rule).size();
         return new ResponseEntity<String>("Technology rule created with new size=" + newSize, HttpStatus.OK);
     }
 
@@ -91,7 +91,7 @@ public class RuleController {
         int scr = Integer.valueOf(score);
         int lvl = Integer.valueOf(level);
         SkillRule rule = new SkillRule(name, lvl, OperatorConverter.convertTextOperatorToSymbolicOperator(levelOperator), scr);
-        Integer newSize = addSkillRule(rule).size();
+        Integer newSize = rulesService.addSkillRule(rule).size();
         return new ResponseEntity<String>("Skill rule created with new size=" + newSize, HttpStatus.OK);
     }
 
@@ -102,7 +102,7 @@ public class RuleController {
         int lvl = Integer.valueOf(level);
         double yearDouble = Double.valueOf(year);
         ToolRule rule = new ToolRule(name, OperatorConverter.convertTextOperatorToSymbolicOperator(yearOperator), yearDouble, lvl, OperatorConverter.convertTextOperatorToSymbolicOperator(levelOperator), scr);
-        Integer newSize = addToolRule(rule).size();
+        Integer newSize = rulesService.addToolRule(rule).size();
         return new ResponseEntity<String>("Tool rule created with new size=" + newSize, HttpStatus.OK);
     }
 
@@ -112,7 +112,7 @@ public class RuleController {
 
         int scr = Integer.valueOf(score);
         LanguageRule rule = new LanguageRule(name, level, OperatorConverter.convertTextOperatorToSymbolicOperator(levelOperator), scr);
-        Integer newSize = addLanguageRule(rule).size();
+        Integer newSize = rulesService.addLanguageRule(rule).size();
         return new ResponseEntity<String>("Language rule created with new size=" + newSize, HttpStatus.OK);
     }
 
@@ -122,7 +122,7 @@ public class RuleController {
 
         int scr = Integer.valueOf(score);
         LocationRule locationRule = new LocationRule(name, scr);
-        Integer newSize = addLocationRule(locationRule).size();
+        Integer newSize = rulesService.addLocationRule(locationRule).size();
         return new ResponseEntity<String>("Location rule created with new size=" + newSize, HttpStatus.OK);
     }
 
@@ -136,7 +136,7 @@ public class RuleController {
         double amountUpDouble = Double.valueOf(amountUp);
         SalaryRule rule = new SalaryRule(amountDownDouble, OperatorConverter.convertTextOperatorToSymbolicOperator(amountDownOperator),
                 amountUpDouble, OperatorConverter.convertTextOperatorToSymbolicOperator(amountUpOperator), scr);
-        Integer newSize = addSalaryRule(rule).size();
+        Integer newSize = rulesService.addSalaryRule(rule).size();
         return new ResponseEntity<String>("Salary ule created with new size=" + newSize, HttpStatus.OK);
     }
 
@@ -146,7 +146,7 @@ public class RuleController {
         int scr = Integer.valueOf(score);
         Operator op = OperatorConverter.convertTextOperatorToSymbolicOperator(operator);
         WorkingHoursRule rule = new WorkingHoursRule(name, op, scr);
-        Integer newSize = addWorkingHoursRule(rule).size();
+        Integer newSize = rulesService.addWorkingHoursRule(rule).size();
         return new ResponseEntity<String>("WorkingHours rule created with new size=" + newSize, HttpStatus.OK);
 
     }
@@ -157,7 +157,7 @@ public class RuleController {
         int scr = Integer.valueOf(score);
         Operator op = OperatorConverter.convertTextOperatorToSymbolicOperator(operator);
         TypeOfContractRule rule = new TypeOfContractRule(name, op, scr);
-        Integer newSize = addTypeOfContractRule(rule).size();
+        Integer newSize = rulesService.addTypeOfContractRule(rule).size();
         return new ResponseEntity<String>("WorkingHours rule created with new size=" + newSize, HttpStatus.OK);
 
     }
@@ -168,7 +168,7 @@ public class RuleController {
         int scr = Integer.valueOf(score);
         Operator op = OperatorConverter.convertTextOperatorToSymbolicOperator(operator);
         PeriodOfNoticeRule rule = new PeriodOfNoticeRule(name, op, scr);
-        Integer newSize = addPeriodOfNoticeRule(rule).size();
+        Integer newSize = rulesService.addPeriodOfNoticeRule(rule).size();
         return new ResponseEntity<String>("WorkingHours rule created with new size=" + newSize, HttpStatus.OK);
     }
 
@@ -181,7 +181,7 @@ public class RuleController {
         Boolean stillWorking = Boolean.valueOf(isStillWorkingParam);
         Boolean haveProfessionalExperienc = Boolean.valueOf(haveProfessionalExperienceParam);
         PreviousEmployerRule rule = new PreviousEmployerRule(name, op, yearDouble, stillWorking, haveProfessionalExperienc, scr);
-        Integer newSize = addPreviousEmployerRule(rule).size();
+        Integer newSize = rulesService.addPreviousEmployerRule(rule).size();
         return new ResponseEntity<String>("PreviousEmployerRule created with new size=" + newSize, HttpStatus.OK);
     }
 
@@ -193,7 +193,7 @@ public class RuleController {
         Boolean studyAbroad = Boolean.valueOf(isAbroadStudent);
         Boolean isStudent = Boolean.valueOf(isStudentParam);
         EducationRule rule = new EducationRule(professionalTitle, fieldOfStudy, modeOfStudy, studyAbroad, isStudent, scr);
-        Integer newSize = addEducationRule(rule).size();
+        Integer newSize = rulesService.addEducationRule(rule).size();
         return new ResponseEntity<String>("PreviousEmployerRule created with new size=" + newSize, HttpStatus.OK);
     }
 
@@ -203,10 +203,11 @@ public class RuleController {
         PerfectEmployeeRules perfectEmployeeRules = this.perfectEmployeeRules;
         List<Rule> technologyRules = rulesService.createRulesForTechnology(perfectEmployeeRules.getTechnologyRules());
         List<Rule> skillRules = rulesService.createRulesForSkills(perfectEmployeeRules.getSkillRules());
-        List<Rule> perfectEmployeeRuleList = Stream.of(technologyRules, skillRules).flatMap(Collection::stream).collect(Collectors.toList());
+        List<Rule> workingHoursRules = rulesService.createRulesForWorkingHours(perfectEmployeeRules.getWorkingHoursRules());
+        List<Rule> perfectEmployeeRuleList = Stream.of(technologyRules, skillRules, workingHoursRules).flatMap(Collection::stream).collect(Collectors.toList());
 
         droolsUtility.createRules(perfectEmployeeRuleList, "rules/template/PerfectEmployeeRules.drl", perfectEmployeeRules.getJobId());
-        return new ResponseEntity<String>("File created", HttpStatus.OK);
+        return new ResponseEntity<String>("rule finalize", HttpStatus.OK);
     }
 
     @RequestMapping(value = "rule/delete", method = RequestMethod.POST)
@@ -214,61 +215,6 @@ public class RuleController {
     public ResponseEntity<String> finalizeAndCreateFile(@RequestParam String name) {
         rulesService.deleteRule(name);
         return new ResponseEntity<String>("rule deleted", HttpStatus.OK);
-    }
-
-    private List<TechnologyRule> addTechnologyRule(TechnologyRule rule) {
-        perfectEmployeeRules.getTechnologyRules().add(rule);
-        return perfectEmployeeRules.getTechnologyRules();
-    }
-
-    private List<SkillRule> addSkillRule(SkillRule rule) {
-        perfectEmployeeRules.getSkillRules().add(rule);
-        return perfectEmployeeRules.getSkillRules();
-    }
-
-    private List<ToolRule> addToolRule(ToolRule rule) {
-        perfectEmployeeRules.getToolRules().add(rule);
-        return perfectEmployeeRules.getToolRules();
-    }
-
-    private List<LanguageRule> addLanguageRule(LanguageRule rule) {
-        perfectEmployeeRules.getLanguageRules().add(rule);
-        return perfectEmployeeRules.getLanguageRules();
-    }
-
-    private List<LocationRule> addLocationRule(LocationRule rule) {
-        perfectEmployeeRules.getLocationRules().add(rule);
-        return perfectEmployeeRules.getLocationRules();
-    }
-
-    private List<EducationRule> addEducationRule(EducationRule rule) {
-        perfectEmployeeRules.getEducationRules().add(rule);
-        return perfectEmployeeRules.getEducationRules();
-    }
-
-    private List<SalaryRule> addSalaryRule(SalaryRule rule) {
-        perfectEmployeeRules.getSalaryRules().add(rule);
-        return perfectEmployeeRules.getSalaryRules();
-    }
-
-    private List<PeriodOfNoticeRule> addPeriodOfNoticeRule(PeriodOfNoticeRule rule) {
-        perfectEmployeeRules.getPeriodOfNoticeRules().add(rule);
-        return perfectEmployeeRules.getPeriodOfNoticeRules();
-    }
-
-    private List<PreviousEmployerRule> addPreviousEmployerRule(PreviousEmployerRule rule) {
-        perfectEmployeeRules.getPreviousEmployerRules().add(rule);
-        return perfectEmployeeRules.getPreviousEmployerRules();
-    }
-
-    private List<TypeOfContractRule> addTypeOfContractRule(TypeOfContractRule rule) {
-        perfectEmployeeRules.getTypeOfContractRules().add(rule);
-        return perfectEmployeeRules.getTypeOfContractRules();
-    }
-
-    private List<WorkingHoursRule> addWorkingHoursRule(WorkingHoursRule rule) {
-        perfectEmployeeRules.getWorkingHoursRules().add(rule);
-        return perfectEmployeeRules.getWorkingHoursRules();
     }
 }
 

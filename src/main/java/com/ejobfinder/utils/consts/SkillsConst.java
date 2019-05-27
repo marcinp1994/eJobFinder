@@ -1,4 +1,4 @@
-package com.ejobfinder.utils;
+package com.ejobfinder.utils.consts;
 
 import java.util.ArrayList;
 import java.util.Arrays;

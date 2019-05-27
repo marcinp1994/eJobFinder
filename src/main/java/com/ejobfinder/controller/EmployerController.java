@@ -7,7 +7,7 @@ import com.ejobfinder.model.rules.PerfectEmployeeRules;
 import com.ejobfinder.service.CustomerService;
 import com.ejobfinder.service.JobOfferService;
 import com.ejobfinder.service.LocationService;
-import com.ejobfinder.utils.*;
+import com.ejobfinder.utils.consts.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;

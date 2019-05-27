@@ -421,11 +421,7 @@
 
                             <h4> Working hours are &nbsp</h4>
                             <select id="workH_SelectorHelper" class="selectpicker" data-style="btn-light">
-                                <option>at least</option>
                                 <option>equal</option>
-                                <option>greater than</option>
-                                <option>lower than</option>
-                                <option>lower or equal to</option>
                             </select>
                             <select id="workHSelector" class="selectpicker" data-style="btn-light" data-live-search="true">
                                 <option hidden>work hours</option>

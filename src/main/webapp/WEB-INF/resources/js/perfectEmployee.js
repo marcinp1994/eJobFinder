@@ -519,7 +519,8 @@ $(document).ready(function() {
             }),
             timeout: 600000,
             success: function(data) {
-
+            var link = "http://localhost:8080/eJobFinder/employer/jobOfferInventory";
+                    $(location).attr('href',link);
             },
             error: function(e) {
                 console.log('error while post');
