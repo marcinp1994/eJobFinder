@@ -328,7 +328,7 @@ $(document).ready(function() {
         document.getElementById("period_tableOfRules").style.display = "table";
         var selectedName = $('#periodSelector').val();
         var selectedHelper = $('#period_SelectorHelper').val();
-        var selectedScore = $('period_score').val();
+        var selectedScore = $('#period_score').val();
 
 
 

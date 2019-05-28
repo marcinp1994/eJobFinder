@@ -7,6 +7,8 @@ import com.ejobfinder.model.Candidate;
 import com.ejobfinder.model.facts.TechnologyFact;
 import com.ejobfinder.model.rules.*;
 import com.ejobfinder.service.RulesService;
+import com.ejobfinder.utils.BooleanMapper;
+import com.ejobfinder.utils.LanguageMapper;
 import com.ejobfinder.utils.OperatorConverter;
 import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,7 +113,8 @@ public class RuleController {
     public ResponseEntity<String> addLanguageRule(@RequestParam String name, @RequestParam String level, @RequestParam String levelOperator, @RequestParam String score) {
 
         int scr = Integer.valueOf(score);
-        LanguageRule rule = new LanguageRule(name, level, OperatorConverter.convertTextOperatorToSymbolicOperator(levelOperator), scr);
+        int lvl = LanguageMapper.getLanguageLvlInt(level);
+        LanguageRule rule = new LanguageRule(name, lvl, OperatorConverter.convertTextOperatorToSymbolicOperator(levelOperator), scr);
         Integer newSize = rulesService.addLanguageRule(rule).size();
         return new ResponseEntity<String>("Language rule created with new size=" + newSize, HttpStatus.OK);
     }
@@ -158,7 +161,7 @@ public class RuleController {
         Operator op = OperatorConverter.convertTextOperatorToSymbolicOperator(operator);
         TypeOfContractRule rule = new TypeOfContractRule(name, op, scr);
         Integer newSize = rulesService.addTypeOfContractRule(rule).size();
-        return new ResponseEntity<String>("WorkingHours rule created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<String>("TypeOfContract rule created with new size=" + newSize, HttpStatus.OK);
 
     }
 
@@ -169,7 +172,7 @@ public class RuleController {
         Operator op = OperatorConverter.convertTextOperatorToSymbolicOperator(operator);
         PeriodOfNoticeRule rule = new PeriodOfNoticeRule(name, op, scr);
         Integer newSize = rulesService.addPeriodOfNoticeRule(rule).size();
-        return new ResponseEntity<String>("WorkingHours rule created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<String>("PeriodOfNotice rule created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "rule/previousEmployerRule", method = RequestMethod.POST)
@@ -178,8 +181,8 @@ public class RuleController {
         int scr = Integer.valueOf(score);
         Operator op = OperatorConverter.convertTextOperatorToSymbolicOperator(operator);
         double yearDouble = Double.valueOf(year);
-        Boolean stillWorking = Boolean.valueOf(isStillWorkingParam);
-        Boolean haveProfessionalExperienc = Boolean.valueOf(haveProfessionalExperienceParam);
+        Boolean stillWorking = BooleanMapper.getBoolean(isStillWorkingParam);
+        Boolean haveProfessionalExperienc = BooleanMapper.getBoolean(haveProfessionalExperienceParam);
         PreviousEmployerRule rule = new PreviousEmployerRule(name, op, yearDouble, stillWorking, haveProfessionalExperienc, scr);
         Integer newSize = rulesService.addPreviousEmployerRule(rule).size();
         return new ResponseEntity<String>("PreviousEmployerRule created with new size=" + newSize, HttpStatus.OK);
@@ -190,11 +193,11 @@ public class RuleController {
     public ResponseEntity<String> addEducationRule(@RequestParam String professionalTitle, @RequestParam String fieldOfStudy, @RequestParam String modeOfStudy,
                                                    @RequestParam String isAbroadStudent, @RequestParam String isStudentParam, @RequestParam String score) {
         int scr = Integer.valueOf(score);
-        Boolean studyAbroad = Boolean.valueOf(isAbroadStudent);
-        Boolean isStudent = Boolean.valueOf(isStudentParam);
+        Boolean studyAbroad = BooleanMapper.getBoolean(isAbroadStudent);
+        Boolean isStudent = BooleanMapper.getBoolean(isStudentParam);
         EducationRule rule = new EducationRule(professionalTitle, fieldOfStudy, modeOfStudy, studyAbroad, isStudent, scr);
         Integer newSize = rulesService.addEducationRule(rule).size();
-        return new ResponseEntity<String>("PreviousEmployerRule created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<String>("Education rule created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "rule/finalize", method = RequestMethod.POST)
@@ -204,7 +207,16 @@ public class RuleController {
         List<Rule> technologyRules = rulesService.createRulesForTechnology(perfectEmployeeRules.getTechnologyRules());
         List<Rule> skillRules = rulesService.createRulesForSkills(perfectEmployeeRules.getSkillRules());
         List<Rule> workingHoursRules = rulesService.createRulesForWorkingHours(perfectEmployeeRules.getWorkingHoursRules());
-        List<Rule> perfectEmployeeRuleList = Stream.of(technologyRules, skillRules, workingHoursRules).flatMap(Collection::stream).collect(Collectors.toList());
+        List<Rule> educationRules = rulesService.createRulesForEducation(perfectEmployeeRules.getEducationRules());
+        List<Rule> languageRules = rulesService.createRulesForLanguage(perfectEmployeeRules.getLanguageRules());
+        List<Rule> periodOfNoticeRules = rulesService.createRulesForPeriodOfNotice(perfectEmployeeRules.getPeriodOfNoticeRules());
+        List<Rule> LocationRules = rulesService.createRulesForLocation(perfectEmployeeRules.getLocationRules());
+        List<Rule> previousEmployerRules = rulesService.createRulesForPreviousEmployee(perfectEmployeeRules.getPreviousEmployerRules());
+        List<Rule> salaryRules = rulesService.createRulesForSalary(perfectEmployeeRules.getSalaryRules());
+        List<Rule> toolRules = rulesService.createRulesForTool(perfectEmployeeRules.getToolRules());
+        List<Rule> typeOfContractRules = rulesService.createRulesForTypeOfContract(perfectEmployeeRules.getTypeOfContractRules());
+        List<Rule> perfectEmployeeRuleList = Stream.of(technologyRules, skillRules, workingHoursRules, educationRules, languageRules, periodOfNoticeRules, LocationRules, previousEmployerRules, salaryRules, toolRules, typeOfContractRules)
+                .flatMap(Collection::stream).collect(Collectors.toList());
 
         droolsUtility.createRules(perfectEmployeeRuleList, "rules/template/PerfectEmployeeRules.drl", perfectEmployeeRules.getJobId());
         return new ResponseEntity<String>("rule finalize", HttpStatus.OK);

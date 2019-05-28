@@ -12,6 +12,22 @@ public interface RulesService {
 
     List<Rule> createRulesForWorkingHours(List<WorkingHoursRule> workingHoursRuleList);
 
+    List<Rule> createRulesForEducation(List<EducationRule> educationRuleList);
+
+    List<Rule> createRulesForLanguage(List<LanguageRule> languageRuleList);
+
+    List<Rule> createRulesForLocation(List<LocationRule> locationRuleList);
+
+    List<Rule> createRulesForPeriodOfNotice(List<PeriodOfNoticeRule> periodOfNoticeRuleList);
+
+    List<Rule> createRulesForPreviousEmployee(List<PreviousEmployerRule> previousEmployerRuleList);
+
+    List<Rule> createRulesForSalary(List<SalaryRule> salaryRuleList);
+
+    List<Rule> createRulesForTool(List<ToolRule> toolRuleList);
+
+    List<Rule> createRulesForTypeOfContract(List<TypeOfContractRule> typeOfContractRuleList);
+
     void deleteRule(String name);
 
     List<TechnologyRule> addTechnologyRule(TechnologyRule rule);

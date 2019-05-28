@@ -21,9 +21,9 @@
             <!--TECHNICAL RULES-->
             <div class="container" style="width: 98%;">
 
-                <div class="panel panel-success">
+                <div class="panel panel-primary">
                     <div class="panel-heading">know technology</div>
-                    <div class="panel-body" style="background-color:EFEFEF;">
+                    <div class="panel-body" style="background-color:#EFEFEF;">
 
                         <div class="input-group mb-2 mr-sm-2">
                             <select id="technologySelector" class="selectpicker" data-style="btn-light" data-live-search="true">
@@ -89,7 +89,7 @@
                             </select>
                         </div>
 
-                        <button type="button" id="add_row" class="btn btn-success" style="float: right;">Create condtion</button>
+                        <button type="button" id="add_row" class="btn btn-primary" style="float: right;">Create condtion</button>
                         <div class="input-group mb-2 mr-sm-2" style="float: right;">
 
                             <h4> Importance:  &nbsp</h4>
@@ -125,7 +125,7 @@
 
             <!--SKILLS RULES-->
             <div class="container" style="width: 98%;">
-                <div class="panel panel-success">
+                <div class="panel panel-info">
                     <div class="panel-heading">have sills</div>
                     <div class="panel-body" style="background-color:EFEFEF;">
 
@@ -159,7 +159,7 @@
                             </select>
                         </div>
 
-                        <button type="button" id="skill_add_row" class="btn btn-success" style="float: right;">Create condtion</button>
+                        <button type="button" id="skill_add_row" class="btn btn-info" style="float: right;">Create condtion</button>
 
                         <div class="input-group mb-2 mr-sm-2" style="float: right;">
 
@@ -300,7 +300,7 @@
 
             <!--LANGUAGE RULES-->
             <div class="container" style="width: 98%;">
-                <div class="panel panel-success">
+                <div class="panel panel-warning">
                     <div class="panel-heading">know languages</div>
                     <div class="panel-body" style="background-color:EFEFEF;">
 
@@ -331,7 +331,7 @@
                             </select>
                         </div>
 
-                        <button type="button" id="lang_add_row" class="btn btn-success" style="float: right;">Create condtion</button>
+                        <button type="button" id="lang_add_row" class="btn btn-warning" style="float: right;">Create condtion</button>
 
                         <div class="input-group mb-2 mr-sm-2" style="float: right;">
 
@@ -367,7 +367,7 @@
 
             <!--LOCATION RULES-->
             <div class="container" style="width: 98%;">
-                <div class="panel panel-success">
+                <div class="panel panel-danger">
                     <div class="panel-heading">have location preferences</div>
                     <div class="panel-body" style="background-color:EFEFEF">
 
@@ -381,7 +381,7 @@
                             </select>
                         </div>
 
-                        <button type="button" id="loc_add_row" class="btn btn-success" style="float: right;">Create condtion</button>
+                        <button type="button" id="loc_add_row" class="btn btn-danger" style="float: right;">Create condtion</button>
                         <div class="input-group mb-2 mr-sm-2" style="float: right;">
 
                             <h4> Importance:  &nbsp</h4>
@@ -413,7 +413,7 @@
 
             <!--WORKING HOURS RULES-->
             <div class="container" style="width: 98%;">
-                <div class="panel panel-success">
+                <div class="panel panel-primary">
                     <div class="panel-heading">working hours</div>
                     <div class="panel-body" style="background-color:EFEFEF;">
 
@@ -431,7 +431,7 @@
                             </select>
                         </div>
 
-                        <button type="button" id="workH_add_row" class="btn btn-success" style="float: right;">Create condtion</button>
+                        <button type="button" id="workH_add_row" class="btn btn-primary" style="float: right;">Create condtion</button>
                         <div class="input-group mb-2 mr-sm-2" style="float: right;">
 
                             <h4> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Importance:  &nbsp</h4>
@@ -462,7 +462,7 @@
 
             <!--CONTRACT RULES-->
             <div class="container" style="width: 98%;">
-                <div class="panel panel-success">
+                <div class="panel panel-info">
                     <div class="panel-heading">contract</div>
                     <div class="panel-body" style="background-color:EFEFEF;">
 
@@ -470,11 +470,7 @@
 
                             <h4> Is type of contract&nbsp</h4>
                             <select id="contr_SelectorHelper" class="selectpicker" data-style="btn-light">
-                                <option>at least</option>
                                 <option>equal</option>
-                                <option>greater than</option>
-                                <option>lower than</option>
-                                <option>lower or equal to</option>
                             </select>
                             <select id="contrSelector" class="selectpicker" data-style="btn-light" data-live-search="true">
                                 <option hidden>type of contract</option>
@@ -484,7 +480,7 @@
                             </select>
                         </div>
 
-                        <button type="button" id="contr_add_row" class="btn btn-success" style="float: right;">Create condtion</button>
+                        <button type="button" id="contr_add_row" class="btn btn-info" style="float: right;">Create condtion</button>
                         <div class="input-group mb-2 mr-sm-2" style="float: right;">
 
                             <h4> Importance:  &nbsp</h4>
@@ -523,11 +519,7 @@
 
                             <h4> Periods of notices are&nbsp</h4>
                             <select id="period_SelectorHelper" class="selectpicker" data-style="btn-light">
-                                <option>at least</option>
                                 <option>equal</option>
-                                <option>greater than</option>
-                                <option>lower than</option>
-                                <option>lower or equal to</option>
                             </select>
                             <select id="periodSelector" class="selectpicker" data-style="btn-light" data-live-search="true">
                                 <option hidden>period</option>
@@ -570,7 +562,7 @@
 
             <!--EDUCATION RULES-->
             <div class="container" style="width: 98%;">
-                <div class="panel panel-success">
+                <div class="panel panel-warning">
                     <div class="panel-heading">Education</div>
                     <div class="panel-body" style="background-color:EFEFEF;">
 
@@ -587,7 +579,7 @@
                             <h4>&nbsp in field &nbsp</h4>
                             <select id="edu_fieldSelector" class="selectpicker" data-style="btn-light" data-live-search="true">
                                 <option hidden>field of study</option>
-                                <c:forEach items="${eduField}" var="val">
+                                <c:forEach items="${eduFields}" var="val">
                                     <option>${val}</option>
                                 </c:forEach>
                             </select>
@@ -624,7 +616,7 @@
 
                         </div>
 
-                        <button type="button" id="edu_add_row" class="btn btn-success" style="float: right;">Create condtion</button>
+                        <button type="button" id="edu_add_row" class="btn btn-warning" style="float: right;">Create condtion</button>
 
                         <div class="input-group mb-2 mr-sm-2" style="float: right;">
 
@@ -663,7 +655,7 @@
 
             <!--PREVIOUS RULES-->
             <div class="container" style="width: 98%;">
-                <div class="panel panel-success">
+                <div class="panel panel-danger">
                     <div class="panel-heading">Previous employer</div>
                     <div class="panel-body" style="background-color:EFEFEF;">
 
@@ -733,7 +725,7 @@
 
                         </div>
 
-                        <button type="button" id="prev_add_row" class="btn btn-success" style="float: right;">Create condtion</button>
+                        <button type="button" id="prev_add_row" class="btn btn-danger" style="float: right;">Create condtion</button>
 
                         <div class="input-group mb-2 mr-sm-2" style="float: right;">
 
@@ -771,7 +763,7 @@
 
             <!--SALARY RULES-->
             <div class="container" style="width: 98%;">
-                <div class="panel panel-success">
+                <div class="panel panel-info">
                     <div class="panel-heading">Have salary expectations</div>
                     <div class="panel-body" style="background-color:EFEFEF;">
 
@@ -861,7 +853,7 @@
                             </select>
                         </div>
 
-                        <button type="button" id="salary_add_row" class="btn btn-success" style="float: right;">Create condtion</button>
+                        <button type="button" id="salary_add_row" class="btn btn-info" style="float: right;">Create condtion</button>
 
                         <div class="input-group mb-2 mr-sm-2" style="float: right;">
 

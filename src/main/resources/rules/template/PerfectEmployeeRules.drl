@@ -11,6 +11,14 @@ global com.ejobfinder.model.Candidate candidate
 import com.ejobfinder.model.facts.TechnologyFact;
 import com.ejobfinder.model.facts.SkillFact;
 import com.ejobfinder.model.facts.WorkingHoursFact;
+import com.ejobfinder.model.facts.EducationFact;
+import com.ejobfinder.model.facts.LanguageFact;
+import com.ejobfinder.model.facts.LocationFact;
+import com.ejobfinder.model.facts.PeriodOfNoticeFact;
+import com.ejobfinder.model.facts.PreviousEmployerFact;
+import com.ejobfinder.model.facts.SalaryFact;
+import com.ejobfinder.model.facts.ToolFact;
+import com.ejobfinder.model.facts.TypeOfContractFact;
 
 
 dialect "java"

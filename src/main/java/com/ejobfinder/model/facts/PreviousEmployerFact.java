@@ -1,26 +1,16 @@
-package com.ejobfinder.model.rules;
+package com.ejobfinder.model.facts;
 
-import com.ejobfinder.drools.Condition.Operator;
-
-public class PreviousEmployerRule {
+public class PreviousEmployerFact {
     private String jobTitle;
-    private Operator yearOperator;
     private double year;
     private Boolean stillWorking;
     private Boolean haveProfessionalExperience;
-    private int score;
 
-    public PreviousEmployerRule() {
-
-    }
-
-    public PreviousEmployerRule(String jobTitle, Operator yearOperator, double year, Boolean isStillWorking, Boolean haveProfessionalExperience, int score) {
+    public PreviousEmployerFact(String jobTitle, double year, Boolean isStillWorking, Boolean haveProfessionalExperience) {
         this.jobTitle = jobTitle;
-        this.yearOperator = yearOperator;
         this.year = year;
         this.stillWorking = isStillWorking;
         this.haveProfessionalExperience = haveProfessionalExperience;
-        this.score = score;
     }
 
     public String getJobTitle() {
@@ -31,14 +21,6 @@ public class PreviousEmployerRule {
         this.jobTitle = jobTitle;
     }
 
-    public Operator getYearOperator() {
-        return yearOperator;
-    }
-
-    public void setYearOperator(Operator yearOperator) {
-        this.yearOperator = yearOperator;
-    }
-
     public double getYear() {
         return year;
     }
@@ -47,7 +29,7 @@ public class PreviousEmployerRule {
         this.year = year;
     }
 
-    public Boolean isStillWorking() {
+    public Boolean stillWorking() {
         return stillWorking;
     }
 
@@ -55,19 +37,11 @@ public class PreviousEmployerRule {
         this.stillWorking = stillWorking;
     }
 
-    public Boolean isHaveProfessionalExperience() {
+    public Boolean HaveProfessionalExperience() {
         return haveProfessionalExperience;
     }
 
     public void setHaveProfessionalExperience(Boolean haveProfessionalExperience) {
         this.haveProfessionalExperience = haveProfessionalExperience;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
     }
 }

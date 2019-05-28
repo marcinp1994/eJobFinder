@@ -1,24 +1,18 @@
-package com.ejobfinder.model.rules;
+package com.ejobfinder.model.facts;
 
-public class EducationRule {
+public class EducationFact {
     private String professionalTitle;
     private String fieldOfStudy;
     private String modeOfStudy;
-    private Boolean studyAbroad;
-    private Boolean isStudent;
-    private int score;
+    private boolean studyAbroad;
+    private boolean student;
 
-    public EducationRule() {
-
-    }
-
-    public EducationRule(String professionalTitle, String fieldOfStudy, String modeOfStudy, Boolean studyAbroad, Boolean isStudent, int score) {
+    public EducationFact(String professionalTitle, String fieldOfStudy, String modeOfStudy, boolean studyAbroad, boolean isStudent) {
         this.professionalTitle = professionalTitle;
         this.fieldOfStudy = fieldOfStudy;
         this.modeOfStudy = modeOfStudy;
         this.studyAbroad = studyAbroad;
-        this.isStudent = isStudent;
-        this.score = score;
+        this.student = isStudent;
     }
 
     public String getProfessionalTitle() {
@@ -45,27 +39,19 @@ public class EducationRule {
         this.modeOfStudy = modeOfStudy;
     }
 
-    public Boolean isStudyAbroad() {
+    public boolean studyAbroad() {
         return studyAbroad;
     }
 
-    public void setStudyAbroad(Boolean studyAbroad) {
+    public void setStudyAbroad(boolean studyAbroad) {
         this.studyAbroad = studyAbroad;
     }
 
-    public Boolean isStudent() {
-        return isStudent;
+    public boolean student() {
+        return student;
     }
 
-    public void setStudent(Boolean student) {
-        isStudent = student;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
+    public void setStudent(boolean student) {
+        this.student = student;
     }
 }

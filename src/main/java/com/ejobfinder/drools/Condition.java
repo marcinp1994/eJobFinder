@@ -51,6 +51,7 @@ public class Condition {
                 add(Short.class);
                 add(Long.class);
                 add(Date.class);
+                add(Boolean.class);
             }
         })),
         /**
@@ -242,6 +243,8 @@ public class Condition {
             drl.append(expressionForNumberValue());
         } else if (value instanceof Date) {
             drl.append(expressionForDateValue());
+        } else if (value instanceof Boolean) {
+            drl.append(expressionForBooleanValue());
         } else {
             throw new IllegalArgumentException("The class " + value.getClass().getSimpleName() + " of value is not acceptable.");
         }
@@ -301,6 +304,24 @@ public class Condition {
 
         if (operator.isComparable(Date.class)) {
             drl.append(property).append(" ").append(operator.getOperation()).append(" (new SimpleDateFormat(\"dd/MM/yyyy HH:mm:ss\")).parse(\"" + (new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")).format((Date) value) + "\")");
+        } else {
+            throw new IllegalArgumentException("Is not possible to use the operator " + operator.getDescription() + " to a " + value.getClass().getSimpleName() + " object.");
+        }
+
+        return drl.toString();
+    }
+
+    /**
+     * Convert the condition for <b>Boolean</b> value in expression.
+     *
+     * @return Expression in dialect.
+     * @throws IllegalArgumentException Indicates the use of invalid pair of value and condition.
+     */
+    private String expressionForBooleanValue() throws IllegalArgumentException {
+        StringBuilder drl = new StringBuilder();
+
+        if ((operator.isComparable(Boolean.class))) {
+            drl.append(property).append(" ").append(operator.getOperation()).append(" ").append(value);
         } else {
             throw new IllegalArgumentException("Is not possible to use the operator " + operator.getDescription() + " to a " + value.getClass().getSimpleName() + " object.");
         }

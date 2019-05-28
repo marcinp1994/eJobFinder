@@ -4,7 +4,7 @@ import com.ejobfinder.drools.Condition.Operator;
 
 public class LanguageRule {
     private String name;
-    private String level;
+    private int level;
     private Operator levelOperator;
     private int score;
 
@@ -12,7 +12,7 @@ public class LanguageRule {
 
     }
 
-    public LanguageRule(String name, String level, Operator levelOperator, int score) {
+    public LanguageRule(String name, int level, Operator levelOperator, int score) {
         this.name = name;
         this.level = level;
         this.levelOperator = levelOperator;
@@ -23,11 +23,11 @@ public class LanguageRule {
         return name;
     }
 
-    public String getLevel() {
+    public int getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(int level) {
         this.level = level;
     }
 
