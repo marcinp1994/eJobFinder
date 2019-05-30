@@ -105,7 +105,7 @@
         </div>
 
         <br><br>
-        <input type="submit" value="submit" class="btn btn-default">
+        <input type="submit" value="Next" class="btn btn-default">
         <a href="<c:url value="/employer/jobOfferInventory/addJobOffer" />" class="btn btn-default">Cancel</a>
     </form:form>
 

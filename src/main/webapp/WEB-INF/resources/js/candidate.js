@@ -11,16 +11,6 @@ $(document).ready(function() {
 
     $('.selectpicker').selectpicker();
 
-    $("#prev_div_still").css("display", "none");
-    $("#prev_div_exp").css("display", "none");
-    $("#prev_div_title").css("display", "none");
-    $("#prev_div_year").css("display", "none");
-
-    $("#edu_div_still").css("display", "none");
-    $("#edu_div_title").css("display", "none");
-    $("#edu_div_field").css("display", "none");
-    $("#edu_div_mode").css("display", "none");
-    $("#edu_div_abroad").css("display", "none");
     var fixHelperModified = function(e, tr) {
             var $originals = tr.children();
             var $helper = tr.clone();
@@ -40,26 +30,20 @@ $(document).ready(function() {
 
 
     $("#add_row").click(function() {
-        document.getElementById("tableOfRules").style.display = "table";
+        document.getElementById("tableOfFacts").style.display = "table";
         var selectedTechnology = $('#technologySelector').val();
         var selectedYears = $('#yearSelector').val();
         var selectedExperience = $('#experienceSelector').val();
-        var selectedYearsHelper = $('#yearSelectorHelper').val();
-        var selectedExperienceHelper = $('#experienceSelectorHelper').val();
-        var selectedScore = $('#score').val();
         $(".selectpicker").val('default');
         $(".selectpicker").selectpicker("refresh");
 
         $.ajax({
             type: "POST",
-            url: "/eJobFinder/rule/technology",
+            url: "/eJobFinder/fact/technology",
             data: jQuery.param({
                 name: selectedTechnology,
                 level: selectedExperience,
-                year: selectedYears,
-                yearOperator: selectedYearsHelper,
-                levelOperator: selectedExperienceHelper,
-                score: selectedScore
+                year: selectedYears
             }),
             timeout: 600000,
             success: function(data) {
@@ -68,17 +52,16 @@ $(document).ready(function() {
                 var rowID = "row" + "_tech_" + number;
                 newRow.setAttribute("id", rowID);
                 newRow.innerHTML = ' <td class="index">' + number + '</td>' +
-                    ' <td>' + "Candidate should know " + selectedTechnology + " at level " + selectedExperienceHelper + " " + selectedExperience + " with years of experience " + selectedYearsHelper + " " + selectedYears + '</td>' +
+                    ' <td>' + "Candidate should know " + selectedTechnology + " at level " + " " + selectedExperience + " with years of experience " + " " + selectedYears + '</td>' +
                     ' <td>' + selectedTechnology + '</td>' +
                     ' <td>' + selectedExperience + '</td>' +
                     ' <td>' + selectedYears + '</td>' +
-                    ' <td>' + selectedScore + '</td>' +
                     ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
 
-                $("#tableOfRules tbody").append(newRow);
+                $("#tableOfFacts tbody").append(newRow);
             },
             error: function(e) {
                 console.log('error while post');
@@ -89,22 +72,19 @@ $(document).ready(function() {
     });
 
     $("#skill_add_row").click(function() {
-        document.getElementById("skill_tableOfRules").style.display = "table";
+        document.getElementById("skill_tableOfFacts").style.display = "table";
         var selectedName = $('#skillSelector').val();
         var selectedExperience = $('#skill_experienceSelector').val();
-        var selectedExperienceHelper = $('#skill_experienceSelectorHelper').val();
         var selectedScore = $('#skill_score').val();
         $(".selectpicker").val('default');
         $(".selectpicker").selectpicker("refresh");
 
         $.ajax({
             type: "POST",
-            url: "/eJobFinder/rule/skill",
+            url: "/eJobFinder/fact/skill",
             data: jQuery.param({
                 name: selectedName,
-                level: selectedExperience,
-                levelOperator: selectedExperienceHelper,
-                score: selectedScore
+                level: selectedExperience
             }),
             timeout: 600000,
             success: function(data) {
@@ -113,15 +93,14 @@ $(document).ready(function() {
                 var rowID = "row" + "_skill_" + number;
                 newRow.setAttribute("id", rowID);
                 newRow.innerHTML = ' <td class="index">' + number + '</td>' +
-                    ' <td>' + "Candidate should have " + selectedName + " at level " + selectedExperienceHelper + " " + selectedExperience + '</td>' +
+                    ' <td>' + "I have " + selectedName + " at level " + " " + selectedExperience + '</td>' +
                     ' <td>' + selectedName + '</td>' +
                     ' <td>' + selectedExperience + '</td>' +
-                    ' <td>' + selectedScore + '</td>' +
                     ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
-                $("#skill_tableOfRules tbody").append(newRow);
+                $("#skill_tableOfFacts tbody").append(newRow);
             },
             error: function(e) {
                 console.log('error while post');
@@ -132,27 +111,22 @@ $(document).ready(function() {
     });
 
     $("#tool_add_row").click(function() {
-        document.getElementById("tool_tableOfRules").style.display = "table";
+        document.getElementById("tool_tableOfFacts").style.display = "table";
         var selectedName = $('#tool_nameSelector').val();
         var selectedYears = $('#tool_yearSelector').val();
-        var selectedYearsHelper = $('#tool_yearSelectorHelper').val();
         var selectedExperience = $('#tool_experienceSelector').val();
-        var selectedExperienceHelper = $('#tool_experienceSelectorHelper').val();
-        var selectedScore = $('#tool_score').val();
+
         $(".selectpicker").val('default');
         $(".selectpicker").selectpicker("refresh");
 
 
         $.ajax({
             type: "POST",
-            url: "/eJobFinder/rule/tool",
+            url: "/eJobFinder/fact/tool",
             data: jQuery.param({
                 name: selectedName,
                 level: selectedExperience,
-                year: selectedYears,
-                yearOperator: selectedYearsHelper,
-                levelOperator: selectedExperienceHelper,
-                score: selectedScore
+                year: selectedYears
             }),
             timeout: 600000,
             success: function(data) {
@@ -161,16 +135,15 @@ $(document).ready(function() {
                 var rowID = "row" + "_tool_" + number;
                 newRow.setAttribute("id", rowID);
                 newRow.innerHTML = ' <td class="index">' + number + '</td>' +
-                    ' <td>' + "Candidate should know " + selectedName + " at level " + selectedExperienceHelper + " " + selectedExperience + " with years of experience " + selectedYearsHelper + " " + selectedYears + '</td>' +
+                    ' <td>' + "I know " + selectedName + " at level " + selectedExperience + " with years of experience "  + " " + selectedYears + '</td>' +
                     ' <td>' + selectedName + '</td>' +
                     ' <td>' + selectedExperience + '</td>' +
                     ' <td>' + selectedYears + '</td>' +
-                    ' <td>' + selectedScore + '</td>' +
                     ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
-                $("#tool_tableOfRules tbody").append(newRow);
+                $("#tool_tableOfFacts tbody").append(newRow);
             },
             error: function(e) {
                 console.log('error while post');
@@ -182,23 +155,20 @@ $(document).ready(function() {
 
 
     $("#lang_add_row").click(function() {
-        document.getElementById("lang_tableOfRules").style.display = "table";
+        document.getElementById("lang_tableOfFacts").style.display = "table";
         var selectedName = $('#langSelector').val();
         var selectedExperience = $('#lang_experienceSelector').val();
-        var selectedExperienceHelper = $('#lang_experienceSelectorHelper').val();
-        var selectedScore = $('#lang_score').val();
+
         $(".selectpicker").val('default');
         $(".selectpicker").selectpicker("refresh");
 
 
         $.ajax({
             type: "POST",
-            url: "/eJobFinder/rule/language",
+            url: "/eJobFinder/fact/language",
             data: jQuery.param({
                 name: selectedName,
-                level: selectedExperience,
-                levelOperator: selectedExperienceHelper,
-                score: selectedScore
+                level: selectedExperience
             }),
             timeout: 600000,
             success: function(data) {
@@ -208,16 +178,15 @@ $(document).ready(function() {
                 newRow.setAttribute("id", rowID);
 
                 newRow.innerHTML = ' <td class="index">' + number + '</td>' +
-                    ' <td>' + "Candidate should know " + selectedName + " at level " + selectedExperienceHelper + " " + selectedExperience + '</td>' +
+                    ' <td>' + "I can speak " + selectedName + " at level " + " " + selectedExperience + '</td>' +
                     ' <td>' + selectedName + '</td>' +
                     ' <td>' + selectedExperience + '</td>' +
-                    ' <td>' + selectedScore + '</td>' +
                     ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
 
-                $("#lang_tableOfRules tbody").append(newRow);
+                $("#lang_tableOfFacts tbody").append(newRow);
             },
             error: function(e) {
                 console.log('error while post');
@@ -228,18 +197,17 @@ $(document).ready(function() {
     });
 
     $("#loc_add_row").click(function() {
-        document.getElementById("loc_tableOfRules").style.display = "table";
+        document.getElementById("loc_tableOfFacts").style.display = "table";
         var selectedName = $('#locSelector').val();
-        var selectedScore = $('#loc_score').val();
+
         $(".selectpicker").val('default');
         $(".selectpicker").selectpicker("refresh");
 
         $.ajax({
             type: "POST",
-            url: "/eJobFinder/rule/location",
+            url: "/eJobFinder/fact/location",
             data: jQuery.param({
-                name: selectedName,
-                score: selectedScore
+                name: selectedName
             }),
             timeout: 600000,
             success: function(data) {
@@ -249,14 +217,13 @@ $(document).ready(function() {
                 newRow.setAttribute("id", rowID);
                 newRow.innerHTML = ' <td class="index">' + number + '</td>' +
                     ' <td>' + selectedName + '</td>' +
-                    ' <td>' + selectedScore + '</td>' +
                     ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
 
 
-                $("#loc_tableOfRules tbody").append(newRow);
+                $("#loc_tableOfFacts tbody").append(newRow);
             },
             error: function(e) {
                 console.log('error while post');
@@ -267,20 +234,17 @@ $(document).ready(function() {
     });
 
     $("#workH_add_row").click(function() {
-        document.getElementById("workH_tableOfRules").style.display = "table";
+        document.getElementById("workH_tableOfFacts").style.display = "table";
         var selectedName = $('#workHSelector').val();
-        var selectedHelper = $('#workH_SelectorHelper').val();
-        var selectedScore = $('#workH_score').val();
+
         $(".selectpicker").val('default');
         $(".selectpicker").selectpicker("refresh");
 
         $.ajax({
             type: "POST",
-            url: "/eJobFinder/rule/workingHours",
+            url: "/eJobFinder/fact/workingHours",
             data: jQuery.param({
-                name: selectedName,
-                operator: selectedHelper,
-                score: selectedScore
+                name: selectedName
             }),
             timeout: 600000,
             success: function(data) {
@@ -290,15 +254,14 @@ $(document).ready(function() {
                 newRow.setAttribute("id", rowID);
 
                 newRow.innerHTML = ' <td class="index">' + number + '</td>' +
-                    ' <td>' + "Woking hours are " + selectedName + '</td>' +
+                    ' <td>' + "I am ok with working hours like " + selectedName + '</td>' +
                     ' <td>' + selectedName + '</td>' +
-                    ' <td>' + selectedScore + '</td>' +
                     ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
 
-                $("#workH_tableOfRules tbody").append(newRow);
+                $("#workH_tableOfFacts tbody").append(newRow);
             },
             error: function(e) {
                 console.log('error while post');
@@ -308,21 +271,18 @@ $(document).ready(function() {
 
     });
     $("#contr_add_row").click(function() {
-        document.getElementById("contr_tableOfRules").style.display = "table";
+        document.getElementById("contr_tableOfFacts").style.display = "table";
         var selectedName = $('#contrSelector').val();
-        var selectedHelper = $('#contr_SelectorHelper').val();
-        var selectedScore = $('#contr_score').val();
+
         $(".selectpicker").val('default');
         $(".selectpicker").selectpicker("refresh");
 
 
         $.ajax({
             type: "POST",
-            url: "/eJobFinder/rule/typeOfContract",
+            url: "/eJobFinder/fact/typeOfContract",
             data: jQuery.param({
-                name: selectedName,
-                operator: selectedHelper,
-                score: selectedScore
+                name: selectedName
             }),
             timeout: 600000,
             success: function(data) {
@@ -331,15 +291,14 @@ $(document).ready(function() {
                 var rowID = "row" + "_contr_" + number;
                 newRow.setAttribute("id", rowID);
                 newRow.innerHTML = ' <td class="index">' + number + '</td>' +
-                    ' <td>' + "Type of contract is " + selectedName + '</td>' +
+                    ' <td>' + "I am ok with type of contract  " + selectedName + '</td>' +
                     ' <td>' + selectedName + '</td>' +
-                    ' <td>' + selectedScore + '</td>' +
                     ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
 
-                $("#contr_tableOfRules tbody").append(newRow);
+                $("#contr_tableOfFacts tbody").append(newRow);
             },
             error: function(e) {
                 console.log('error while post');
@@ -351,23 +310,16 @@ $(document).ready(function() {
 
 
     $("#period_add_row").click(function() {
-        document.getElementById("period_tableOfRules").style.display = "table";
+        document.getElementById("period_tableOfFacts").style.display = "table";
         var selectedName = $('#periodSelector').val();
-        var selectedHelper = $('#period_SelectorHelper').val();
-        var selectedScore = $('#period_score').val();
-
-
-
 
         $(".selectpicker").val('default');
         $(".selectpicker").selectpicker("refresh");
         $.ajax({
             type: "POST",
-            url: "/eJobFinder/rule/periodOfNotice",
+            url: "/eJobFinder/fact/periodOfNotice",
             data: jQuery.param({
                 name: selectedName,
-                operator: selectedHelper,
-                score: selectedScore
             }),
             timeout: 600000,
             success: function(data) {
@@ -376,15 +328,14 @@ $(document).ready(function() {
                 var rowID = "row" + "_period_" + number;
                 newRow.setAttribute("id", rowID);
                 newRow.innerHTML = ' <td class="index">' + number + '</td>' +
-                    ' <td>' + "Period of notice is " + selectedName + '</td>' +
+                    ' <td>' + "My period of notice is " + selectedName + '</td>' +
                     ' <td>' + selectedName + '</td>' +
-                    ' <td>' + selectedScore + '</td>' +
                     ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
 
-                $("#period_tableOfRules tbody").append(newRow);
+                $("#period_tableOfFacts tbody").append(newRow);
             },
             error: function(e) {
                 console.log('error while post');
@@ -393,78 +344,28 @@ $(document).ready(function() {
 
 
     });
-    $("#prev_parameterChooser").on("changed.bs.select",
-        function(e, clickedIndex, newValue, oldValue) {
-            $("#prev_div_still").css("display", "none");
-            $("#prev_div_exp").css("display", "none");
-            $("#prev_div_title").css("display", "none");
-            $("#prev_div_year").css("display", "none");
-
-                      var val = $("#prev_parameterChooser").val();
-
-                        if (val.includes('professional title')) {
-                            $("#prev_div_title").css("display", "");
-                        }
-                        if (val.includes('years of work')) {
-                            $("#prev_div_year").css("display", "");
-                        }
-                        if (val.includes('professional experience')) {
-                            $("#prev_div_exp").css("display", "");
-                        }
-                        if (val.includes('still working')) {
-                            $("#prev_div_still").css("display", "");
-                        }
-        });
-
-    $("#edu_parameterChooser").on("changed.bs.select",
-        function(e, clickedIndex, newValue, oldValue) {
-            $("#edu_div_still").css("display", "none");
-            $("#edu_div_title").css("display", "none");
-            $("#edu_div_field").css("display", "none");
-            $("#edu_div_mode").css("display", "none");
-            $("#edu_div_abroad").css("display", "none");
-
-            var val = $("#edu_parameterChooser").val();
-
-            if (val.includes('professional title')) {
-                $("#edu_div_title").css("display", "");
-            }
-            if (val.includes('field of study')) {
-                $("#edu_div_field").css("display", "");
-            }
-            if (val.includes('mode of study')) {
-                $("#edu_div_mode").css("display", "");
-            }
-            if (val.includes('studying abroad')) {
-                $("#edu_div_abroad").css("display", "");
-            }
-            if (val.includes('still studying')) {
-                $("#edu_div_still").css("display", "");
-            }
-        });
 
     $("#edu_add_row").click(function() {
-        document.getElementById("edu_tableOfRules").style.display = "table";
+        document.getElementById("edu_tableOfFacts").style.display = "table";
         var selectedTitle = $('#edu_titleSelector').val();
         var selectedField = $('#edu_fieldSelector').val();
         var selectedMode = $('#edu_modeSelector').val();
         var selectedAbroad = $('#edu_abroadSelector').val();
         var selectedIsStudent = $('#edu_isStudentSelector').val();
-        var selectedScore = $('#edu_score').val();
+
         $(".selectpicker").val('default');
         $(".selectpicker").selectpicker("refresh");
 
 
         $.ajax({
             type: "POST",
-            url: "/eJobFinder/rule/education",
+            url: "/eJobFinder/fact/education",
             data: jQuery.param({
                 professionalTitle: selectedTitle,
                 fieldOfStudy: selectedField,
                 modeOfStudy: selectedMode,
                 isAbroadStudent: selectedAbroad,
-                isStudentParam: selectedIsStudent,
-                score: selectedScore
+                isStudentParam: selectedIsStudent
             }),
             timeout: 600000,
             success: function(data) {
@@ -474,20 +375,17 @@ $(document).ready(function() {
                 var rowID = "row" + "_edu_" + number;
                 newRow.setAttribute("id", rowID);
                 newRow.innerHTML = ' <td class="index">' + number + '</td>' +
-                    ' <td>' + "Candidate is " + selectedTitle + '</td>' +
                     ' <td>' + selectedTitle + '</td>' +
                     ' <td>' + selectedField + '</td>' +
                     ' <td>' + selectedMode + '</td>' +
                     ' <td>' + selectedAbroad + '</td>' +
                     ' <td>' + selectedIsStudent + '</td>' +
-                    ' <td>' + selectedScore + '</td>' +
-
                     ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
 
-                $("#edu_tableOfRules tbody").append(newRow);
+                $("#edu_tableOfFacts tbody").append(newRow);
             },
             error: function(e) {
                 console.log('error while post');
@@ -498,26 +396,25 @@ $(document).ready(function() {
     });
 
     $("#prev_add_row").click(function() {
-        document.getElementById("prev_tableOfRules").style.display = "table";
+        document.getElementById("prev_tableOfFacts").style.display = "table";
         var selectedTitle = $('#prev_titleSelector').val();
         var selectedYears = $('#prev_yearSelector').val();
         var selectedYearsHelper = $('#prev_yearSelectorHelper').val();
         var selectedIsStillWorkingParam = $('#prev_stillWorking').val();
         var selectedHaveProfessionalExperienceParam = $('#prev_proExp').val();
-        var selectedScore = $('#prev_score').val();
+
         $(".selectpicker").val('default');
         $(".selectpicker").selectpicker("refresh");
 
         $.ajax({
             type: "POST",
-            url: "/eJobFinder/rule/previousEmployerRule",
+            url: "/eJobFinder/fact/previousEmployerRule",
             data: jQuery.param({
                 name: selectedTitle,
                 year: selectedYears,
                 operator: selectedYearsHelper,
                 isStillWorkingParam: selectedIsStillWorkingParam,
-                haveProfessionalExperienceParam: selectedHaveProfessionalExperienceParam,
-                score: selectedScore
+                haveProfessionalExperienceParam: selectedHaveProfessionalExperienceParam
             }),
             timeout: 600000,
             success: function(data) {
@@ -527,18 +424,16 @@ $(document).ready(function() {
                 newRow.setAttribute("id", rowID);
 
                 newRow.innerHTML = ' <td class="index">' + number + '</td>' +
-                    ' <td>' + "Candidat was " + selectedTitle + " for " + selectedYearsHelper + " " + selectedYears + '</td>' +
+                    ' <td>' + "I was " + selectedTitle + " for " +" " + selectedYears + ' years</td>' +
                     ' <td>' + selectedTitle + '</td>' +
                     ' <td>' + selectedYears + '</td>' +
                     ' <td>' + selectedIsStillWorkingParam + '</td>' +
                     ' <td>' + selectedHaveProfessionalExperienceParam + '</td>' +
-
-                    ' <td>' + selectedScore + '</td>' +
                     ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
-                $("#prev_tableOfRules tbody").append(newRow);
+                $("#prev_tableOfFacts tbody").append(newRow);
             },
             error: function(e) {
                 console.log('error while post');
@@ -549,20 +444,19 @@ $(document).ready(function() {
     });
 
     $("#salary_add_row").click(function() {
-        document.getElementById("salary_tableOfRules").style.display = "table";
+        document.getElementById("salary_tableOfFacts").style.display = "table";
         var selectedAmountDown = $('#salary_amountDownSelector').val();
         var selectedAmountUp = $('#salary_amountUpSelector').val();
-        var selectedScore = $('#salary_score').val();
+
         $(".selectpicker").val('default');
         $(".selectpicker").selectpicker("refresh");
 
         $.ajax({
             type: "POST",
-            url: "/eJobFinder/rule/salary",
+            url: "/eJobFinder/fact/salary",
             data: jQuery.param({
                 amountDown: selectedAmountDown,
-                amountUp: selectedAmountUp,
-                score: selectedScore
+                amountUp: selectedAmountUp
             }),
             timeout: 600000,
             success: function(data) {
@@ -571,15 +465,14 @@ $(document).ready(function() {
                 var rowID = "row" + "_salary_" + number;
                 newRow.setAttribute("id", rowID);
                 newRow.innerHTML = ' <td class="index">' + number + '</td>' +
-                    ' <td>' + "Minimum salary" +  " " + selectedAmountDown + " and maxiumum salary" +" " + selectedAmountUp + '</td>' +
+                    ' <td>' + "I want to earn minimum " + selectedAmountDown + "</td>" +
                     ' <td>' + selectedAmountDown + '</td>' +
                     ' <td>' + selectedAmountUp + '</td>' +
-                    ' <td>' + selectedScore + '</td>' +
                     ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
-                $("#salary_tableOfRules tbody").append(newRow);
+                $("#salary_tableOfFacts tbody").append(newRow);
             },
             error: function(e) {
                 console.log('error while post');
@@ -593,7 +486,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: "POST",
-            url: "/eJobFinder/rule/finalize",
+            url: "/eJobFinder/fact/finalize",
             data: jQuery.param({
 
             }),
@@ -614,7 +507,7 @@ $(document).ready(function() {
 function deleteRow(rowName) {
     $.ajax({
         type: "POST",
-        url: "/eJobFinder/rule/delete",
+        url: "/eJobFinder/fact/delete",
         data: jQuery.param({
             name: rowName
         }),

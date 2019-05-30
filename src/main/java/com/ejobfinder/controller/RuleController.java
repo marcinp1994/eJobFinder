@@ -4,12 +4,15 @@ import com.ejobfinder.drools.Condition.Operator;
 import com.ejobfinder.drools.Rule;
 import com.ejobfinder.drools.utils.DroolsUtility;
 import com.ejobfinder.model.Candidate;
+import com.ejobfinder.model.JobOffer;
 import com.ejobfinder.model.facts.TechnologyFact;
 import com.ejobfinder.model.rules.*;
+import com.ejobfinder.service.JobOfferService;
 import com.ejobfinder.service.RulesService;
 import com.ejobfinder.utils.BooleanMapper;
 import com.ejobfinder.utils.LanguageMapper;
 import com.ejobfinder.utils.OperatorConverter;
+import org.h2.util.StringUtils;
 import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,6 +41,8 @@ public class RuleController {
     @Autowired
     private RulesService rulesService;
 
+    @Autowired
+    private JobOfferService jobOfferService;
     @RequestMapping("/employer/jobOfferInventory/perfectEmployeeRules/{jobId}")
     public String rule(Model model, @PathVariable("jobId") String jobId, @AuthenticationPrincipal User activeUser) throws Exception {
         TechnologyRule technologyRule1 = new TechnologyRule("Java", Operator.GREATER_THAN_OR_EQUAL_TO, 2.0, 3, Operator.GREATER_THAN_OR_EQUAL_TO, 2);
@@ -61,7 +66,6 @@ public class RuleController {
         TechnologyFact technologyFact2 = new TechnologyFact("Spring", 1, 5);
         TechnologyFact technologyFact3 = new TechnologyFact("SQL", 1, 5);
         List<TechnologyFact> technologyFactList = Arrays.asList(technologyFact, technologyFact2, technologyFact3);
-        candidate.setTechnologyFacts(technologyFactList);
 
         System.out.println("Technology name = '" + technologyFact.getName() + "' and level = '" + technologyFact.getLevel() + "' and years = '" + technologyFact.getYear() + "'.");
         System.out.println("Technology name = '" + technologyFact2.getName() + "' and level = '" + technologyFact2.getLevel() + "' and years = '" + technologyFact2.getYear() + "'.");
@@ -131,14 +135,13 @@ public class RuleController {
 
     @RequestMapping(value = "rule/salary", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> addSalaryeRule(@RequestParam String amountDown, @RequestParam String amountDownOperator,
-                                                 @RequestParam String amountUp, @RequestParam String amountUpOperator,
+    public ResponseEntity<String> addSalaryeRule(@RequestParam String amountDown, @RequestParam String amountUp,
                                                  @RequestParam String score) {
         int scr = Integer.valueOf(score);
         double amountDownDouble = Double.valueOf(amountDown);
         double amountUpDouble = Double.valueOf(amountUp);
-        SalaryRule rule = new SalaryRule(amountDownDouble, OperatorConverter.convertTextOperatorToSymbolicOperator(amountDownOperator),
-                amountUpDouble, OperatorConverter.convertTextOperatorToSymbolicOperator(amountUpOperator), scr);
+        SalaryRule rule = new SalaryRule(amountDownDouble, Operator.EQUAL_TO,
+                amountUpDouble, Operator.EQUAL_TO, scr);
         Integer newSize = rulesService.addSalaryRule(rule).size();
         return new ResponseEntity<String>("Salary ule created with new size=" + newSize, HttpStatus.OK);
     }
@@ -179,11 +182,27 @@ public class RuleController {
     @ResponseBody
     public ResponseEntity<String> addPreviousEmployerRule(@RequestParam String name, @RequestParam String year, @RequestParam String operator, @RequestParam String isStillWorkingParam, @RequestParam String haveProfessionalExperienceParam, @RequestParam String score) {
         int scr = Integer.valueOf(score);
-        Operator op = OperatorConverter.convertTextOperatorToSymbolicOperator(operator);
-        double yearDouble = Double.valueOf(year);
+
         Boolean stillWorking = BooleanMapper.getBoolean(isStillWorkingParam);
         Boolean haveProfessionalExperienc = BooleanMapper.getBoolean(haveProfessionalExperienceParam);
-        PreviousEmployerRule rule = new PreviousEmployerRule(name, op, yearDouble, stillWorking, haveProfessionalExperienc, scr);
+
+        PreviousEmployerRule rule = new PreviousEmployerRule();
+
+        rule.setScore(scr);
+        rule.setStillWorking(stillWorking);
+        rule.setHaveProfessionalExperience(haveProfessionalExperienc);
+
+        if (!StringUtils.isNullOrEmpty(year)) {
+            Operator op = OperatorConverter.convertTextOperatorToSymbolicOperator(operator);
+            double yearDouble = Double.valueOf(year);
+
+            rule.setYearOperator(op);
+            rule.setYear(yearDouble);
+        }
+        if (!StringUtils.isNullOrEmpty(name)) {
+            rule.setJobTitle(name);
+        }
+
         Integer newSize = rulesService.addPreviousEmployerRule(rule).size();
         return new ResponseEntity<String>("PreviousEmployerRule created with new size=" + newSize, HttpStatus.OK);
     }
@@ -195,7 +214,24 @@ public class RuleController {
         int scr = Integer.valueOf(score);
         Boolean studyAbroad = BooleanMapper.getBoolean(isAbroadStudent);
         Boolean isStudent = BooleanMapper.getBoolean(isStudentParam);
-        EducationRule rule = new EducationRule(professionalTitle, fieldOfStudy, modeOfStudy, studyAbroad, isStudent, scr);
+        EducationRule rule = new EducationRule();
+
+        rule.setScore(scr);
+        rule.setStudyAbroad(studyAbroad);
+        rule.setStudent(isStudent);
+
+        if (!StringUtils.isNullOrEmpty(professionalTitle)) {
+            rule.setProfessionalTitle(professionalTitle);
+        }
+
+        if (!StringUtils.isNullOrEmpty(fieldOfStudy)) {
+            rule.setFieldOfStudy(fieldOfStudy);
+        }
+
+        if (!StringUtils.isNullOrEmpty(modeOfStudy)) {
+            rule.setModeOfStudy(modeOfStudy);
+        }
+
         Integer newSize = rulesService.addEducationRule(rule).size();
         return new ResponseEntity<String>("Education rule created with new size=" + newSize, HttpStatus.OK);
     }
@@ -218,7 +254,11 @@ public class RuleController {
         List<Rule> perfectEmployeeRuleList = Stream.of(technologyRules, skillRules, workingHoursRules, educationRules, languageRules, periodOfNoticeRules, LocationRules, previousEmployerRules, salaryRules, toolRules, typeOfContractRules)
                 .flatMap(Collection::stream).collect(Collectors.toList());
 
-        droolsUtility.createRules(perfectEmployeeRuleList, "rules/template/PerfectEmployeeRules.drl", perfectEmployeeRules.getJobId());
+        droolsUtility.createRules(perfectEmployeeRuleList, "rules/template/this.drl", perfectEmployeeRules.getJobId());
+
+        JobOffer offer = jobOfferService.getJobOfferById(perfectEmployeeRules.getJobId());
+        offer.setContainsRules(Boolean.TRUE);
+        jobOfferService.editJobOffer(offer);
         return new ResponseEntity<String>("rule finalize", HttpStatus.OK);
     }
 

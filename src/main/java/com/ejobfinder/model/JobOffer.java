@@ -37,6 +37,7 @@ public class JobOffer {
     private String preferredSkills;
     @NotNull
     private String benefits;
+    private Boolean containsRules = Boolean.FALSE;
     private String additionalInfo;
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -186,6 +187,14 @@ public class JobOffer {
 
     public Location getLocation() {
         return location;
+    }
+
+    public Boolean getContainsRules() {
+        return containsRules;
+    }
+
+    public void setContainsRules(Boolean containsRules) {
+        this.containsRules = containsRules;
     }
 
     public void setLocation(Location location) {

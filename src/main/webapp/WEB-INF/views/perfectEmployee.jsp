@@ -7,7 +7,7 @@
 <br/>
 <div class="container-wrapper">
     <div class="container">
-        <div class="page-header">
+        <div class="page-header"></br>
             <h1>Add a perfect employee profile</h1>
 
             <p class="lead">Fill the below information:</p>
@@ -27,13 +27,13 @@
 
                         <div class="input-group mb-2 mr-sm-2">
                             <select id="technologySelector" class="selectpicker" data-style="btn-light" data-live-search="true">
-                                <option hidden>Technology</option>
+                              <option value="" hidden>Technology</option>
                                 <c:forEach items="${technologies}" var="technology">
                                     <option>${technology}</option>
                                 </c:forEach>
                             </select>
                         </div>
-                        <div class="input-group mb-2 mr-sm-2">
+                        </br><div class="input-group mb-2 mr-sm-2">
 
                             <h4> at level&nbsp</h4>
                             <select id="experienceSelectorHelper" class="selectpicker" data-style="btn-light">
@@ -44,7 +44,7 @@
                                 <option>lower or equal to</option>
                             </select>
                             <select id="experienceSelector" class="selectpicker" data-style="btn-light">
-                                <option hidden>Level</option>
+                              <option value="" hidden>Level</option>
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
@@ -54,7 +54,7 @@
                             </select>
                         </div>
 
-                        <div class="input-group mb-2 mr-sm-2">
+                        </br><div class="input-group mb-2 mr-sm-2">
                             <h4> with years of experience&nbsp</h4>
                             <select id="yearSelectorHelper" class="selectpicker" data-style="btn-light">
                                 <option>at least</option>
@@ -64,7 +64,7 @@
                                 <option>lower or equal to</option>
                             </select>
                             <select id="yearSelector" class="selectpicker" data-style="btn-light">
-                                <option hidden>Years of work</option>
+                              <option value="" hidden>Years of work</option>
                                 <option>0.5</option>
                                 <option>1</option>
                                 <option>1.5</option>
@@ -132,13 +132,13 @@
                         <div class="input-group mb-2 mr-sm-2">
 
                             <select id="skillSelector" class="selectpicker" data-style="btn-light" data-live-search="true">
-                                <option hidden>Skill</option>
+                              <option value="" hidden>Skill</option>
                                 <c:forEach items="${skills}" var="skill">
                                     <option>${skill}</option>
                                 </c:forEach>
                             </select>
                         </div>
-                        <div class="input-group mb-2 mr-sm-2">
+                        </br><div class="input-group mb-2 mr-sm-2">
 
                             <h4> at level&nbsp</h4>
                             <select id="skill_experienceSelectorHelper" class="selectpicker" data-style="btn-light">
@@ -149,7 +149,7 @@
                                 <option>lower or equal to</option>
                             </select>
                             <select id="skill_experienceSelector" class="selectpicker" data-style="btn-light">
-                                <option hidden>Level</option>
+                              <option value="" hidden>Level</option>
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
@@ -202,13 +202,13 @@
                         <div class="input-group mb-2 mr-sm-2">
 
                             <select id="tool_nameSelector" class="selectpicker" data-style="btn-light" data-live-search="true">
-                                <option hidden>Tool</option>
+                              <option value="" hidden>Tool</option>
                                 <c:forEach items="${tools}" var="tool">
                                     <option>${tool}</option>
                                 </c:forEach>
                             </select>
                         </div>
-                        <div class="input-group mb-2 mr-sm-2">
+                        </br><div class="input-group mb-2 mr-sm-2">
 
                             <h4> at level&nbsp</h4>
                             <select id="tool_experienceSelectorHelper" class="selectpicker" data-style="btn-light">
@@ -219,7 +219,7 @@
                                 <option>lower or equal to</option>
                             </select>
                             <select id="tool_experienceSelector" class="selectpicker" data-style="btn-light">
-                                <option hidden>Level</option>
+                              <option value="" hidden>Level</option>
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
@@ -229,7 +229,7 @@
                             </select>
                         </div>
 
-                        <div class="input-group mb-2 mr-sm-2">
+                        </br><div class="input-group mb-2 mr-sm-2">
                             <h4> with years of experience&nbsp</h4>
                             <select id="tool_yearSelectorHelper" class="selectpicker" data-style="btn-light">
                                 <option>at least</option>
@@ -239,7 +239,7 @@
                                 <option>lower or equal to</option>
                             </select>
                             <select id="tool_yearSelector" class="selectpicker" data-style="btn-light">
-                                <option hidden>Years of work</option>
+                              <option value="" hidden>Years of work</option>
                                 <option>0.5</option>
                                 <option>1</option>
                                 <option>1.5</option>
@@ -307,13 +307,13 @@
                         <div class="input-group mb-2 mr-sm-2">
 
                             <select id="langSelector" class="selectpicker" data-style="btn-light" data-live-search="true">
-                                <option hidden>language</option>
+                              <option value="" hidden>language</option>
                                 <c:forEach items="${languages}" var="language">
                                     <option>${language}</option>
                                 </c:forEach>
                             </select>
                         </div>
-                        <div class="input-group mb-2 mr-sm-2">
+                        </br><div class="input-group mb-2 mr-sm-2">
 
                             <h4> at level&nbsp</h4>
                             <select id="lang_experienceSelectorHelper" class="selectpicker" data-style="btn-light">
@@ -324,7 +324,7 @@
                                 <option>lower or equal to</option>
                             </select>
                             <select id="lang_experienceSelector" class="selectpicker" data-style="btn-light">
-                                <option hidden>level</option>
+                              <option value="" hidden>level</option>
                                 <c:forEach items="${languages_levels}" var="language_lvl">
                                     <option>${language_lvl}</option>
                                 </c:forEach>
@@ -374,7 +374,7 @@
                         <div class="input-group mb-2 mr-sm-2">
 
                             <select id="locSelector" class="selectpicker" data-style="btn-light" data-live-search="true">
-                                <option hidden>location</option>
+                              <option value="" hidden>location</option>
                                 <c:forEach items="${locations}" var="loc">
                                     <option>${loc}</option>
                                 </c:forEach>
@@ -424,7 +424,7 @@
                                 <option>equal</option>
                             </select>
                             <select id="workHSelector" class="selectpicker" data-style="btn-light" data-live-search="true">
-                                <option hidden>work hours</option>
+                              <option value="" hidden>work hours</option>
                                 <c:forEach items="${workingHours}" var="wH">
                                     <option>${wH}</option>
                                 </c:forEach>
@@ -473,7 +473,7 @@
                                 <option>equal</option>
                             </select>
                             <select id="contrSelector" class="selectpicker" data-style="btn-light" data-live-search="true">
-                                <option hidden>type of contract</option>
+                              <option value="" hidden>type of contract</option>
                                 <c:forEach items="${typeOfContracts}" var="val">
                                     <option>${val}</option>
                                 </c:forEach>
@@ -522,7 +522,7 @@
                                 <option>equal</option>
                             </select>
                             <select id="periodSelector" class="selectpicker" data-style="btn-light" data-live-search="true">
-                                <option hidden>period</option>
+                              <option value="" hidden>period</option>
                                 <c:forEach items="${periods}" var="val">
                                     <option>${val}</option>
                                 </c:forEach>
@@ -547,11 +547,10 @@
                             <thead>
                                 <tr>
                                     <th style="width: 5%;" scope="col" class="text-center">#</th>
-                                    <th style="width: 60%;" scope="col">Condition</th>
+                                    <th style="width: 70%;" scope="col">Condition</th>
                                     <th style="width: 10%;" scope="col">Period of Notice</th>
                                     <th style="width: 10%;" scope="col">Importance</th>
-                                    <th style="width: 10%;" scope="col">Importance</th>
-                                    <th style="width: 5%;" scope="col">#</th>
+                                   <th style="width: 5%;" scope="col">#</th>
                                 </tr>
                             </thead>
                             <tbody> </tbody>
@@ -565,35 +564,44 @@
                 <div class="panel panel-warning">
                     <div class="panel-heading">Education</div>
                     <div class="panel-body" style="background-color:EFEFEF;">
-
-                        <div class="input-group mb-2 mr-sm-2">
+    <div class="input-group mb-2 mr-sm-2">
+     <h4> Choose parmeters:  &nbsp</h4>
+     <select class="selectpicker" id="edu_parameterChooser"multiple>
+  <option>professional title</option>
+  <option>field of study</option>
+  <option>mode of study</option>
+  <option>studying abroad</option>
+    <option>still studying</option>
+</select>
+       </div></br>
+                        <div class="input-group mb-2 mr-sm-2" id="edu_div_title">
                             <h4>have</h4>
                             <select id="edu_titleSelector" class="selectpicker" data-style="btn-light" data-live-search="true">
-                                <option hidden>professional title</option>
+                                <option value="" hidden>professional title</option>
                                 <c:forEach items="${eduTitles}" var="val">
                                     <option>${val}</option>
                                 </c:forEach>
                             </select>
                         </div>
-                        <div class="input-group mb-2 mr-sm-2">
-                            <h4>&nbsp in field &nbsp</h4>
+                        </br><div class="input-group mb-2 mr-sm-2" id="edu_div_field">
+                            <h4>in field &nbsp</h4>
                             <select id="edu_fieldSelector" class="selectpicker" data-style="btn-light" data-live-search="true">
-                                <option hidden>field of study</option>
+                              <option value="" hidden>field of study</option>
                                 <c:forEach items="${eduFields}" var="val">
                                     <option>${val}</option>
                                 </c:forEach>
                             </select>
                         </div>
-                        <div class="input-group mb-2 mr-sm-2">
-                            <h4>&nbsp and mode &nbsp</h4>
+                        </br><div class="input-group mb-2 mr-sm-2" id="edu_div_mode">
+                            <h4>and mode &nbsp</h4>
                             <select id="edu_modeSelector" class="selectpicker" data-style="btn-light" data-live-search="true">
-                                <option hidden>mode of study</option>
+                              <option value="" hidden>mode of study</option>
                                 <c:forEach items="${eduModes}" var="val">
                                     <option>${val}</option>
                                 </c:forEach>
                             </select>
                         </div>
-                        <div class="input-group mb-2 mr-sm-2">
+                        </br><div class="input-group mb-2 mr-sm-2" id="edu_div_abroad">
 
                             <h4> have studied abroad &nbsp</h4>
                             <select id="edu_abroadSelector" class="selectpicker" data-style="btn-light">
@@ -604,7 +612,7 @@
                             </select>
 
                         </div>
-                        <div class="input-group mb-2 mr-sm-2">
+                        </br><div class="input-group mb-2 mr-sm-2" id="edu_div_still">
 
                             <h4> can be still a student &nbsp</h4>
                             <select id="edu_isStudentSelector" class="selectpicker" data-style="btn-light">
@@ -658,17 +666,25 @@
                 <div class="panel panel-danger">
                     <div class="panel-heading">Previous employer</div>
                     <div class="panel-body" style="background-color:EFEFEF;">
-
-                        <div class="input-group mb-2 mr-sm-2">
+    <div class="input-group mb-2 mr-sm-2">
+     <h4> Choose parmeters:  &nbsp</h4>
+     <select class="selectpicker" id="prev_parameterChooser"multiple>
+  <option>professional title</option>
+  <option>years of work</option>
+  <option>professional experience</option>
+  <option> still working</option>
+</select>
+       </div>
+                      </br>  <div class="input-group mb-2 mr-sm-2" id="prev_div_title">
                             <h4>Was</h4>
                             <select id="prev_titleSelector" class="selectpicker" data-style="btn-light" data-live-search="true">
-                                <option hidden>professional title</option>
+                              <option value="" hidden>professional title</option>
                                 <c:forEach items="${jobTitles}" var="val">
                                     <option>${val}</option>
                                 </c:forEach>
                             </select>
                         </div>
-                        <div class="input-group mb-2 mr-sm-2">
+                        </br><div class="input-group mb-2 mr-sm-2"  id="prev_div_year">
                             <h4> for  &nbsp</h4>
                             <select id="prev_yearSelectorHelper" class="selectpicker" data-style="btn-light">
                                 <option>at least</option>
@@ -678,7 +694,7 @@
                                 <option>lower or equal to</option>
                             </select>
                             <select id="prev_yearSelector" class="selectpicker" data-style="btn-light">
-                                <option hidden>Years of work</option>
+                              <option value="" hidden>Years of work</option>
                                 <option>0.5</option>
                                 <option>1</option>
                                 <option>1.5</option>
@@ -703,7 +719,7 @@
                             </select>
                         </div>
 
-                        <div class="input-group mb-2 mr-sm-2">
+                        </br><div class="input-group mb-2 mr-sm-2" id="prev_div_exp">
 
                             <h4> and have professional experience &nbsp</h4>
                             <select id="prev_proExp" class="selectpicker" data-style="btn-light">
@@ -713,10 +729,10 @@
                             </select>
 
                         </div>
-                        <div class="input-group mb-2 mr-sm-2">
-
+                        </br>
+                        <div class="input-group mb-2 mr-sm-2" id="prev_div_still">
                             <h4>  and can be still a worker &nbsp</h4>
-                            <select id="prev_stillWorking" class="selectpicker" data-style="btn-light">
+                            <select id="prev_stillWorking" class="selectpicker" data-style="btn-light" >
                                 <option>NEVERMIND</option>
                                 <option>YES</option>
                                 <option>NO</option>
@@ -766,18 +782,11 @@
                 <div class="panel panel-info">
                     <div class="panel-heading">Have salary expectations</div>
                     <div class="panel-body" style="background-color:EFEFEF;">
-
+<h4>Select salary range</h4>
                         <div class="input-group mb-2 mr-sm-2">
                             <h4> Minimum  &nbsp</h4>
-                            <select id="salary_amountDownSelectorHelper" class="selectpicker" data-style="btn-light">
-                                <option>at least</option>
-                                <option>equal</option>
-                                <option>greater than</option>
-                                <option>lower than</option>
-                                <option>lower or equal to</option>
-                            </select>
                             <select id="salary_amountDownSelector" class="selectpicker" data-style="btn-light">
-                                <option hidden>Amount</option>
+                              <option value="" hidden>Amount</option>
                                 <option>3000</option>
                                 <option>3500</option>
                                 <option>4000</option>
@@ -810,17 +819,10 @@
                             </select>
                         </div>
 
-                        <div class="input-group mb-2 mr-sm-2">
+                        </br><div class="input-group mb-2 mr-sm-2">
                             <h4> Maxiumum  &nbsp</h4>
-                            <select id="salary_amountUpSelectorHelper" class="selectpicker" data-style="btn-light">
-                                <option>at least</option>
-                                <option>equal</option>
-                                <option>greater than</option>
-                                <option>lower than</option>
-                                <option>lower or equal to</option>
-                            </select>
-                            <select id="salary_amountUpSelector" class="selectpicker" data-style="btn-light">
-                                <option hidden>Amount</option>
+                          <select id="salary_amountUpSelector" class="selectpicker" data-style="btn-light">
+                              <option value="" hidden>Amount</option>
                                 <option>3000</option>
                                 <option>3500</option>
                                 <option>4000</option>
