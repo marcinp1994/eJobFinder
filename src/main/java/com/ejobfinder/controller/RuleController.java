@@ -43,6 +43,8 @@ public class RuleController {
 
     @Autowired
     private JobOfferService jobOfferService;
+
+
     @RequestMapping("/employer/jobOfferInventory/perfectEmployeeRules/{jobId}")
     public String rule(Model model, @PathVariable("jobId") String jobId, @AuthenticationPrincipal User activeUser) throws Exception {
         TechnologyRule technologyRule1 = new TechnologyRule("Java", Operator.GREATER_THAN_OR_EQUAL_TO, 2.0, 3, Operator.GREATER_THAN_OR_EQUAL_TO, 2);
@@ -238,7 +240,8 @@ public class RuleController {
 
     @RequestMapping(value = "rule/finalize", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> finalizeAndCreateFile() throws Exception {
+    public ResponseEntity<String> finalizeAndCreateFile(@RequestParam String threshold) throws Exception {
+        Integer thresholdPercentage = Integer.valueOf(threshold);
         PerfectEmployeeRules perfectEmployeeRules = this.perfectEmployeeRules;
         List<Rule> technologyRules = rulesService.createRulesForTechnology(perfectEmployeeRules.getTechnologyRules());
         List<Rule> skillRules = rulesService.createRulesForSkills(perfectEmployeeRules.getSkillRules());
@@ -254,17 +257,18 @@ public class RuleController {
         List<Rule> perfectEmployeeRuleList = Stream.of(technologyRules, skillRules, workingHoursRules, educationRules, languageRules, periodOfNoticeRules, LocationRules, previousEmployerRules, salaryRules, toolRules, typeOfContractRules)
                 .flatMap(Collection::stream).collect(Collectors.toList());
 
-        droolsUtility.createRules(perfectEmployeeRuleList, "rules/template/this.drl", perfectEmployeeRules.getJobId());
+        droolsUtility.createRules(perfectEmployeeRuleList, "rules/template/PerfectEmployeeRules.drl", perfectEmployeeRules.getJobId());
 
         JobOffer offer = jobOfferService.getJobOfferById(perfectEmployeeRules.getJobId());
         offer.setContainsRules(Boolean.TRUE);
+        offer.setThresholdPercentagePoints(thresholdPercentage);
         jobOfferService.editJobOffer(offer);
         return new ResponseEntity<String>("rule finalize", HttpStatus.OK);
     }
 
     @RequestMapping(value = "rule/delete", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> finalizeAndCreateFile(@RequestParam String name) {
+    public ResponseEntity<String> deleteRule(@RequestParam String name) {
         rulesService.deleteRule(name);
         return new ResponseEntity<String>("rule deleted", HttpStatus.OK);
     }
