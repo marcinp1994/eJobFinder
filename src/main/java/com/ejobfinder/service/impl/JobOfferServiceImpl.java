@@ -40,8 +40,8 @@ public class JobOfferServiceImpl implements JobOfferService {
     }
 
     @Override
-    public List<JobOffer> getJobOffersByCustomerName(String name) {
-        return jobOfferDao.getJobOffersByCustomerName(name);
+    public List<JobOffer> getJobOffersByEmployerName(String name) {
+        return jobOfferDao.getJobOffersByEmployerName(name);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class JobOfferServiceImpl implements JobOfferService {
     }
 
     @Override
-    public List<JobOffer> getJobOffersByCustomerId(int id) {
-        return jobOfferDao.getJobOffersByCustomerId(id);
+    public List<JobOffer> getJobOffersByEmployerId(int id) {
+        return jobOfferDao.getJobOffersByEmployerId(id);
     }
 }

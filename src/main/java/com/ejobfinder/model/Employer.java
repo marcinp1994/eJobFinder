@@ -15,16 +15,15 @@ public class Employer implements Serializable {
 
     @Id
     @GeneratedValue
-    private int customerId;
-    private String customerType;
+    private int employerId;
     private String companyName;
     @NotEmpty(message = "The customer name must not be null.")
     private String name;
     @NotEmpty(message = "The customer email must not be null.")
     private String lastName;
     @NotEmpty(message = "The customer email must not be null.")
-    private String customerEmail;
-    private String customerPhone;
+    private String employerEmail;
+    private String employerPhone;
 
     @NotEmpty(message = "The customer username must not be null.")
     private String username;
@@ -32,35 +31,26 @@ public class Employer implements Serializable {
     @NotEmpty(message = "The customer password must not be null.")
     private String password;
 
-    @OneToMany(mappedBy = "Customer", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "employer", fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
-    List<JobOffer> jobOffers;
+    private List<JobOffer> jobOffers;
 
     private boolean enabled;
 
-
-    public int getCustomerId() {
-        return customerId;
+    public String getEmployerEmail() {
+        return employerEmail;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setEmployerEmail(String employerEmail) {
+        this.employerEmail = employerEmail;
     }
 
-    public String getCustomerEmail() {
-        return customerEmail;
+    public String getEmployerPhone() {
+        return employerPhone;
     }
 
-    public void setCustomerEmail(String customerEmail) {
-        this.customerEmail = customerEmail;
-    }
-
-    public String getCustomerPhone() {
-        return customerPhone;
-    }
-
-    public void setCustomerPhone(String customerPhone) {
-        this.customerPhone = customerPhone;
+    public void setEmployerPhone(String employerPhone) {
+        this.employerPhone = employerPhone;
     }
 
     public String getUsername() {
@@ -119,12 +109,11 @@ public class Employer implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getCustomerType() {
-        return customerType;
+    public int getEmployerId() {
+        return employerId;
     }
 
-    public void setCustomerType(String customerType) {
-        this.customerType = customerType;
+    public void setEmployerId(int employerId) {
+        this.employerId = employerId;
     }
-
 }

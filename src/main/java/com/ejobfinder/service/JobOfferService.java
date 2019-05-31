@@ -16,9 +16,9 @@ public interface JobOfferService {
 
     void deleteJobOffer(String jobId);
 
-    List<JobOffer> getJobOffersByCustomerName(String name);
+    List<JobOffer> getJobOffersByEmployerName(String name);
 
     List<JobOffer> getJobOffersByCategory(String category);
 
-    List<JobOffer> getJobOffersByCustomerId(int id);
+    List<JobOffer> getJobOffersByEmployerId(int id);
 }

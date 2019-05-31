@@ -1,10 +1,10 @@
 package com.ejobfinder.controller;
 
-import com.ejobfinder.model.Customer;
+import com.ejobfinder.model.Employer;
 import com.ejobfinder.model.JobOffer;
 import com.ejobfinder.model.Location;
 import com.ejobfinder.model.rules.PerfectEmployeeRules;
-import com.ejobfinder.service.CustomerService;
+import com.ejobfinder.service.EmployerService;
 import com.ejobfinder.service.JobOfferService;
 import com.ejobfinder.service.LocationService;
 import com.ejobfinder.utils.consts.*;
@@ -35,7 +35,7 @@ public class EmployerController {
     private Path path;
 
     @Autowired
-    private CustomerService customerService;
+    private EmployerService employerService;
 
     @Autowired
     private JobOfferService jobOfferService;
@@ -48,7 +48,7 @@ public class EmployerController {
 
     @RequestMapping("/employer/jobOfferInventory")
     public String employerPageInventory(@AuthenticationPrincipal User activeUser, Model model) {
-        List<JobOffer> jobOffers = jobOfferService.getJobOffersByCustomerName(activeUser.getUsername());
+        List<JobOffer> jobOffers = jobOfferService.getJobOffersByEmployerName(activeUser.getUsername());
         model.addAttribute("jobOffers", jobOffers);
         return "jobOfferInventory";
     }
@@ -63,8 +63,8 @@ public class EmployerController {
     public String addJobOffer(@AuthenticationPrincipal User activeUser, Model model) {
         JobOffer jobOffer = new JobOffer();
         Location location = new Location();
-        Customer customer = customerService.getCustomerByUsername(activeUser.getUsername());
-        jobOffer.setCustomer(customer);
+        Employer employer = employerService.getEmployerByUsername(activeUser.getUsername());
+        jobOffer.setEmployer(employer);
         model.addAttribute("jobOffer", jobOffer);
         model.addAttribute("location", location);
 
@@ -74,8 +74,8 @@ public class EmployerController {
     @RequestMapping(value = "/employer/jobOfferInventory/addJobOffer", method = RequestMethod.POST)
     public String addJobOfferPost(@Valid @ModelAttribute("jobOffer") JobOffer jobOffer, BindingResult result,
                                   @AuthenticationPrincipal User activeUser, HttpServletRequest request, Model model) {
-        Customer customer = customerService.getCustomerByUsername(activeUser.getUsername());
-        jobOffer.setCustomer(customer);
+        Employer employer = employerService.getEmployerByUsername(activeUser.getUsername());
+        jobOffer.setEmployer(employer);
         if (jobOffer.getLocation() != null && jobOffer.getLocation().getCity() != null) {
             Location location = locationService.getLocationByCity(jobOffer.getLocation().getCity());
             if (location != null) {
@@ -153,9 +153,9 @@ public class EmployerController {
             }
         }
 
-        if (jobOffer.getCustomer() == null) {
-            Customer customer = customerService.getCustomerByUsername(activeUser.getUsername());
-            jobOffer.setCustomer(customer);
+        if (jobOffer.getEmployer() == null) {
+            Employer employer = employerService.getEmployerByUsername(activeUser.getUsername());
+            jobOffer.setEmployer(employer);
         }
 
         jobOfferService.editJobOffer(jobOffer);

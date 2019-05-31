@@ -1,6 +1,5 @@
 package com.ejobfinder.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +23,6 @@ public class JobOffer {
     private String shortDescription;
     @NotNull
     private String description;
-    private String salary;
     @NotNull
     @NotEmpty(message = "Category must not be empty!")
     private String category;
@@ -48,15 +46,13 @@ public class JobOffer {
     private MultipartFile companyLogo;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn()
-    private Customer Customer;
+    private Employer employer;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn()
+    private Candidate candidate;
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn()
     private Location location;
-    @OneToOne
-    @JoinColumn(name = "perfectEmployeeId")
-    @JsonIgnore
-    private PerfectEmployee perfectEmployee;
-
 
     public String getPosition() {
         return position;
@@ -88,14 +84,6 @@ public class JobOffer {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getSalary() {
-        return salary;
-    }
-
-    public void setSalary(String salary) {
-        this.salary = salary;
     }
 
     public String getJobId() {
@@ -202,12 +190,12 @@ public class JobOffer {
         this.location = location;
     }
 
-    public com.ejobfinder.model.Customer getCustomer() {
-        return Customer;
+    public Employer getEmployer() {
+        return employer;
     }
 
-    public void setCustomer(com.ejobfinder.model.Customer customer) {
-        Customer = customer;
+    public void setEmployer(Employer employer) {
+        this.employer = employer;
     }
 
     public Integer getThresholdPercentagePoints() {
@@ -216,6 +204,14 @@ public class JobOffer {
 
     public void setThresholdPercentagePoints(Integer thresholdPercentagePoints) {
         this.thresholdPercentagePoints = thresholdPercentagePoints;
+    }
+
+    public Candidate getCandidate() {
+        return candidate;
+    }
+
+    public void setCandidate(Candidate candidate) {
+        this.candidate = candidate;
     }
 
     @Override
@@ -228,7 +224,6 @@ public class JobOffer {
                 Objects.equals(companyName, jobOffer.companyName) &&
                 Objects.equals(shortDescription, jobOffer.shortDescription) &&
                 Objects.equals(description, jobOffer.description) &&
-                Objects.equals(salary, jobOffer.salary) &&
                 Objects.equals(category, jobOffer.category) &&
                 Objects.equals(jobOfferStatus, jobOffer.jobOfferStatus) &&
                 Objects.equals(requirements, jobOffer.requirements) &&
@@ -240,13 +235,12 @@ public class JobOffer {
                 Objects.equals(expirationDate, jobOffer.expirationDate) &&
                 Objects.equals(tags, jobOffer.tags) &&
                 Objects.equals(companyLogo, jobOffer.companyLogo) &&
-                Objects.equals(Customer, jobOffer.Customer) &&
                 Objects.equals(location, jobOffer.location);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(jobId, position, companyName, shortDescription, description, salary, category, jobOfferStatus, requirements, responsibilities, preferredSkills, thresholdPercentagePoints, benefits, additionalInfo, expirationDate, tags, companyLogo, Customer, location);
+        return Objects.hash(jobId, position, companyName, shortDescription, description, category, jobOfferStatus, requirements, responsibilities, preferredSkills, thresholdPercentagePoints, benefits, additionalInfo, expirationDate, tags, companyLogo, location);
     }
 
 }

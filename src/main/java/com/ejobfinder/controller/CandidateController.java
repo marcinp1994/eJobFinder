@@ -225,7 +225,7 @@ public class CandidateController {
     public ResponseEntity<String> finalizeAndUpdatedProfile() {
         CandidateFacts factsAboutUser = this.candidateFacts;
         Candidate candidate = new Candidate();
-        candidate.setCandidateFacts(factsAboutUser);
+        //scandidate.setCandidateFacts(factsAboutUser);
         StatelessKieSession session = droolsUtility.loadSession("8");
 
         session.setGlobal("candidate", candidate);

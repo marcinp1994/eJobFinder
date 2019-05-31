@@ -6,17 +6,15 @@
 <div class="container-wrapper">
     <div class="container">
         <div class="page-header">
-            <h1>Register ${customerType}</h1>
+            <h1>Register Employer</h1>
 
             <p class="lead">Please fill in your information below:</p>
         </div>
 
-        <form:form action="${pageContext.request.contextPath}/register" method="post"
-                   commandName="customer" >
+        <form:form action="${pageContext.request.contextPath}/registerEmp" method="post"
+                   commandName="employer" >
 
         <h3>Basic Info</h3>
-        <form:hidden path="customerType" value="${customerType}" />
-
         <div class="form-group">
             <label for="name">Name</label>
             <form:input path="name" id="name" class="form-Control" required="required" data-error="Please enter your Name."/>
@@ -27,21 +25,19 @@
             <form:input path="lastName" id="name" class="form-Control" required="required" data-error="Please enter your Last Name."/>
         </div>
 
-        <c:if test="${customerType == 'Employer'}">
         <div class="form-group">
             <label for="name">Company Name</label>
             <form:input path="companyName" id="name" class="form-Control" required="required" data-error="Please enter your Company Name."/>
         </div>
-        </c:if>
 
         <div class="form-group">
             <label for="email">Email</label>
-            <form:input path="customerEmail" id="email" class="form-Control" required="required" data-error="Please enter your Email."/>
+            <form:input path="employerEmail" id="email" class="form-Control" required="required" data-error="Please enter your Email."/>
         </div>
 
         <div class="form-group">
             <label for="phone">Phone</label>
-            <form:input path="customerPhone" id="phone" class="form-Control" required="required" data-error="Please enter your Phone."/>
+            <form:input path="employerPhone" id="phone" class="form-Control" required="required" data-error="Please enter your Phone."/>
         </div>
 
         <div class="form-group">

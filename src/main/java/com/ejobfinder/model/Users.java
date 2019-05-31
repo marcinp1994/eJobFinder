@@ -13,7 +13,8 @@ public class Users {
     private String username;
     private String password;
     private boolean enabled;
-    private int customerId;
+    private int employerId;
+    private int candidateId;
 
     public int getUsersId() {
         return usersId;
@@ -47,11 +48,19 @@ public class Users {
         this.enabled = enabled;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public int getEmployerId() {
+        return employerId;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setEmployerId(int employerId) {
+        this.employerId = employerId;
+    }
+
+    public int getCandidateId() {
+        return candidateId;
+    }
+
+    public void setCandidateId(int candidateId) {
+        this.candidateId = candidateId;
     }
 }

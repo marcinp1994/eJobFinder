@@ -1,7 +1,9 @@
 package com.ejobfinder.controller;
 
-import com.ejobfinder.model.Customer;
-import com.ejobfinder.service.CustomerService;
+import com.ejobfinder.model.Candidate;
+import com.ejobfinder.model.Employer;
+import com.ejobfinder.service.CandidateService;
+import com.ejobfinder.service.EmployerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,47 +18,49 @@ import javax.servlet.http.HttpServletRequest;
 public class RegisterController {
 
     @Autowired
-    private CustomerService customerService;
+    private EmployerService employerService;
+
+    @Autowired
+    private CandidateService candidateService;
 
     @RequestMapping("/registerCandidate")
     public String registerCandidate(Model model) {
 
-        Customer customer = new Customer();
-        customer.setCustomerType("Candidate");
-        //BillingAddress billingAddress = new BillingAddress();
-        //ShippingAddress shippingAddress = new ShippingAddress();
-        //customer.setBillingAddress(billingAddress);
-        //customer.setShippingAddress(shippingAddress);
+        Candidate candidate = new Candidate();
+        model.addAttribute("candidate", candidate);
 
-        model.addAttribute("customer", customer);
-        model.addAttribute("customerType", "Candidate");
-
-
-        return "registerCustomer";
+        return "registerCandidate";
     }
 
     @RequestMapping("/registerEmployer")
     public String registerEmployer(Model model) {
 
-        Customer customer = new Customer();
-        customer.setCustomerType("Employer");
-        //BillingAddress billingAddress = new BillingAddress();
-        //ShippingAddress shippingAddress = new ShippingAddress();
-        //customer.setBillingAddress(billingAddress);
-        //customer.setShippingAddress(shippingAddress);
+        Employer employer = new Employer();
+        model.addAttribute("employer", employer);
 
-        model.addAttribute("customer", customer);
-        model.addAttribute("customerType", "Employer");
-
-        return "registerCustomer";
+        return "registerEmployer";
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String registerCustomerPost(@ModelAttribute("customer") Customer customer, Model model, HttpServletRequest request) {
-        customer.setEnabled(true);
-        customerService.addCustomer(customer);
+    @RequestMapping(value = "/registerEmp", method = RequestMethod.POST)
+    public String registerEmployerPost(@ModelAttribute("employer") Employer employer, Model model, HttpServletRequest request) {
+        employer.setEnabled(true);
+        employerService.addEmployer(employer);
         try {
-            request.login(customer.getUsername(), customer.getPassword());
+            request.login(employer.getUsername(), employer.getPassword());
+        } catch (ServletException e) {
+            return "registerCustomerSuccess";
+        }
+
+        return "redirect:/";
+
+    }
+
+    @RequestMapping(value = "/registerCan", method = RequestMethod.POST)
+    public String registerCandidatePost(@ModelAttribute("candidate") Candidate candidate, Model model, HttpServletRequest request) {
+        candidate.setEnabled(true);
+        candidateService.addCandidate(candidate);
+        try {
+            request.login(candidate.getUsername(), candidate.getPassword());
         } catch (ServletException e) {
             return "registerCustomerSuccess";
         }
