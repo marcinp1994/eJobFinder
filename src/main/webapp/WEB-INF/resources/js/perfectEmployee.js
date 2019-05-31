@@ -5,7 +5,9 @@ function splitter(resp) {
     }
     return 0;
 }
-
+function updateTextInput(val) {
+            $("#percentheader").html( "<h3>Current threshold is "+val+"%  </br><small> after passing this point candidates will be matched with yours offer</small></h3>");
+        }
 $(document).ready(function() {
 
 
@@ -590,12 +592,12 @@ $(document).ready(function() {
     });
 
     $("#sendFormButton").click(function() {
-
+   var selectedThreshold= $('#formControlRange').val();
         $.ajax({
             type: "POST",
             url: "/eJobFinder/rule/finalize",
             data: jQuery.param({
-
+                    threshold: selectedThreshold
             }),
             timeout: 600000,
             success: function(data) {

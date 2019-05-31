@@ -35,6 +35,7 @@ public class JobOffer {
     private String responsibilities;
     @NotNull
     private String preferredSkills;
+    private Integer thresholdPercentagePoints;
     @NotNull
     private String benefits;
     private Boolean containsRules = Boolean.FALSE;
@@ -209,6 +210,14 @@ public class JobOffer {
         Customer = customer;
     }
 
+    public Integer getThresholdPercentagePoints() {
+        return thresholdPercentagePoints;
+    }
+
+    public void setThresholdPercentagePoints(Integer thresholdPercentagePoints) {
+        this.thresholdPercentagePoints = thresholdPercentagePoints;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -224,6 +233,7 @@ public class JobOffer {
                 Objects.equals(jobOfferStatus, jobOffer.jobOfferStatus) &&
                 Objects.equals(requirements, jobOffer.requirements) &&
                 Objects.equals(responsibilities, jobOffer.responsibilities) &&
+                Objects.equals(thresholdPercentagePoints, jobOffer.thresholdPercentagePoints) &&
                 Objects.equals(preferredSkills, jobOffer.preferredSkills) &&
                 Objects.equals(benefits, jobOffer.benefits) &&
                 Objects.equals(additionalInfo, jobOffer.additionalInfo) &&
@@ -236,7 +246,7 @@ public class JobOffer {
 
     @Override
     public int hashCode() {
-        return Objects.hash(jobId, position, companyName, shortDescription, description, salary, category, jobOfferStatus, requirements, responsibilities, preferredSkills, benefits, additionalInfo, expirationDate, tags, companyLogo, Customer, location);
+        return Objects.hash(jobId, position, companyName, shortDescription, description, salary, category, jobOfferStatus, requirements, responsibilities, preferredSkills, thresholdPercentagePoints, benefits, additionalInfo, expirationDate, tags, companyLogo, Customer, location);
     }
 
 }

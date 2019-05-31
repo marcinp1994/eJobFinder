@@ -500,7 +500,7 @@
                                     <th style="width: 70%;" scope="col">Condition</th>
                                     <th style="width: 10%;" scope="col">Type of Contract</th>
                                     <th style="width: 10%;" scope="col">Importance</th>
-                                    <th style="width: 5%;" scope="col">#</th>
+                                   <th style="width: 5%;" scope="col">#</th>
                                 </tr>
                             </thead>
                             <tbody> </tbody>
@@ -889,6 +889,15 @@
                 </div>
             </div>
 
+ <div class="input-group mb-2 mr-sm-2" style="width:50%;margin-left: 25%;">
+         <h2> Define minimum threshold for candiates</h2>
+
+         <input type="range" class="form-control-range" id="formControlRange"  style="width:100%;"   min="0" max="100" value="50" step="5" onchange="updateTextInput(this.value)"/>
+       </div>
+
+<div class="page-header" id="percentheader" style="width:50%;margin-left: 25%;">
+ <h3>Current threshold is 50%  </br><small> after passing this point candidates will be matched with yours offer</small></h3>
+</div>
             <div style=" height:50px; width:98%;">
                 <button type="button" id="sendFormButton" class="btn btn-primary" style="position:relative; width:50%; height:50px; left:25%">Create Rules</button>
             </div>
