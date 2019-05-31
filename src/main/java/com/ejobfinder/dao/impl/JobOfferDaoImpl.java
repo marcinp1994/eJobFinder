@@ -25,6 +25,7 @@ public class JobOfferDaoImpl implements JobOfferDao {
     public void addJobOffer(JobOffer jobOffer) {
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(jobOffer);
+
         session.flush();
     }
 

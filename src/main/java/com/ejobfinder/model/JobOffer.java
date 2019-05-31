@@ -1,12 +1,16 @@
 package com.ejobfinder.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -47,12 +51,16 @@ public class JobOffer {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn()
     private Employer employer;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn()
-    private Candidate candidate;
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn()
     private Location location;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JoinTable(name = "joboffers_candidates",
+            joinColumns = @JoinColumn(name = "jobId"),
+            inverseJoinColumns = @JoinColumn(name = "candidateId")
+    )
+    private List<Candidate> candidates = new ArrayList<>();
 
     public String getPosition() {
         return position;
@@ -206,12 +214,22 @@ public class JobOffer {
         this.thresholdPercentagePoints = thresholdPercentagePoints;
     }
 
-    public Candidate getCandidate() {
-        return candidate;
+    public List<Candidate> getCandidates() {
+        return candidates;
     }
 
-    public void setCandidate(Candidate candidate) {
-        this.candidate = candidate;
+    public void setCandidates(List<Candidate> candidates) {
+        this.candidates = candidates;
+    }
+
+    public void addCandidate(Candidate candidate) {
+        candidates.add(candidate);
+        candidate.getJobOffers().add(this);
+    }
+
+    public void removeCandidate(Candidate candidate) {
+        candidates.remove(candidate);
+        candidate.getJobOffers().remove(this);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.ejobfinder.model.facts;
 
 public class EducationFact {
+    private int candidateId;
     private String professionalTitle;
     private String fieldOfStudy;
     private String modeOfStudy;
@@ -53,5 +54,21 @@ public class EducationFact {
 
     public void setStudent(boolean student) {
         this.student = student;
+    }
+
+    public int getCandidateId() {
+        return candidateId;
+    }
+
+    public void setCandidateId(int candidateId) {
+        this.candidateId = candidateId;
+    }
+
+    public boolean isStudyAbroad() {
+        return studyAbroad;
+    }
+
+    public boolean isStudent() {
+        return student;
     }
 }

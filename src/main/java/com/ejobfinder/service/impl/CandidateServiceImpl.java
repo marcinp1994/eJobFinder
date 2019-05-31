@@ -18,6 +18,11 @@ public class CandidateServiceImpl implements CandidateService {
         candidateDao.addCandidate(candidate);
     }
 
+    @Override
+    public void updateCandidate(Candidate candidate) {
+        candidateDao.updateCandidate(candidate);
+    }
+
     public Candidate getCandidateById(int candidateId) {
         return candidateDao.getCandidateById(candidateId);
     }

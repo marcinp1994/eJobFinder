@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,7 +15,7 @@ public class Candidate implements Serializable {
     private static final long serialVersionUID = 5140900014886999914L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int candidateId;
     @NotEmpty(message = "The candidate name must not be null.")
     private String name;
@@ -30,9 +31,9 @@ public class Candidate implements Serializable {
     @NotEmpty(message = "The candidate password must not be null.")
     private String password;
 
-    @OneToMany(mappedBy = "candidate", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "candidates", fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
-    private List<JobOffer> jobOffers;
+    private List<JobOffer> jobOffers = new ArrayList<>();
 
     private boolean enabled;
     //private CandidateFacts candidateFacts;

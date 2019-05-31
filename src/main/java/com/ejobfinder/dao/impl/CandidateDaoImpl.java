@@ -40,6 +40,12 @@ public class CandidateDaoImpl implements CandidateDao {
         session.flush();
     }
 
+    public void updateCandidate(Candidate candidate) {
+        Session session = sessionFactory.getCurrentSession();
+        session.saveOrUpdate(candidate);
+        session.flush();
+    }
+
     public Candidate getCandidateById(int candidateId) {
         Session session = sessionFactory.getCurrentSession();
         return (Candidate) session.get(Candidate.class, candidateId);
