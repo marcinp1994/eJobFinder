@@ -329,7 +329,7 @@ public class RulesServiceImpl implements RulesService {
         for (TypeOfContractRule typeOfContractRule : typeOfContractRuleList) {
             if (typeOfContractRule.getTypeOfContract() != null) {
                 Rule rule = new Rule("Type Of Contract Rule");
-                rule.setDataObject(TypeOfContractRule.class.getName());
+                rule.setDataObject(TypeOfContractFact.class.getName());
                 List<Condition> conditionList = new ArrayList<>();
                 Condition condition = new Condition();
                 condition.setProperty("typeOfContract");

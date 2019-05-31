@@ -13,72 +13,16 @@ import com.ejobfinder.model.facts.ToolFact;
 import com.ejobfinder.model.facts.TypeOfContractFact;
 dialect "java"
 
-rule "9 - Type Of Contract Rule"
+rule "1 - Type Of Contract Rule"
 when
-  com.ejobfinder.model.rules.TypeOfContractRule((typeOfContract == "B2B"))
+  com.ejobfinder.model.facts.TypeOfContractFact((typeOfContract == "B2B"))
 then
-  candidate.score(3);
-end
-
-rule "8 - Tool Rule"
-when
-  com.ejobfinder.model.facts.ToolFact((name == "Gradle") && (level < 3) && (year < 4.5))
-then
-  candidate.score(1);
-end
-
-rule "7 - Salary Rule"
-when
-  com.ejobfinder.model.facts.SalaryFact((amountDown > 9500.0) && (amountUp > 8500.0))
-then
-  candidate.score(2);
-end
-
-rule "6 - Previous Employer Rule"
-when
-  com.ejobfinder.model.facts.PreviousEmployerFact((jobTitle == "IT Jobs Salaries") && (stillWorking == false) && (haveProfessionalExperience == true) && (year < 5.5))
-then
-  candidate.score(3);
-end
-
-rule "5 - Location Rule"
-when
-  com.ejobfinder.model.facts.LocationFact((name == "Poznan"))
-then
-  candidate.score(3);
-end
-
-rule "4 - Language Rule"
-when
-  com.ejobfinder.model.facts.LanguageFact((name == "Portugue") && (level < 22))
-then
-  candidate.score(3);
-end
-
-rule "3 - Education Rule"
-when
-  com.ejobfinder.model.facts.EducationFact((fieldOfStudy == "Teleinformatics") && (modeOfStudy == "Full-time studies") && (professionalTitle == "Engineer") && (student == true) && (studyAbroad == true))
-then
-  candidate.score(3);
-end
-
-rule "2 - Working Hours Rule"
-when
-  com.ejobfinder.model.facts.WorkingHoursFact((workingHours == "Full-time"))
-then
-  candidate.score(3);
-end
-
-rule "1 - Skill Rule"
-when
-  com.ejobfinder.model.facts.SkillFact((name == "Hands-On SQL Experience") && (level > 3))
-then
-  candidate.score(3);
+  candidate.score(4);
 end
 
 rule "0 - Technology Rule"
 when
-  com.ejobfinder.model.facts.TechnologyFact((name == "Directory") && (level > 2) && (year > 2.5))
+  com.ejobfinder.model.facts.TechnologyFact((name == "MVC") && (level >= 3) && (year >= 6.0))
 then
   candidate.score(3);
 end

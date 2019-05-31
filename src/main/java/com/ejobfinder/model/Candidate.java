@@ -1,22 +1,27 @@
 package com.ejobfinder.model;
 
-import com.ejobfinder.model.facts.TechnologyFact;
-
-import java.util.List;
+import com.ejobfinder.model.facts.CandidateFacts;
 
 
 public class Candidate {
-    private List<TechnologyFact> technologyFacts;
-    private Location location;
-
+    CandidateFacts candidateFacts;
     private int score;
 
-    public List<TechnologyFact> getTechnologyFacts() {
-        return technologyFacts;
+    public Candidate() {
+
     }
 
-    public void setTechnologyFacts(List<TechnologyFact> technologyFacts) {
-        this.technologyFacts = technologyFacts;
+    public Candidate(CandidateFacts candidateFacts, int score) {
+        this.candidateFacts = candidateFacts;
+        this.score = score;
+    }
+
+    public CandidateFacts getCandidateFacts() {
+        return candidateFacts;
+    }
+
+    public void setCandidateFacts(CandidateFacts candidateFacts) {
+        this.candidateFacts = candidateFacts;
     }
 
     public int getScore() {

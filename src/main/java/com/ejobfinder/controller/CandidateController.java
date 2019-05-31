@@ -1,9 +1,12 @@
 package com.ejobfinder.controller;
 
+import com.ejobfinder.drools.utils.DroolsUtility;
+import com.ejobfinder.model.Candidate;
 import com.ejobfinder.model.facts.*;
 import com.ejobfinder.utils.BooleanMapper;
 import com.ejobfinder.utils.LanguageMapper;
 import com.ejobfinder.utils.consts.*;
+import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class CandidateController {
+
+    @Autowired
+    private DroolsUtility droolsUtility;
 
     @Autowired
     private CandidateFacts candidateFacts;
@@ -218,6 +224,16 @@ public class CandidateController {
     @ResponseBody
     public ResponseEntity<String> finalizeAndUpdatedProfile() {
         CandidateFacts factsAboutUser = this.candidateFacts;
+        Candidate candidate = new Candidate();
+        candidate.setCandidateFacts(factsAboutUser);
+        StatelessKieSession session = droolsUtility.loadSession("8");
+
+        session.setGlobal("candidate", candidate);
+
+        session.execute(factsAboutUser.getTechnologyFacts());
+        session.execute(factsAboutUser.getTypeOfContractFacts());
+
+        System.out.println("Candidate SCORE = '" + candidate.getScore() + "' points");
 
 
         return new ResponseEntity<String>("profile successfully updated", HttpStatus.OK);
