@@ -275,6 +275,267 @@
                 </div>
             </div>
 
+        <security:csrfMetaTags />
+
+        <form:form action="" method="post" commandName="jobOffer" enctype="multipart/form-data" class="form-inline">
+            </br>
+            <!--TECHNICAL RULES-->
+            <div class="container" style="width: 98%;">
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Technologies - please add technologies which do you know</div>
+                    <div class="panel-body" style="background-color:#EFEFEF;">
+
+                        <div class="input-group mb-2 mr-sm-2">
+                            <select id="technologySelector" class="selectpicker" data-style="btn-light" data-live-search="true">
+                                <option value="" hidden>Technology</option>
+                                <c:forEach items="${technologies}" var="technology">
+                                    <option>${technology}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="input-group mb-2 mr-sm-2">
+
+                            <h4>&nbsp; at level&nbsp</h4>
+
+                            <select id="experienceSelector" class="selectpicker" data-style="btn-light">
+                                <option value="" hidden>Level</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group mb-2 mr-sm-2">
+                            <h4> with years of experience&nbsp</h4>
+
+                            <select id="yearSelector" class="selectpicker" data-style="btn-light">
+                                <option value="" hidden>Years of work</option>
+                                <option>0.5</option>
+                                <option>1</option>
+                                <option>1.5</option>
+                                <option>2</option>
+                                <option>2.5</option>
+                                <option>3</option>
+                                <option>3.5</option>
+                                <option>4</option>
+                                <option>4.5</option>
+                                <option>5</option>
+                                <option>5.5</option>
+                                <option>6</option>
+                                <option>6.5</option>
+                                <option>7</option>
+                                <option>7.5</option>
+                                <option>8</option>
+                                <option>8.5</option>
+                                <option>9</option>
+                                <option>9.5</option>
+                                <option>10</option>
+                                <option>10+</option>
+                            </select>
+                        </div>
+
+                        <button type="button" id="add_row" class="btn btn-primary" style="float: right;"> Add</button>
+
+                        <table class="table table-hover" id="tableOfFacts" style="display: none;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%;" scope="col" class="text-center">#</th>
+                                    <th style="width: 60%;" scope="col">Genearted description</th>
+                                    <th style="width: 10%;" scope="col">Technology</th>
+                                    <th style="width: 10%;" scope="col">Level</th>
+                                    <th style="width: 10%;" scope="col">Years of experience</th>
+                                    <th style="width: 5%;" scope="col">#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!--SKILLS RULES-->
+            <div class="container" style="width: 98%;">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Skills - which skills do you have</div>
+                    <div class="panel-body" style="background-color:EFEFEF;">
+
+                        <div class="input-group mb-2 mr-sm-2">
+
+                            <select id="skillSelector" class="selectpicker" data-style="btn-light" data-live-search="true">
+                                <option value="" hidden>Skill</option>
+                                <c:forEach items="${skills}" var="skill">
+                                    <option>${skill}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="input-group mb-2 mr-sm-2">
+
+                            <h4> at level&nbsp</h4>
+
+                            <select id="skill_experienceSelector" class="selectpicker" data-style="btn-light">
+                                <option value="" hidden>Level</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                            </select>
+                        </div>
+
+                        <button type="button" id="skill_add_row" class="btn btn-info" style="float: right;"> Add</button>
+
+                        <table class="table table-hover" id="skill_tableOfFacts" style="display: none;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%;" scope="col" class="text-center">#</th>
+                                    <th style="width: 70%;" scope="col">Genearted description</th>
+                                    <th style="width: 10%;" scope="col">Skill</th>
+                                    <th style="width: 10%;" scope="col">Level</th>
+                                    <th style="width: 5%;" scope="col">#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!--TOOL RULES-->
+            <div class="container" style="width: 98%;">
+                <div class="panel panel-success">
+                    <div class="panel-heading">Tools - which tools do you know?</div>
+                    <div class="panel-body" style="background-color:EFEFEF;">
+
+                        <div class="input-group mb-2 mr-sm-2">
+
+                            <select id="tool_nameSelector" class="selectpicker" data-style="btn-light" data-live-search="true">
+                                <option value="" hidden>Tool</option>
+                                <c:forEach items="${tools}" var="tool">
+                                    <option>${tool}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="input-group mb-2 mr-sm-2">
+
+                            <h4> at level&nbsp</h4>
+
+                            <select id="tool_experienceSelector" class="selectpicker" data-style="btn-light">
+                                <option value="" hidden>Level</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group mb-2 mr-sm-2">
+                            <h4> with years of experience&nbsp</h4>
+
+                            <select id="tool_yearSelector" class="selectpicker" data-style="btn-light">
+                                <option value="" hidden>Years of work</option>
+                                <option>0.5</option>
+                                <option>1</option>
+                                <option>1.5</option>
+                                <option>2</option>
+                                <option>2.5</option>
+                                <option>3</option>
+                                <option>3.5</option>
+                                <option>4</option>
+                                <option>4.5</option>
+                                <option>5</option>
+                                <option>5.5</option>
+                                <option>6</option>
+                                <option>6.5</option>
+                                <option>7</option>
+                                <option>7.5</option>
+                                <option>8</option>
+                                <option>8.5</option>
+                                <option>9</option>
+                                <option>9.5</option>
+                                <option>10</option>
+                                <option>10+</option>
+                            </select>
+                        </div>
+
+                        <button type="button" id="tool_add_row" class="btn btn-success" style="float: right;"> Add</button>
+
+                        <table class="table table-hover" id="tool_tableOfFacts" style="display: none;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%;" scope="col" class="text-center">#</th>
+                                    <th style="width: 60%;" scope="col">Genearted description</th>
+                                    <th style="width: 10%;" scope="col">Tool</th>
+                                    <th style="width: 10%;" scope="col">Level</th>
+                                    <th style="width: 10%;" scope="col">Years of experience</th>
+                                    <th style="width: 5%;" scope="col">#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!--LANGUAGE RULES-->
+            <div class="container" style="width: 98%;">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">Languages- which languages do you know?</div>
+                    <div class="panel-body" style="background-color:EFEFEF;">
+
+                        <div class="input-group mb-2 mr-sm-2">
+
+                            <select id="langSelector" class="selectpicker" data-style="btn-light" data-live-search="true">
+                                <option value="" hidden>language</option>
+                                <c:forEach items="${languages}" var="language">
+                                    <option>${language}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="input-group mb-2 mr-sm-2">
+
+                            <h4> at level&nbsp</h4>
+
+                            <select id="lang_experienceSelector" class="selectpicker" data-style="btn-light">
+                                <option value="" hidden>level</option>
+                                <c:forEach items="${languages_levels}" var="language_lvl">
+                                    <option>${language_lvl}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
+                        <button type="button" id="lang_add_row" class="btn btn-warning" style="float: right;"> Add</button>
+
+                        <table class="table table-hover" id="lang_tableOfFacts" style="display: none;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%;" scope="col" class="text-center">#</th>
+                                    <th style="width: 70%;" scope="col">Genearted description</th>
+                                    <th style="width: 10%;" scope="col">Language</th>
+                                    <th style="width: 10%;" scope="col">Level</th>
+                                    <th style="width: 5%;" scope="col">#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <!--LOCATION RULES-->
             <div class="container" style="width: 98%;">
                 <div class="panel panel-danger">
