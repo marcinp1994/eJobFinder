@@ -225,13 +225,21 @@ public class CandidateController {
     public ResponseEntity<String> finalizeAndUpdatedProfile() {
         CandidateFacts factsAboutUser = this.candidateFacts;
         Candidate candidate = new Candidate();
-        //scandidate.setCandidateFacts(factsAboutUser);
-        StatelessKieSession session = droolsUtility.loadSession("8");
+        StatelessKieSession session = droolsUtility.loadSession("3");
 
         session.setGlobal("candidate", candidate);
 
         session.execute(factsAboutUser.getTechnologyFacts());
         session.execute(factsAboutUser.getTypeOfContractFacts());
+        session.execute(factsAboutUser.getEducationFacts());
+        session.execute(factsAboutUser.getLanguageFacts());
+        session.execute(factsAboutUser.getLocationFacts());
+        session.execute(factsAboutUser.getPeriodOfNoticeFacts());
+        session.execute(factsAboutUser.getPreviousEmployerFacts());
+        session.execute(factsAboutUser.getSalaryFacts());
+        session.execute(factsAboutUser.getToolFacts());
+        session.execute(factsAboutUser.getWorkingHoursFacts());
+        session.execute(factsAboutUser.getSkillFacts());
 
         System.out.println("Candidate SCORE = '" + candidate.getScore() + "' points");
 
