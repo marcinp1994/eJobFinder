@@ -8,6 +8,8 @@ public interface JobOfferService {
 
     void addJobOffer(JobOffer jobOffer);
 
+    void addJobOfferWithCandidate(JobOffer jobOffer);
+
     void editJobOffer(JobOffer jobOffer);
 
     JobOffer getJobOfferById(String jobId);

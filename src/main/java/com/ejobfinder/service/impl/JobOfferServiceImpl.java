@@ -20,6 +20,11 @@ public class JobOfferServiceImpl implements JobOfferService {
     }
 
     @Override
+    public void addJobOfferWithCandidate(JobOffer jobOffer) {
+        jobOfferDao.addJobOfferWithCandidate(jobOffer);
+    }
+
+    @Override
     public void editJobOffer(JobOffer jobOffer) {
         jobOfferDao.editJobOffer(jobOffer);
     }

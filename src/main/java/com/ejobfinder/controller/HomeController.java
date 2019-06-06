@@ -66,8 +66,8 @@ public class HomeController {
         JobOffer jobOffer = jobOfferService.getJobOfferById(jobId);
         Candidate candidate = candidateService.getCandidateByUsername(activeUser.getUsername());
         jobOffer.addCandidate(candidate);
-        jobOfferService.addJobOffer(jobOffer);
-        candidateService.updateCandidate(candidate);
+        jobOfferService.addJobOfferWithCandidate(jobOffer);
+        //candidateService.updateCandidate(candidate);
 
         return "redirect:/";
     }
