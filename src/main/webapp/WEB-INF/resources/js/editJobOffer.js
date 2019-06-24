@@ -24,4 +24,5 @@ $("#txtEditor5").Editor("setText", "Hello");
 $("input:submit").click(function(){
 $('#txtEditorContent5').text($('#txtEditor5').Editor("getText"));});
 
+
 });

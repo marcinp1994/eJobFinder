@@ -3,13 +3,15 @@ package com.ejobfinder.controller;
 import com.ejobfinder.drools.utils.DroolsUtility;
 import com.ejobfinder.model.Candidate;
 import com.ejobfinder.model.facts.*;
+import com.ejobfinder.service.CandidateService;
 import com.ejobfinder.utils.BooleanMapper;
 import com.ejobfinder.utils.LanguageMapper;
 import com.ejobfinder.utils.consts.*;
-import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +25,51 @@ public class CandidateController {
     @Autowired
     private CandidateFacts candidateFacts;
 
+    @Autowired
+    private CandidateService candidateService;
+
     @RequestMapping("/candidate")
-    public String candidatePage(Model model) {
+    public String candidatePage(Model model, @AuthenticationPrincipal User activeUser) {
+
+        Candidate candidate = candidateService.getCandidateByUsername(activeUser.getUsername());
+
+        //clear facts in session
+        candidateFacts.getEducationFacts().clear();
+        candidateFacts.getLanguageFacts().clear();
+        candidateFacts.getSalaryFacts().clear();
+        candidateFacts.getSkillFacts().clear();
+        candidateFacts.getTechnologyFacts().clear();
+        candidateFacts.getToolFacts().clear();
+        candidateFacts.getPreviousEmployerFacts().clear();
+        candidateFacts.getPeriodOfNoticeFacts().clear();
+        candidateFacts.getTypeOfContractFacts().clear();
+        candidateFacts.getWorkingHoursFacts().clear();
+
+        //set readed facts from DB to session
+        candidateFacts.getEducationFacts().addAll(candidate.getEducationFacts());
+        candidateFacts.getLanguageFacts().addAll(candidate.getLanguageFacts());
+        candidateFacts.getSalaryFacts().addAll(candidate.getSalaryFacts());
+        candidateFacts.getSkillFacts().addAll(candidate.getSkillFacts());
+        candidateFacts.getTechnologyFacts().addAll(candidate.getTechnologyFacts());
+        candidateFacts.getToolFacts().addAll(candidate.getToolFacts());
+        candidateFacts.getPreviousEmployerFacts().addAll(candidate.getPreviousEmployerFacts());
+        candidateFacts.getPeriodOfNoticeFacts().addAll(candidate.getPeriodOfNoticeFacts());
+        candidateFacts.getTypeOfContractFacts().addAll(candidate.getTypeOfContractFacts());
+        candidateFacts.getWorkingHoursFacts().addAll(candidate.getWorkingHoursFacts());
+
+
+        //add facts FROM DB to GUI
+        model.addAttribute("technologyFacts", candidate.getTechnologyFacts());
+        model.addAttribute("educationFacts", candidate.getEducationFacts());
+        model.addAttribute("periodOfNoticeFacts", candidate.getPeriodOfNoticeFacts());
+        model.addAttribute("languageFacts", candidate.getLanguageFacts());
+        model.addAttribute("previousEmployerFacts", candidate.getPreviousEmployerFacts());
+        model.addAttribute("salaryFacts", candidate.getSalaryFacts());
+        model.addAttribute("skillFacts", candidate.getSkillFacts());
+        model.addAttribute("typeOfContractFacts", candidate.getTypeOfContractFacts());
+        model.addAttribute("locationFacts", candidate.getLocationFacts());
+        model.addAttribute("workingHoursFacts", candidate.getWorkingHoursFacts());
+        model.addAttribute("toolFacts", candidate.getToolFacts());
 
         model.addAttribute("technologies", TechnologiesConst.TECHNOLOGY_LIST);
 
@@ -51,6 +96,17 @@ public class CandidateController {
 
 
         return "candidate";
+    }
+
+    @RequestMapping("/candidate/candidateMainPage")
+    public String candidateMainPage(Model model, @AuthenticationPrincipal User activeUser) {
+
+        Candidate candidate = candidateService.getCandidateByUsername(activeUser.getUsername());
+
+        model.addAttribute("name", candidate.getName());
+        model.addAttribute("lastName", candidate.getLastName());
+
+        return "candidateMainPage";
     }
 
     @RequestMapping("/candidate/{jobId}")
@@ -192,7 +248,7 @@ public class CandidateController {
         double yearDouble = Double.valueOf(year);
 
         PreviousEmployerFact fact = new PreviousEmployerFact(name, yearDouble, stillWorking, haveProfessionalExperienc);
-
+        candidateFacts.addPreviousEmployerFact(fact);
         int newSize = candidateFacts.getPreviousEmployerFacts().size();
         return new ResponseEntity<String>("PreviousEmployerfact created with new size=" + newSize, HttpStatus.OK);
     }
@@ -217,34 +273,64 @@ public class CandidateController {
     @ResponseBody
     public ResponseEntity<String> deleteFact(@RequestParam String name) {
         candidateFacts.deleteFact(name);
-        return new ResponseEntity<String>("rule deleted", HttpStatus.OK);
+        return new ResponseEntity<String>("fact deleted", HttpStatus.OK);
     }
 
     @RequestMapping(value = "fact/finalize", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> finalizeAndUpdatedProfile() {
+    public ResponseEntity<String> finalizeAndUpdatedProfile(@AuthenticationPrincipal User activeUser) {
         CandidateFacts factsAboutUser = this.candidateFacts;
-        Candidate candidate = new Candidate();
-        StatelessKieSession session = droolsUtility.loadSession("3");
-
-        session.setGlobal("candidate", candidate);
-
-        session.execute(factsAboutUser.getTechnologyFacts());
-        session.execute(factsAboutUser.getTypeOfContractFacts());
-        session.execute(factsAboutUser.getEducationFacts());
-        session.execute(factsAboutUser.getLanguageFacts());
-        session.execute(factsAboutUser.getLocationFacts());
-        session.execute(factsAboutUser.getPeriodOfNoticeFacts());
-        session.execute(factsAboutUser.getPreviousEmployerFacts());
-        session.execute(factsAboutUser.getSalaryFacts());
-        session.execute(factsAboutUser.getToolFacts());
-        session.execute(factsAboutUser.getWorkingHoursFacts());
-        session.execute(factsAboutUser.getSkillFacts());
+        Candidate candidate = candidateService.getCandidateByUsername(activeUser.getUsername());
+        if (candidate == null) {
+            candidate = new Candidate();
+            copyValuesToCandidate(candidate, factsAboutUser);
+            candidateService.addCandidate(candidate);
+        } else {
+            copyValuesToCandidate(candidate, factsAboutUser);
+            candidateService.updateCandidate(candidate);
+        }
 
         System.out.println("Candidate SCORE = '" + candidate.getScore() + "' points");
 
-
         return new ResponseEntity<String>("profile successfully updated", HttpStatus.OK);
+    }
+
+    private void copyValuesToCandidate(Candidate candidate, CandidateFacts factsAboutUser) {
+        candidate.getEducationFacts().clear();
+        candidate.getLanguageFacts().clear();
+        candidate.getLocationFacts().clear();
+        candidate.getSalaryFacts().clear();
+        candidate.getSkillFacts().clear();
+        candidate.getTechnologyFacts().clear();
+        candidate.getToolFacts().clear();
+        candidate.getPreviousEmployerFacts().clear();
+        candidate.getPeriodOfNoticeFacts().clear();
+        candidate.getTypeOfContractFacts().clear();
+        candidate.getWorkingHoursFacts().clear();
+
+        factsAboutUser.getEducationFacts().forEach(fact -> fact.setCandidate(candidate));
+        factsAboutUser.getLanguageFacts().forEach(fact -> fact.setCandidate(candidate));
+        factsAboutUser.getSalaryFacts().forEach(fact -> fact.setCandidate(candidate));
+        factsAboutUser.getSkillFacts().forEach(fact -> fact.setCandidate(candidate));
+        factsAboutUser.getTechnologyFacts().forEach(fact -> fact.setCandidate(candidate));
+        factsAboutUser.getToolFacts().forEach(fact -> fact.setCandidate(candidate));
+        factsAboutUser.getPreviousEmployerFacts().forEach(fact -> fact.setCandidate(candidate));
+        factsAboutUser.getPeriodOfNoticeFacts().forEach(fact -> fact.setCandidate(candidate));
+        factsAboutUser.getTypeOfContractFacts().forEach(fact -> fact.setCandidate(candidate));
+        factsAboutUser.getWorkingHoursFacts().forEach(fact -> fact.setCandidate(candidate));
+        factsAboutUser.getLocationFacts().forEach(fact -> fact.setCandidate(candidate));
+
+        candidate.getEducationFacts().addAll(factsAboutUser.getEducationFacts());
+        candidate.getLanguageFacts().addAll(factsAboutUser.getLanguageFacts());
+        candidate.getSalaryFacts().addAll(factsAboutUser.getSalaryFacts());
+        candidate.getSkillFacts().addAll(factsAboutUser.getSkillFacts());
+        candidate.getTechnologyFacts().addAll(factsAboutUser.getTechnologyFacts());
+        candidate.getToolFacts().addAll((factsAboutUser.getToolFacts()));
+        candidate.getPreviousEmployerFacts().addAll(factsAboutUser.getPreviousEmployerFacts());
+        candidate.getPeriodOfNoticeFacts().addAll(factsAboutUser.getPeriodOfNoticeFacts());
+        candidate.getTypeOfContractFacts().addAll(factsAboutUser.getTypeOfContractFacts());
+        candidate.getWorkingHoursFacts().addAll(factsAboutUser.getWorkingHoursFacts());
+        candidate.getLocationFacts().addAll(factsAboutUser.getLocationFacts());
     }
 
 }

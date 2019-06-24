@@ -2,6 +2,7 @@ package com.ejobfinder.controller;
 
 import com.ejobfinder.model.Candidate;
 import com.ejobfinder.model.JobOffer;
+import com.ejobfinder.model.JobOfferApplication;
 import com.ejobfinder.model.Location;
 import com.ejobfinder.service.CandidateService;
 import com.ejobfinder.service.JobOfferService;
@@ -65,7 +66,13 @@ public class HomeController {
     public String jobOfferApply(@PathVariable String jobId, Model model, @AuthenticationPrincipal User activeUser) {
         JobOffer jobOffer = jobOfferService.getJobOfferById(jobId);
         Candidate candidate = candidateService.getCandidateByUsername(activeUser.getUsername());
-        jobOffer.addCandidate(candidate);
+        JobOfferApplication application = new JobOfferApplication();
+
+        application.setJobOffer(jobOffer);
+        application.setCandidate(candidate);
+
+        //TODO score candidate evaluation
+        jobOffer.addApplication(application);
         jobOfferService.addJobOfferWithCandidate(jobOffer);
         //candidateService.updateCandidate(candidate);
 

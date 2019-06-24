@@ -22,28 +22,30 @@ public class JobOfferDaoImpl implements JobOfferDao {
     private SessionFactory sessionFactory;
 
     @Override
-    public void addJobOffer(JobOffer jobOffer) {
+    public String addJobOffer(JobOffer jobOffer) {
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(jobOffer);
-
         session.flush();
+        return jobOffer.getJobId();
     }
 
     @Override
-    public void addJobOfferWithCandidate(JobOffer jobOffer) {
+    public String addJobOfferWithCandidate(JobOffer jobOffer) {
         Session session = sessionFactory.getCurrentSession();
         session.merge(jobOffer);
 
         session.flush();
         session.clear();
+        return jobOffer.getJobId();
     }
 
     @Override
-    public void editJobOffer(JobOffer jobOffer) {
+    public String editJobOffer(JobOffer jobOffer) {
         Session session = sessionFactory.getCurrentSession();
         session.evict(jobOffer);
         session.saveOrUpdate(jobOffer);
         session.flush();
+        return jobOffer.getJobId();
     }
 
     @Override

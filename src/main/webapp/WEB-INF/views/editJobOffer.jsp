@@ -12,7 +12,7 @@
             <p class="lead">Please update the job offer information here:</p>
         </div>
 
-        <form:form action="${pageContext.request.contextPath}/employer/jobOfferInventory/editJobOffer" method="post"
+        <form:form id="jobForm" action="${pageContext.request.contextPath}/employer/jobOfferInventory/editJobOffer" method="post"
                    commandName="jobOffer" enctype="multipart/form-data">
         <form:hidden path="jobId" value="${jobOffer.jobId}" />
         <form:hidden path="location.locationId" value="${jobOffer.location.locationId}" />
@@ -96,7 +96,7 @@
         </div>
 
         <br><br>
-        <input type="submit" value="Next" class="btn btn-default">
+        <input type="submit" value="Next" class="btn btn-default" id="sendButton">
         <a href="<c:url value="/employer/jobOfferInventory" />" class="btn btn-default">Cancel</a>
         </form:form>
 
@@ -110,34 +110,4 @@
         <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
         <script src="<c:url value="/resources/js/editor.js" />"></script>
-        <script>
-        $(document).ready(function() {
-
-        $("#txtEditor").Editor();
-        $("#txtEditor").Editor("setText", '${jobOffer.responsibilities}');
-        $("input:submit").click(function(){
-        $('#txtEditorContent').text($('#txtEditor').Editor("getText"));});
-
-        $("#txtEditor2").Editor();
-        $("#txtEditor2").Editor("setText", '${jobOffer.responsibilities}');
-        $("input:submit").click(function(){
-        $('#txtEditorContent2').text($('#txtEditor2').Editor("getText"));});
-
-        $("#txtEditor3").Editor();
-        $("#txtEditor3").Editor("setText", '${jobOffer.requirements}');
-        $("input:submit").click(function(){
-        $('#txtEditorContent3').text($('#txtEditor3').Editor("getText"));});
-
-        $("#txtEditor4").Editor();
-        $("#txtEditor4").Editor("setText", '${jobOffer.preferredSkills}');
-        $("input:submit").click(function(){
-        $('#txtEditorContent4').text($('#txtEditor4').Editor("getText"));});
-
-        $("#txtEditor5").Editor();
-        $("#txtEditor5").Editor("setText", '${jobOffer.benefits}');
-        $("input:submit").click(function(){
-        $('#txtEditorContent5').text($('#txtEditor5').Editor("getText"));});
-
-        });
-        </script>
-
+        <script src="<c:url value="/resources/js/editJobOffer.js" />"></script>

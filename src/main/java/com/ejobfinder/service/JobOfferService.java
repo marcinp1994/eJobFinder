@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface JobOfferService {
 
-    void addJobOffer(JobOffer jobOffer);
+    String addJobOffer(JobOffer jobOffer);
 
-    void addJobOfferWithCandidate(JobOffer jobOffer);
+    String addJobOfferWithCandidate(JobOffer jobOffer);
 
-    void editJobOffer(JobOffer jobOffer);
+    String editJobOffer(JobOffer jobOffer);
 
     JobOffer getJobOfferById(String jobId);
 

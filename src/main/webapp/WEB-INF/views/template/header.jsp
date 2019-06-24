@@ -62,7 +62,7 @@
                                 <li><a href="<c:url value="/employer" />">My Account</a></li>
                             </c:if>
                             <c:if test="${pageContext.request.isUserInRole('ROLE_USER')}">
-                                <li><a href="<c:url value="/candidate" />">MyAccount</a></li>
+                                <li><a href="<c:url value="/candidate/candidateMainPage" />">MyAccount</a></li>
                             </c:if>
                         </c:if>
                         <c:if test="${pageContext.request.userPrincipal.name  == null}">
@@ -71,7 +71,7 @@
                             <ul class="dropdown-menu">
                             <li><a href="<c:url value="/employer/" />">Employer</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="<c:url value="/candidate/" />">Candidate</a></li>
+                            <li><a href="<c:url value="/candidate/candidateMainPage" />">Candidate</a></li>
                             </ul>
                             </li>
                             <li class="dropdown">

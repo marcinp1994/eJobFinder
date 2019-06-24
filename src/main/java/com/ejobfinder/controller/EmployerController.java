@@ -54,8 +54,11 @@ public class EmployerController {
     }
 
     @RequestMapping("/employer")
-    public String employerPage(Model model) {
+    public String employerPage(Model model, @AuthenticationPrincipal User activeUser) {
+        Employer employer = employerService.getEmployerByUsername(activeUser.getUsername());
 
+        model.addAttribute("name", employer.getName());
+        model.addAttribute("lastName", employer.getLastName());
         return "employer";
     }
 
@@ -88,7 +91,7 @@ public class EmployerController {
             return "addJobOffer";
         }
 
-        jobOfferService.addJobOffer(jobOffer);
+        String offerID = jobOfferService.addJobOffer(jobOffer);
 
         MultipartFile companyLogo = jobOffer.getCompanyLogo();
         String rootDirectory = request.getSession().getServletContext().getRealPath("/");
@@ -103,7 +106,7 @@ public class EmployerController {
             }
         }
 
-        return "redirect:/employer/jobOfferInventory";
+        return "redirect:/employer/jobOfferInventory/perfectEmployee/" + offerID;
     }
 
     @RequestMapping(value = "/employer/jobOfferInventory/deleteJobOffer/{jobId}")
@@ -158,9 +161,9 @@ public class EmployerController {
             jobOffer.setEmployer(employer);
         }
 
-        jobOfferService.editJobOffer(jobOffer);
+        String jobId = jobOfferService.editJobOffer(jobOffer);
 
-        return "redirect:/employer/jobOfferInventory";
+        return "redirect:/employer/jobOfferInventory/perfectEmployee/" + jobId;
     }
 
     @RequestMapping("/employer/jobOfferInventory/perfectEmployee/{jobId}")

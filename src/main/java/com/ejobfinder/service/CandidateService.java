@@ -1,6 +1,7 @@
 package com.ejobfinder.service;
 
 import com.ejobfinder.model.Candidate;
+import com.ejobfinder.model.facts.CandidateFacts;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface CandidateService {
     List<Candidate> getAllCandidates();
 
     Candidate getCandidateByUsername(String username);
+
+    Integer evaluateScoringOnJobOffer(String jobOfferId, CandidateFacts factsAboutUser, Candidate candidate);
 }

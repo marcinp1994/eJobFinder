@@ -15,18 +15,21 @@ public class JobOfferServiceImpl implements JobOfferService {
     private JobOfferDao jobOfferDao;
 
     @Override
-    public void addJobOffer(JobOffer jobOffer) {
-        jobOfferDao.addJobOffer(jobOffer);
+    public String addJobOffer(JobOffer jobOffer) {
+        String id = jobOfferDao.addJobOffer(jobOffer);
+        return id;
     }
 
     @Override
-    public void addJobOfferWithCandidate(JobOffer jobOffer) {
-        jobOfferDao.addJobOfferWithCandidate(jobOffer);
+    public String addJobOfferWithCandidate(JobOffer jobOffer) {
+        String id = jobOfferDao.addJobOfferWithCandidate(jobOffer);
+        return id;
     }
 
     @Override
-    public void editJobOffer(JobOffer jobOffer) {
-        jobOfferDao.editJobOffer(jobOffer);
+    public String editJobOffer(JobOffer jobOffer) {
+        String id = jobOfferDao.editJobOffer(jobOffer);
+        return id;
     }
 
     @Override

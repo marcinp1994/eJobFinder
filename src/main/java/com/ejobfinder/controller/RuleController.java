@@ -260,8 +260,10 @@ public class RuleController {
         droolsUtility.createRules(perfectEmployeeRuleList, "rules/template/PerfectEmployeeRules.drl", perfectEmployeeRules.getJobId());
 
         JobOffer offer = jobOfferService.getJobOfferById(perfectEmployeeRules.getJobId());
+        Integer maxPointsValue = perfectEmployeeRuleList.stream().mapToInt(rule -> rule.getScore()).sum();
         offer.setContainsRules(Boolean.TRUE);
         offer.setThresholdPercentagePoints(thresholdPercentage);
+        offer.setMaximalPoints(maxPointsValue);
         jobOfferService.editJobOffer(offer);
         return new ResponseEntity<String>("rule finalize", HttpStatus.OK);
     }

@@ -56,7 +56,7 @@ $(document).ready(function() {
                     ' <td>' + selectedTechnology + '</td>' +
                     ' <td>' + selectedExperience + '</td>' +
                     ' <td>' + selectedYears + '</td>' +
-                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
+                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "','tableOfFacts')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
@@ -96,7 +96,7 @@ $(document).ready(function() {
                     ' <td>' + "I have " + selectedName + " at level " + " " + selectedExperience + '</td>' +
                     ' <td>' + selectedName + '</td>' +
                     ' <td>' + selectedExperience + '</td>' +
-                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
+                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "','skill_tableOfFacts')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
@@ -135,11 +135,11 @@ $(document).ready(function() {
                 var rowID = "row" + "_tool_" + number;
                 newRow.setAttribute("id", rowID);
                 newRow.innerHTML = ' <td class="index">' + number + '</td>' +
-                    ' <td>' + "I know " + selectedName + " at level " + selectedExperience + " with years of experience "  + " " + selectedYears + '</td>' +
+                    ' <td>' + "I know " + selectedName + " at level " + selectedExperience + " with years of experience " + " " + selectedYears + '</td>' +
                     ' <td>' + selectedName + '</td>' +
                     ' <td>' + selectedExperience + '</td>' +
                     ' <td>' + selectedYears + '</td>' +
-                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
+                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "','tool_tableOfFacts')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
@@ -181,7 +181,7 @@ $(document).ready(function() {
                     ' <td>' + "I can speak " + selectedName + " at level " + " " + selectedExperience + '</td>' +
                     ' <td>' + selectedName + '</td>' +
                     ' <td>' + selectedExperience + '</td>' +
-                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
+                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "','lang_tableOfFacts')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
@@ -217,7 +217,7 @@ $(document).ready(function() {
                 newRow.setAttribute("id", rowID);
                 newRow.innerHTML = ' <td class="index">' + number + '</td>' +
                     ' <td>' + selectedName + '</td>' +
-                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
+                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "','loc_tableOfFacts')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
@@ -256,7 +256,7 @@ $(document).ready(function() {
                 newRow.innerHTML = ' <td class="index">' + number + '</td>' +
                     ' <td>' + "I am ok with working hours like " + selectedName + '</td>' +
                     ' <td>' + selectedName + '</td>' +
-                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
+                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "','workH_tableOfFacts')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
@@ -293,7 +293,7 @@ $(document).ready(function() {
                 newRow.innerHTML = ' <td class="index">' + number + '</td>' +
                     ' <td>' + "I am ok with type of contract  " + selectedName + '</td>' +
                     ' <td>' + selectedName + '</td>' +
-                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
+                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "','contr_tableOfFacts')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
@@ -330,7 +330,7 @@ $(document).ready(function() {
                 newRow.innerHTML = ' <td class="index">' + number + '</td>' +
                     ' <td>' + "My period of notice is " + selectedName + '</td>' +
                     ' <td>' + selectedName + '</td>' +
-                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
+                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "','period_tableOfFacts')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
@@ -380,7 +380,7 @@ $(document).ready(function() {
                     ' <td>' + selectedMode + '</td>' +
                     ' <td>' + selectedAbroad + '</td>' +
                     ' <td>' + selectedIsStudent + '</td>' +
-                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
+                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "','edu_tableOfFacts')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
@@ -424,12 +424,12 @@ $(document).ready(function() {
                 newRow.setAttribute("id", rowID);
 
                 newRow.innerHTML = ' <td class="index">' + number + '</td>' +
-                    ' <td>' + "I was " + selectedTitle + " for " +" " + selectedYears + ' years</td>' +
+                    ' <td>' + "I was " + selectedTitle + " for " + " " + selectedYears + ' years</td>' +
                     ' <td>' + selectedTitle + '</td>' +
                     ' <td>' + selectedYears + '</td>' +
                     ' <td>' + selectedIsStillWorkingParam + '</td>' +
                     ' <td>' + selectedHaveProfessionalExperienceParam + '</td>' +
-                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
+                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "','prev_tableOfFacts')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
@@ -468,7 +468,7 @@ $(document).ready(function() {
                     ' <td>' + "I want to earn minimum " + selectedAmountDown + "</td>" +
                     ' <td>' + selectedAmountDown + '</td>' +
                     ' <td>' + selectedAmountUp + '</td>' +
-                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "')>" +
+                    ' <td>' + " <button type='button' class='btn btn-danger'  onclick=deleteRow('" + rowID + "','salary_tableOfFacts')>" +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>';
@@ -504,7 +504,7 @@ $(document).ready(function() {
     });
 });
 
-function deleteRow(rowName) {
+function deleteRow(rowName, table) {
     $.ajax({
         type: "POST",
         url: "/eJobFinder/fact/delete",
@@ -514,7 +514,12 @@ function deleteRow(rowName) {
         timeout: 600000,
         success: function(data) {
             var selector = "#" + rowName;
+            console.log('remove ' + selector);
             $(selector).remove();
+            var rowCount = $("#" + table + ' tr').length;
+            if (rowCount == 1) {
+                document.getElementById(table).style.display = "none";
+            }
         },
         error: function(e) {
             console.log('error while post');

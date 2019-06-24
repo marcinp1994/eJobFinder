@@ -1,8 +1,11 @@
 package com.ejobfinder.service.impl;
 
 import com.ejobfinder.dao.CandidateDao;
+import com.ejobfinder.drools.utils.DroolsUtility;
 import com.ejobfinder.model.Candidate;
+import com.ejobfinder.model.facts.CandidateFacts;
 import com.ejobfinder.service.CandidateService;
+import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,10 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Autowired
     private CandidateDao candidateDao;
+
+    @Autowired
+    private DroolsUtility droolsUtility;
+
 
     public void addCandidate(Candidate candidate) {
         candidateDao.addCandidate(candidate);
@@ -33,5 +40,26 @@ public class CandidateServiceImpl implements CandidateService {
 
     public Candidate getCandidateByUsername(String username) {
         return candidateDao.getCandidateByUsername(username);
+    }
+
+    @Override
+    public Integer evaluateScoringOnJobOffer(String jobOfferId, CandidateFacts factsAboutUser, Candidate candidate) {
+        StatelessKieSession session = droolsUtility.loadSession(jobOfferId);
+
+        session.setGlobal("candidate", candidate);
+
+        session.execute(factsAboutUser.getTechnologyFacts());
+        session.execute(factsAboutUser.getTypeOfContractFacts());
+        session.execute(factsAboutUser.getEducationFacts());
+        session.execute(factsAboutUser.getLanguageFacts());
+        session.execute(factsAboutUser.getLocationFacts());
+        session.execute(factsAboutUser.getPeriodOfNoticeFacts());
+        session.execute(factsAboutUser.getPreviousEmployerFacts());
+        session.execute(factsAboutUser.getSalaryFacts());
+        session.execute(factsAboutUser.getToolFacts());
+        session.execute(factsAboutUser.getWorkingHoursFacts());
+        session.execute(factsAboutUser.getSkillFacts());
+
+        return candidate.getScore();
     }
 }

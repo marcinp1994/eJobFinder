@@ -25,6 +25,8 @@ public class Rule {
      */
     private String action;
 
+    private int score;
+
     /**
      * Creates a new rule.
      *
@@ -188,5 +190,14 @@ public class Rule {
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

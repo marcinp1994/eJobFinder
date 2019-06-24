@@ -1,12 +1,24 @@
 package com.ejobfinder.model.facts;
 
+import com.ejobfinder.model.Candidate;
+
+import javax.persistence.*;
+
+@Entity
 public class EducationFact {
-    private int candidateId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int factId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Candidate candidate;
     private String professionalTitle;
     private String fieldOfStudy;
     private String modeOfStudy;
     private boolean studyAbroad;
     private boolean student;
+
+    public EducationFact() {
+    }
 
     public EducationFact(String professionalTitle, String fieldOfStudy, String modeOfStudy, boolean studyAbroad, boolean isStudent) {
         this.professionalTitle = professionalTitle;
@@ -14,6 +26,22 @@ public class EducationFact {
         this.modeOfStudy = modeOfStudy;
         this.studyAbroad = studyAbroad;
         this.student = isStudent;
+    }
+
+    public int getFactId() {
+        return factId;
+    }
+
+    public void setFactId(int factId) {
+        this.factId = factId;
+    }
+
+    public Candidate getCandidate() {
+        return candidate;
+    }
+
+    public void setCandidate(Candidate candidate) {
+        this.candidate = candidate;
     }
 
     public String getProfessionalTitle() {
@@ -57,11 +85,11 @@ public class EducationFact {
     }
 
     public int getCandidateId() {
-        return candidateId;
+        return candidate.getCandidateId();
     }
 
     public void setCandidateId(int candidateId) {
-        this.candidateId = candidateId;
+        //this.candidateId = candidateId;
     }
 
     public boolean isStudyAbroad() {
@@ -71,4 +99,5 @@ public class EducationFact {
     public boolean isStudent() {
         return student;
     }
+
 }

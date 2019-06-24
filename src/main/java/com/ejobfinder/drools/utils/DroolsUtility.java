@@ -13,6 +13,7 @@ import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,10 @@ public class DroolsUtility {
         system.write("src/main/resources/simple.drl", services.getResources().newReaderResource(new StringReader(drl)));
         services.newKieBuilder(system).buildAll();
 
-        File rulesFile = new File("C:\\Users\\m.pudelko\\Desktop\\MAGISTERKA\\eJobFinder\\src\\main\\resources\\rules\\" + jobId + ".drl");
+        String fileName = jobId + ".drl";
+        ClassLoader classLoader = getClass().getClassLoader();
+        URL resource = classLoader.getResource(fileName);
+        File rulesFile = new File(resource.getFile());
         FileOutputStream is = new FileOutputStream(rulesFile);
         OutputStreamWriter osw = new OutputStreamWriter(is);
         Writer w = new BufferedWriter(osw);
@@ -48,7 +52,10 @@ public class DroolsUtility {
     public StatelessKieSession loadSession(String jobId) {
         KieServices kieServices = KieServices.Factory.get();
         KieFileSystem kfs = kieServices.newKieFileSystem();
-        File file = new File("C:\\Users\\m.pudelko\\Desktop\\MAGISTERKA\\eJobFinder\\src\\main\\resources\\rules\\" + jobId + ".drl");
+        ClassLoader classLoader = getClass().getClassLoader();
+        String fileName = jobId + ".drl";
+        URL resourceURL = classLoader.getResource(fileName);
+        File file = new File(resourceURL.getFile());
         Resource resource = kieServices.getResources().newFileSystemResource(file).setResourceType(ResourceType.DRL);
         kfs.write(resource);
         KieBuilder kb = kieServices.newKieBuilder(kfs);
@@ -57,7 +64,6 @@ public class DroolsUtility {
         KieContainer container = kieServices.newKieContainer(kieServices.getRepository().getDefaultReleaseId());
         return container.getKieBase().newStatelessKieSession();
     }
-
     /**
      * Debug tool to show what is happening over each triggered execution.<br>
      * Name of rule trigger as well the object inspected are printed.

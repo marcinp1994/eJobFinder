@@ -11,7 +11,7 @@
             <p class="lead">Fill the below information to add a job offer:</p>
         </div>
 
-        <form:form action="${pageContext.request.contextPath}/employer/jobOfferInventory/addJobOffer" method="post"
+        <form:form id="jobForm" action="${pageContext.request.contextPath}/employer/jobOfferInventory/addJobOffer" method="post"
                    commandName="jobOffer" enctype="multipart/form-data">
 
         <div class="form-group">
@@ -105,7 +105,7 @@
         </div>
 
         <br><br>
-        <input type="submit" value="Next" class="btn btn-default">
+        <input type="submit" value="Next" class="btn btn-default" id="sendButton">
         <a href="<c:url value="/employer/jobOfferInventory/addJobOffer" />" class="btn btn-default">Cancel</a>
     </form:form>
 

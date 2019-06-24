@@ -39,6 +39,7 @@ public class RulesServiceImpl implements RulesService {
             }
             rule.setConditions(conditionList);
             rule.setAction(String.valueOf(skillRule.getScore()));
+            rule.setScore(skillRule.getScore());
             rules.add(rule);
         }
         return rules;
@@ -72,6 +73,7 @@ public class RulesServiceImpl implements RulesService {
             }
             rule.setConditions(conditionList);
             rule.setAction(String.valueOf(technologyRule.getScore()));
+            rule.setScore(technologyRule.getScore());
             rules.add(rule);
         }
         return rules;
@@ -92,6 +94,7 @@ public class RulesServiceImpl implements RulesService {
                 conditionList.add(condition);
                 rule.setConditions(conditionList);
                 rule.setAction(String.valueOf(workingHoursRule.getScore()));
+                rule.setScore(workingHoursRule.getScore());
                 rules.add(rule);
             }
         }
@@ -146,6 +149,7 @@ public class RulesServiceImpl implements RulesService {
 
             rule.setConditions(conditionList);
             rule.setAction(String.valueOf(educationRule.getScore()));
+            rule.setScore(educationRule.getScore());
             rules.add(rule);
         }
         return rules;
@@ -172,6 +176,7 @@ public class RulesServiceImpl implements RulesService {
             }
             rule.setConditions(conditionList);
             rule.setAction(String.valueOf(languageRule.getScore()));
+            rule.setScore(languageRule.getScore());
             rules.add(rule);
         }
         return rules;
@@ -192,6 +197,7 @@ public class RulesServiceImpl implements RulesService {
                 conditionList.add(condition);
                 rule.setConditions(conditionList);
                 rule.setAction(String.valueOf(locationRule.getScore()));
+                rule.setScore(locationRule.getScore());
                 rules.add(rule);
             }
         }
@@ -213,6 +219,7 @@ public class RulesServiceImpl implements RulesService {
                 conditionList.add(condition);
                 rule.setConditions(conditionList);
                 rule.setAction(String.valueOf(periodOfNoticeRule.getScore()));
+                rule.setScore(periodOfNoticeRule.getScore());
                 rules.add(rule);
             }
         }
@@ -257,6 +264,7 @@ public class RulesServiceImpl implements RulesService {
             }
             rule.setConditions(conditionList);
             rule.setAction(String.valueOf(previousEmployerRule.getScore()));
+            rule.setScore(previousEmployerRule.getScore());
             rules.add(rule);
         }
         return rules;
@@ -285,6 +293,7 @@ public class RulesServiceImpl implements RulesService {
             }
             rule.setConditions(conditionList);
             rule.setAction(String.valueOf(salaryRule.getScore()));
+            rule.setScore(salaryRule.getScore());
             rules.add(rule);
         }
         return rules;
@@ -318,6 +327,7 @@ public class RulesServiceImpl implements RulesService {
             }
             rule.setConditions(conditionList);
             rule.setAction(String.valueOf(toolRule.getScore()));
+            rule.setScore(toolRule.getScore());
             rules.add(rule);
         }
         return rules;
@@ -338,6 +348,7 @@ public class RulesServiceImpl implements RulesService {
                 conditionList.add(condition);
                 rule.setConditions(conditionList);
                 rule.setAction(String.valueOf(typeOfContractRule.getScore()));
+                rule.setScore(typeOfContractRule.getScore());
                 rules.add(rule);
             }
         }

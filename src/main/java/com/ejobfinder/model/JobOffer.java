@@ -1,17 +1,15 @@
 package com.ejobfinder.model;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class JobOffer {
@@ -38,6 +36,7 @@ public class JobOffer {
     @NotNull
     private String preferredSkills;
     private Integer thresholdPercentagePoints;
+    private Integer maximalPoints;
     @NotNull
     private String benefits;
     private Boolean containsRules = Boolean.FALSE;
@@ -54,13 +53,8 @@ public class JobOffer {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn()
     private Location location;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @Fetch(value = FetchMode.SUBSELECT)
-    @JoinTable(name = "joboffers_candidates",
-            joinColumns = @JoinColumn(name = "jobId"),
-            inverseJoinColumns = @JoinColumn(name = "candidateId")
-    )
-    private List<Candidate> candidates = new ArrayList<>();
+    @OneToMany(mappedBy = "jobOffer")
+    private Set<JobOfferApplication> jobOfferApplications = new HashSet<JobOfferApplication>();
 
     public String getPosition() {
         return position;
@@ -214,22 +208,29 @@ public class JobOffer {
         this.thresholdPercentagePoints = thresholdPercentagePoints;
     }
 
-    public List<Candidate> getCandidates() {
-        return candidates;
+    public Set<JobOfferApplication> getJobOfferApplications() {
+        return jobOfferApplications;
     }
 
-    public void setCandidates(List<Candidate> candidates) {
-        this.candidates = candidates;
+    public void setJobOfferApplications(Set<JobOfferApplication> jobOfferApplications) {
+        this.jobOfferApplications = jobOfferApplications;
     }
 
-    public void addCandidate(Candidate candidate) {
-        candidates.add(candidate);
-        candidate.getJobOffers().add(this);
+    public void addApplication(JobOfferApplication application) {
+        application.setJobOffer(this);
+        jobOfferApplications.add(application);
     }
 
-    public void removeCandidate(Candidate candidate) {
-        candidates.remove(candidate);
-        candidate.getJobOffers().remove(this);
+    public void removeApplication(JobOfferApplication application) {
+        jobOfferApplications.remove(application);
+    }
+
+    public Integer getMaximalPoints() {
+        return maximalPoints;
+    }
+
+    public void setMaximalPoints(Integer maximalPoints) {
+        this.maximalPoints = maximalPoints;
     }
 
     @Override
@@ -253,12 +254,13 @@ public class JobOffer {
                 Objects.equals(expirationDate, jobOffer.expirationDate) &&
                 Objects.equals(tags, jobOffer.tags) &&
                 Objects.equals(companyLogo, jobOffer.companyLogo) &&
+                Objects.equals(maximalPoints, jobOffer.maximalPoints) &&
                 Objects.equals(location, jobOffer.location);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(jobId, position, companyName, shortDescription, description, category, jobOfferStatus, requirements, responsibilities, preferredSkills, thresholdPercentagePoints, benefits, additionalInfo, expirationDate, tags, companyLogo, location);
+        return Objects.hash(jobId, position, companyName, maximalPoints, shortDescription, description, category, jobOfferStatus, requirements, responsibilities, preferredSkills, thresholdPercentagePoints, benefits, additionalInfo, expirationDate, tags, companyLogo, location);
     }
 
 }
