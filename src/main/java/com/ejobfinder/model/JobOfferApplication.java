@@ -2,7 +2,6 @@ package com.ejobfinder.model;
 
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 public class JobOfferApplication {
@@ -11,13 +10,13 @@ public class JobOfferApplication {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String applicationId;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "job_id")
     private JobOffer jobOffer;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "candidate_id")
     private Candidate candidate;
     @Column(name = "score")
     private Integer calculatedScore;
+    @Column(name = "percentOfMaxScore")
+    private Double percentOfMaxScore;
 
     public String getApplicationId() {
         return applicationId;
@@ -51,20 +50,11 @@ public class JobOfferApplication {
         this.calculatedScore = calculatedScore;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        JobOfferApplication jobOfferApplication = (JobOfferApplication) o;
-        return Objects.equals(applicationId, jobOfferApplication.applicationId) &&
-                Objects.equals(jobOffer, jobOfferApplication.jobOffer) &&
-                Objects.equals(candidate, jobOfferApplication.candidate) &&
-                Objects.equals(calculatedScore, jobOfferApplication.calculatedScore);
+    public Double getPercentOfMaxScore() {
+        return percentOfMaxScore;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(applicationId, jobOffer, candidate, calculatedScore);
+    public void setPercentOfMaxScore(Double percentOfMaxScore) {
+        this.percentOfMaxScore = percentOfMaxScore;
     }
-
 }

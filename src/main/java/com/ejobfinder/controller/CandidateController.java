@@ -290,8 +290,6 @@ public class CandidateController {
             candidateService.updateCandidate(candidate);
         }
 
-        System.out.println("Candidate SCORE = '" + candidate.getScore() + "' points");
-
         return new ResponseEntity<String>("profile successfully updated", HttpStatus.OK);
     }
 

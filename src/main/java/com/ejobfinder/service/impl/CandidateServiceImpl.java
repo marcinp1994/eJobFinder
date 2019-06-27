@@ -62,4 +62,25 @@ public class CandidateServiceImpl implements CandidateService {
 
         return candidate.getScore();
     }
+
+    @Override
+    public Integer evaluateScoringOnJobOffer(String jobOfferId, Candidate candidate) {
+        StatelessKieSession session = droolsUtility.loadSession(jobOfferId);
+
+        session.setGlobal("candidate", candidate);
+
+        session.execute(candidate.getTechnologyFacts());
+        session.execute(candidate.getTypeOfContractFacts());
+        session.execute(candidate.getEducationFacts());
+        session.execute(candidate.getLanguageFacts());
+        session.execute(candidate.getLocationFacts());
+        session.execute(candidate.getPeriodOfNoticeFacts());
+        session.execute(candidate.getPreviousEmployerFacts());
+        session.execute(candidate.getSalaryFacts());
+        session.execute(candidate.getToolFacts());
+        session.execute(candidate.getWorkingHoursFacts());
+        session.execute(candidate.getSkillFacts());
+
+        return candidate.getScore();
+    }
 }

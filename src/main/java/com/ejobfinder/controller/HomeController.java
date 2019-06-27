@@ -71,10 +71,17 @@ public class HomeController {
         application.setJobOffer(jobOffer);
         application.setCandidate(candidate);
 
-        //TODO score candidate evaluation
+        Integer score = candidateService.evaluateScoringOnJobOffer(jobId, candidate);
+        Double percent = Double.valueOf((score / jobOffer.getMaximalPoints()) * 100);
+
+        application.setPercentOfMaxScore(percent);
+        application.setCalculatedScore(score);
+
+        candidate.getJobOfferApplications().add(application);
         jobOffer.addApplication(application);
+
         jobOfferService.addJobOfferWithCandidate(jobOffer);
-        //candidateService.updateCandidate(candidate);
+        candidateService.updateCandidate(candidate);
 
         return "redirect:/";
     }

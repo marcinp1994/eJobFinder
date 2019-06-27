@@ -53,7 +53,7 @@ public class JobOffer {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @JoinColumn()
     private Location location;
-    @OneToMany(mappedBy = "jobOffer")
+    @OneToMany(mappedBy = "jobOffer", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     private Set<JobOfferApplication> jobOfferApplications = new HashSet<JobOfferApplication>();
 
     public String getPosition() {

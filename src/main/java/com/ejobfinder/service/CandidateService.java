@@ -18,4 +18,6 @@ public interface CandidateService {
     Candidate getCandidateByUsername(String username);
 
     Integer evaluateScoringOnJobOffer(String jobOfferId, CandidateFacts factsAboutUser, Candidate candidate);
+
+    Integer evaluateScoringOnJobOffer(String jobOfferId, Candidate candidate);
 }

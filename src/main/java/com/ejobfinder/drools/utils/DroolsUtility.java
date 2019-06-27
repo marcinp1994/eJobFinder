@@ -40,8 +40,9 @@ public class DroolsUtility {
 
         String fileName = jobId + ".drl";
         ClassLoader classLoader = getClass().getClassLoader();
-        URL resource = classLoader.getResource(fileName);
-        File rulesFile = new File(resource.getFile());
+
+        URL resource = classLoader.getResource("/rules");
+        File rulesFile = new File(resource.getFile() + fileName);
         FileOutputStream is = new FileOutputStream(rulesFile);
         OutputStreamWriter osw = new OutputStreamWriter(is);
         Writer w = new BufferedWriter(osw);
@@ -53,7 +54,7 @@ public class DroolsUtility {
         KieServices kieServices = KieServices.Factory.get();
         KieFileSystem kfs = kieServices.newKieFileSystem();
         ClassLoader classLoader = getClass().getClassLoader();
-        String fileName = jobId + ".drl";
+        String fileName = "/rules/" + jobId + ".drl";
         URL resourceURL = classLoader.getResource(fileName);
         File file = new File(resourceURL.getFile());
         Resource resource = kieServices.getResources().newFileSystemResource(file).setResourceType(ResourceType.DRL);
