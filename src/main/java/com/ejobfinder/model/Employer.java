@@ -24,6 +24,8 @@ public class Employer implements Serializable {
     @NotEmpty(message = "The customer email must not be null.")
     private String employerEmail;
     private String employerPhone;
+    @Column(nullable = false)
+    private boolean premiumMember;
 
     @NotEmpty(message = "The customer username must not be null.")
     private String username;
@@ -34,9 +36,11 @@ public class Employer implements Serializable {
     @OneToMany(mappedBy = "employer", fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<JobOffer> jobOffers;
-
     private boolean enabled;
 
+    public Employer() {
+        premiumMember = false;
+    }
     public String getEmployerEmail() {
         return employerEmail;
     }
@@ -115,5 +119,13 @@ public class Employer implements Serializable {
 
     public void setEmployerId(int employerId) {
         this.employerId = employerId;
+    }
+
+    public boolean getPremiumMember() {
+        return premiumMember;
+    }
+
+    public void setPremiumMember(boolean premiumMember) {
+        this.premiumMember = premiumMember;
     }
 }

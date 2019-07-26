@@ -4,9 +4,13 @@ import com.ejobfinder.drools.Condition.Operator;
 import com.ejobfinder.drools.Rule;
 import com.ejobfinder.drools.utils.DroolsUtility;
 import com.ejobfinder.model.Candidate;
+import com.ejobfinder.model.Employer;
 import com.ejobfinder.model.JobOffer;
+import com.ejobfinder.model.JobOfferApplication;
 import com.ejobfinder.model.facts.TechnologyFact;
 import com.ejobfinder.model.rules.*;
+import com.ejobfinder.service.CandidateService;
+import com.ejobfinder.service.EmployerService;
 import com.ejobfinder.service.JobOfferService;
 import com.ejobfinder.service.RulesService;
 import com.ejobfinder.utils.BooleanMapper;
@@ -34,6 +38,12 @@ public class RuleController {
 
     @Autowired
     private DroolsUtility droolsUtility;
+
+    @Autowired
+    private EmployerService employerService;
+
+    @Autowired
+    private CandidateService candidateService;
 
     @Autowired
     private PerfectEmployeeRules perfectEmployeeRules;
@@ -239,8 +249,10 @@ public class RuleController {
     }
 
     @RequestMapping(value = "rule/finalize", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<String> finalizeAndCreateFile(@RequestParam String threshold) throws Exception {
+    public String finalizeAndCreateFile(@AuthenticationPrincipal User activeUser, Model model, @RequestParam String threshold) throws Exception {
+        Employer employer = employerService.getEmployerByUsername(activeUser.getUsername());
+
+        model.addAttribute("isPremium", employer.getPremiumMember());
         Integer thresholdPercentage = Integer.valueOf(threshold);
         PerfectEmployeeRules perfectEmployeeRules = this.perfectEmployeeRules;
         List<Rule> technologyRules = rulesService.createRulesForTechnology(perfectEmployeeRules.getTechnologyRules());
@@ -260,12 +272,33 @@ public class RuleController {
         droolsUtility.createRules(perfectEmployeeRuleList, "rules/template/PerfectEmployeeRules.drl", perfectEmployeeRules.getJobId());
 
         JobOffer offer = jobOfferService.getJobOfferById(perfectEmployeeRules.getJobId());
-        Integer maxPointsValue = perfectEmployeeRuleList.stream().mapToInt(rule -> rule.getScore()).sum();
+        int maxPointsValue = perfectEmployeeRuleList.stream().mapToInt(Rule::getScore).sum();
         offer.setContainsRules(Boolean.TRUE);
         offer.setThresholdPercentagePoints(thresholdPercentage);
         offer.setMaximalPoints(maxPointsValue);
-        jobOfferService.editJobOffer(offer);
-        return new ResponseEntity<String>("rule finalize", HttpStatus.OK);
+
+        if (employer.getPremiumMember()) {
+            List<Candidate> candidates = candidateService.getAllCandidates();
+            candidates.forEach(candidate -> {
+                JobOfferApplication application = new JobOfferApplication();
+
+                application.setJobOffer(offer);
+                application.setCandidate(candidate);
+
+                Integer score = candidateService.evaluateScoringOnJobOffer(offer.getJobId(), candidate);
+                Double percent = Double.valueOf(score * 100 / offer.getMaximalPoints());
+
+
+                application.setPercentOfMaxScore(percent);
+                application.setCalculatedScore(score);
+                application.setPotential(true);
+                offer.addApplication(application);
+            });
+
+        }
+        jobOfferService.updateJobOffer(offer);
+        model.addAttribute("potentialApplications", offer.getPotentialJobOfferApplications());
+        return "redirect:/employer/jobOfferInventory";
     }
 
     @RequestMapping(value = "rule/delete", method = RequestMethod.POST)

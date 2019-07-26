@@ -21,15 +21,14 @@ public class JobOfferServiceImpl implements JobOfferService {
     }
 
     @Override
-    public String addJobOfferWithCandidate(JobOffer jobOffer) {
-        String id = jobOfferDao.addJobOfferWithCandidate(jobOffer);
+    public String editJobOffer(JobOffer jobOffer) {
+        String id = jobOfferDao.editJobOffer(jobOffer);
         return id;
     }
 
     @Override
-    public String editJobOffer(JobOffer jobOffer) {
-        String id = jobOfferDao.editJobOffer(jobOffer);
-        return id;
+    public JobOffer updateJobOffer(JobOffer jobOffer) {
+        return jobOfferDao.updateJobOffer(jobOffer);
     }
 
     @Override

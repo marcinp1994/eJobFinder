@@ -69,16 +69,30 @@
                     </h4>
                     <p style="font-size:15px;">${jobOffer.additionalInfo}</p>
 					</c:if>
-
+<c:set var="alreadyApplied" value="false" />
+ <c:forEach var="app" items="${jobOffer.jobOfferApplications}">
+  <c:if test="${app.candidate.candidateId eq candidate}">
+                            <c:set var="alreadyApplied" value="true" />
+     </c:if>
+</c:forEach>
+                                          <c:if test="${alreadyApplied}">
+                                             <div class="alert alert-warning" role="alert">
+                                                   Applying for the same job offer second time is not possible!!!
+                                                  </div>
+                                         </c:if>
                        <c:if test="${pageContext.request.userPrincipal.name != null}">
                             <c:if test="${pageContext.request.isUserInRole('ROLE_USER')}">
                            <div class="dropdown">
-                                 <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">Apply
+                                 <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown"
+                                                    <c:if test="${alreadyApplied}">
+                                                    disabled style="display: none;"
+                                                      </c:if>
+                                 >Apply
                                  <span class="caret"></span></button>
                                  <ul class="dropdown-menu">
                                  <li><a href="<spring:url value="/candidate/${jobOffer.jobId}/apply" />">Use my profile</a></li>
                                  <li role="separator" class="divider"></li>
-                                 <li><a href="<spring:url value="/candidate/${jobOffer.jobId}/apply" />">Fill up candidate profile</a></li>
+                                 <li><a href="<spring:url value="/candidate/withNewProfile/${jobOffer.jobId}"/>">Fill up candidate profile</a></li>
                                  </ul>
                                </div>
                              </c:if>

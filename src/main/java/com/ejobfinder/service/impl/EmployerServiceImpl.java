@@ -29,4 +29,9 @@ public class EmployerServiceImpl implements EmployerService {
     public Employer getEmployerByUsername(String username) {
         return employerDao.getEmployerByUsername(username);
     }
+
+    @Override
+    public Employer updateEmployer(Employer employer) {
+        return employerDao.updateEmployer(employer);
+    }
 }

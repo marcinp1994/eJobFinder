@@ -20,4 +20,14 @@ $("#txtEditor5").Editor();
 $("input:submit").click(function(){
 $('#txtEditorContent5').text($('#txtEditor5').Editor("getText"));});
 
+$('#jobForm').on('keyup keypress', function(e) {
+  var keyCode = e.keyCode || e.which;
+  if (keyCode === 13) {
+    e.preventDefault();
+    return false;
+  }
+});
+$('form input').on('keypress', function(e) {
+    return e.which !== 13;
+});
 });

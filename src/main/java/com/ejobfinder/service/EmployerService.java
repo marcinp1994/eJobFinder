@@ -13,4 +13,6 @@ public interface EmployerService {
     List<Employer> getAllEmployers();
 
     Employer getEmployerByUsername(String username);
+
+    Employer updateEmployer(Employer employer);
 }

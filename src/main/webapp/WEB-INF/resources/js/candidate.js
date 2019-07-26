@@ -483,7 +483,6 @@ $(document).ready(function() {
     });
 
     $("#sendFormButton").click(function() {
-
         $.ajax({
             type: "POST",
             url: "/eJobFinder/fact/finalize",
@@ -500,8 +499,28 @@ $(document).ready(function() {
             }
         });
 
-
     });
+
+        $("#applyButton").click(function() {
+
+         var arr = window.location.pathname.split('/');
+         var jobId = arr[arr.length-1];
+            $.ajax({
+                type: "POST",
+                url: "/eJobFinder/fact/applyWithTempProfile",
+                data: jQuery.param({
+                       jobId:jobId
+                }),
+                timeout: 600000,
+                success: function(data) {
+                    var link = "http://localhost:8080/eJobFinder/jobOfferList";
+                    $(location).attr('href', link);
+                },
+                error: function(e) {
+                    console.log('error while post');
+                }
+            });
+                });
 });
 
 function deleteRow(rowName, table) {

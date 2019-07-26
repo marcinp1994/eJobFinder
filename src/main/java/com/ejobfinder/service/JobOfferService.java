@@ -8,9 +8,9 @@ public interface JobOfferService {
 
     String addJobOffer(JobOffer jobOffer);
 
-    String addJobOfferWithCandidate(JobOffer jobOffer);
-
     String editJobOffer(JobOffer jobOffer);
+
+    JobOffer updateJobOffer(JobOffer jobOffer);
 
     JobOffer getJobOfferById(String jobId);
 

@@ -48,8 +48,11 @@ public class EmployerController {
 
     @RequestMapping("/employer/jobOfferInventory")
     public String employerPageInventory(@AuthenticationPrincipal User activeUser, Model model) {
+        Employer employer = employerService.getEmployerByUsername(activeUser.getUsername());
         List<JobOffer> jobOffers = jobOfferService.getJobOffersByEmployerName(activeUser.getUsername());
         model.addAttribute("jobOffers", jobOffers);
+        model.addAttribute("isPremium", employer.getPremiumMember());
+
         return "jobOfferInventory";
     }
 
@@ -59,6 +62,66 @@ public class EmployerController {
 
         model.addAttribute("name", employer.getName());
         model.addAttribute("lastName", employer.getLastName());
+        model.addAttribute("isPremium", employer.getPremiumMember());
+
+        List<JobOffer> jobOffers = jobOfferService.getJobOffersByEmployerName(activeUser.getUsername());
+        boolean notificationNeeded = jobOffers != null && jobOffers.stream().anyMatch(jobOffer -> jobOffer.getJobOfferApplications().stream().anyMatch(application ->
+                application.getEmployerAcceptancee() != null &&
+                        application.getCandidateAcceptancee() != application.getEmployerAcceptancee()
+                        && application.getCandidateAcceptancee()
+        ));
+
+        model.addAttribute("notify", notificationNeeded);
+        model.addAttribute("offers", jobOffers);
+
+        return "employer";
+    }
+
+    @RequestMapping("/employer/buyPremium")
+    public String buyPremium(Model model, @AuthenticationPrincipal User activeUser) {
+        Employer employer = employerService.getEmployerByUsername(activeUser.getUsername());
+
+        employer.setPremiumMember(true);
+        model.addAttribute("name", employer.getName());
+        model.addAttribute("lastName", employer.getLastName());
+        model.addAttribute("isPremium", employer.getPremiumMember());
+
+        employerService.updateEmployer(employer);
+
+        List<JobOffer> jobOffers = jobOfferService.getJobOffersByEmployerName(activeUser.getUsername());
+        boolean notificationNeeded = jobOffers.stream().anyMatch(jobOffer -> jobOffer.getJobOfferApplications().stream().anyMatch(application ->
+                application.getEmployerAcceptancee() != null &&
+                        application.getCandidateAcceptancee() != application.getEmployerAcceptancee()
+                        && application.getCandidateAcceptancee()
+        ));
+
+        model.addAttribute("notify", notificationNeeded);
+        model.addAttribute("offers", jobOffers);
+
+        return "employer";
+    }
+
+    @RequestMapping("/employer/cancelPremium")
+    public String cancelPremium(Model model, @AuthenticationPrincipal User activeUser) {
+        Employer employer = employerService.getEmployerByUsername(activeUser.getUsername());
+
+        employer.setPremiumMember(false);
+        model.addAttribute("name", employer.getName());
+        model.addAttribute("lastName", employer.getLastName());
+        model.addAttribute("isPremium", employer.getPremiumMember());
+
+        employerService.updateEmployer(employer);
+
+        List<JobOffer> jobOffers = jobOfferService.getJobOffersByEmployerName(activeUser.getUsername());
+        boolean notificationNeeded = jobOffers.stream().anyMatch(jobOffer -> jobOffer.getJobOfferApplications().stream().anyMatch(application ->
+                application.getEmployerAcceptancee() != null &&
+                        application.getCandidateAcceptancee() != application.getEmployerAcceptancee()
+                        && application.getCandidateAcceptancee()
+        ));
+
+        model.addAttribute("notify", notificationNeeded);
+        model.addAttribute("offers", jobOffers);
+
         return "employer";
     }
 
@@ -70,6 +133,7 @@ public class EmployerController {
         jobOffer.setEmployer(employer);
         model.addAttribute("jobOffer", jobOffer);
         model.addAttribute("location", location);
+        model.addAttribute("isPremium", employer.getPremiumMember());
 
         return "addJobOffer";
     }
@@ -109,9 +173,16 @@ public class EmployerController {
         return "redirect:/employer/jobOfferInventory/perfectEmployee/" + offerID;
     }
 
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+    }
+
     @RequestMapping(value = "/employer/jobOfferInventory/deleteJobOffer/{jobId}")
     public String deleteJobOffer(@PathVariable String jobId, @AuthenticationPrincipal User activeUser, Model model, HttpServletRequest request) {
+        Employer employer = employerService.getEmployerByUsername(activeUser.getUsername());
 
+        model.addAttribute("isPremium", employer.getPremiumMember());
         String rootDirectory = request.getSession().getServletContext().getRealPath("/");
         path = Paths.get(rootDirectory + "\\WEB-INF\\resources\\images\\" + jobId + ".png");
 
@@ -126,6 +197,27 @@ public class EmployerController {
         jobOfferService.deleteJobOffer(jobId);
 
         return "redirect:/employer/jobOfferInventory";
+    }
+
+    @RequestMapping("/employer/report")
+    public String reportPage(Model model, @AuthenticationPrincipal User activeUser) {
+        Employer employer = employerService.getEmployerByUsername(activeUser.getUsername());
+
+        model.addAttribute("name", employer.getName());
+        model.addAttribute("lastName", employer.getLastName());
+        model.addAttribute("isPremium", employer.getPremiumMember());
+
+        List<JobOffer> jobOffers = jobOfferService.getJobOffersByEmployerName(activeUser.getUsername());
+        boolean notificationNeeded = jobOffers.stream().anyMatch(jobOffer -> jobOffer.getJobOfferApplications().stream().anyMatch(application ->
+                application.getEmployerAcceptancee() != null &&
+                        application.getCandidateAcceptancee() != application.getEmployerAcceptancee() &&
+                        application.getCandidateAcceptancee()
+        ));
+
+        model.addAttribute("notify", notificationNeeded);
+        model.addAttribute("offers", jobOffers);
+
+        return "report";
     }
 
     @RequestMapping("/employer/jobOfferInventory/editJobOffer/{jobId}")
@@ -167,33 +259,26 @@ public class EmployerController {
     }
 
     @RequestMapping("/employer/jobOfferInventory/perfectEmployee/{jobId}")
-    public String perfectEmployee(@PathVariable("jobId") String jobId, Model model, HttpServletRequest request) {
+    public String perfectEmployee(@PathVariable("jobId") String jobId, @AuthenticationPrincipal User activeUser, Model model, HttpServletRequest request) {
         JobOffer jobOffer = jobOfferService.getJobOfferById(jobId);
+        Employer employer = employerService.getEmployerByUsername(activeUser.getUsername());
+
         perfectEmployeeRules.setJobId(jobId);
         model.addAttribute(jobOffer);
-
         model.addAttribute("technologies", TechnologiesConst.TECHNOLOGY_LIST);
-
         model.addAttribute("skills", SkillsConst.SKILL_LIST);
-
         model.addAttribute("tools", ToolsConst.TOOLS_LIST);
-
         model.addAttribute("languages", LanguagesConst.LANGUAGE_LIST);
         model.addAttribute("languages_levels", LanguagesConst.LANGUAGE_LEVELS);
-
         model.addAttribute("locations", LocationsConst.LOCATION_LIST);
-
         model.addAttribute("workingHours", WorkingHoursConst.VALUES_LIST);
-
         model.addAttribute("typeOfContracts", TypeOfContractsConst.VALUES_LIST);
-
         model.addAttribute("periods", PeriodOfNoticesConst.VALUES_LIST);
-
         model.addAttribute("eduTitles", EducationsConst.PROFESSIONAL_TITLES_LIST);
         model.addAttribute("eduFields", EducationsConst.FIELD_OF_STUDY_LIST);
         model.addAttribute("eduModes", EducationsConst.MODE_OF_STUDY_LIST);
-
         model.addAttribute("jobTitles", JobTitlesConst.JON_TITLE_LIST);
+        model.addAttribute("isPremium", employer.getPremiumMember());
 
         return "perfectEmployee";
     }

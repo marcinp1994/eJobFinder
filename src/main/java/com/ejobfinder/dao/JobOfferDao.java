@@ -8,7 +8,7 @@ public interface JobOfferDao {
 
     String addJobOffer(JobOffer jobOffer);
 
-    String addJobOfferWithCandidate(JobOffer jobOffer);
+    JobOffer updateJobOffer(JobOffer jobOffer);
 
     String editJobOffer(JobOffer jobOffer);
 

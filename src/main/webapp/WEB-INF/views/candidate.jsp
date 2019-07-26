@@ -79,7 +79,6 @@
 
                                     <button type="button" id="add_row" class="btn btn-primary" style="float: right;"> Add</button>
 
-                                    <table class="table table-hover" id="tableOfFacts" style="display: none;">
 
                                         <c:if test="${empty technologyFacts}">
                                             <table class="table table-hover" id="tableOfFacts" style="display: none;">
@@ -925,8 +924,16 @@
                 </div>
 
                 <div style=" height:50px; width:98%;">
+                  <c:if test="${empty jobId}">
                     <button type="button" id="sendFormButton" class="btn btn-primary" style="position:relative; width:50%; height:50px; left:25%">Update my profile</button>
+                   </c:if>
+                        <c:if test="${not empty jobId}">
+                                       <button type="button" id="applyButton" class="btn btn-primary" style="position:relative; width:50%; height:50px; left:25%">Apply</button>
+                     </c:if>
+
                 </div>
+
+
                 </form:form>
                 <%@include file="/WEB-INF/views/template/footer.jsp" %>
                     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

@@ -27,6 +27,8 @@
 
         </div>
 
+
+
         <div class="form-group">
             <label class="control-label" for="companyLogo">Upload Company Logo</label>
             <form:errors path="companyLogo" cssStyle="color: red;" />
@@ -39,10 +41,15 @@
             <form:input path="position" id="position" class="form-Control" required="required" data-error="Please enter your Position."/>
         </div>
 
+             <div class="form-group" style="width:100%;">
+                  <label for="tags">Add tags for your job offer</label><br>
+               <form:input type="text" value="" placeholder="Add tag here"  style="width: -webkit-fill-available;" data-role="tagsinput" id="tag" class="form-control" path="tags"/>
+              </div>
+
         <div class="form-group">
             <label for="expirationDate">Expiration Date:</label>
              <form:errors path="expirationDate" cssStyle="color: red;" />
-            <form:input type="date" class="form-control" path="expirationDate" id="expirationDate" required="required" data-error="Please enter your Expiration Date."/>
+            <form:input type="date" class="form-control" style="width:100%;" path="expirationDate" id="expirationDate" required="required" data-error="Please enter your Expiration Date."/>
         </div>
 
         <div class="form-group">
@@ -118,5 +125,6 @@
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script src="http://1000hz.github.io/bootstrap-validator/dist/validator.min.js"></script>
 <script src="<c:url value="/resources/js/editor.js" />"></script>
+<script src="<c:url value="/resources/js/bootstrap-tagsinput.js" />"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/addJobOffer.js" />"></script>
 

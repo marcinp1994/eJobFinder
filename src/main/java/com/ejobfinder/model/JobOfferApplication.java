@@ -15,8 +15,20 @@ public class JobOfferApplication {
     private Candidate candidate;
     @Column(name = "score")
     private Integer calculatedScore;
+    @Column(name = "isPotential", nullable = false)
+    private boolean potential;
     @Column(name = "percentOfMaxScore")
     private Double percentOfMaxScore;
+    @Column(name = "employerAcceptance")
+    private Boolean employerAcceptancee;
+    @Column(name = "candidateAcceptance")
+    private Boolean candidateAcceptancee;
+
+    public JobOfferApplication() {
+        employerAcceptancee = null;
+        candidateAcceptancee = Boolean.FALSE;
+        potential = false;
+    }
 
     public String getApplicationId() {
         return applicationId;
@@ -56,5 +68,40 @@ public class JobOfferApplication {
 
     public void setPercentOfMaxScore(Double percentOfMaxScore) {
         this.percentOfMaxScore = percentOfMaxScore;
+    }
+
+    public Boolean getEmployerAcceptancee() {
+        return employerAcceptancee;
+    }
+
+    public int getEmployerAcceptanceeAsInt() {
+        if (employerAcceptancee == null) {
+            return 0;
+        }
+        if (employerAcceptancee) {
+            return 1;
+        }
+        return -1;
+    }
+
+
+    public void setEmployerAcceptancee(boolean employerAcceptancee) {
+        this.employerAcceptancee = employerAcceptancee;
+    }
+
+    public boolean getCandidateAcceptancee() {
+        return candidateAcceptancee;
+    }
+
+    public void setCandidateAcceptancee(boolean candidateAcceptancee) {
+        this.candidateAcceptancee = candidateAcceptancee;
+    }
+
+    public boolean getPotential() {
+        return potential;
+    }
+
+    public void setPotential(boolean potential) {
+        this.potential = potential;
     }
 }

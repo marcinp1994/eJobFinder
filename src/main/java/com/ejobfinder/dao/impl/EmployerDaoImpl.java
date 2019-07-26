@@ -40,6 +40,14 @@ public class EmployerDaoImpl implements EmployerDao {
         session.flush();
     }
 
+    @Override
+    public Employer updateEmployer(Employer employer) {
+        Session session = sessionFactory.getCurrentSession();
+        session.evict(employer);
+        session.saveOrUpdate(employer);
+        session.flush();
+        return employer;
+    }
     public Employer getEmployerById(int employerId) {
         Session session = sessionFactory.getCurrentSession();
         return (Employer) session.get(Employer.class, employerId);

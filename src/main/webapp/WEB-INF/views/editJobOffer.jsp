@@ -38,7 +38,10 @@
              <form:errors path="position" cssStyle="color: red;" />
             <form:input path="position" id="position" class="form-Control" value="${jobOffer.position}" required="required" data-error="Please enter your Position."/>
         </div>
-
+             <div class="form-group" style="width:100%;">
+                  <label for="tags">Add tags for your job offer</label><br>
+               <form:input type="text" value="" placeholder="Add tag here"  style="width: -webkit-fill-available;" data-role="tagsinput" id="tag" class="form-control" path="tags"/>
+              </div>
         <div class="form-group">
             <label for="expirationDate">Expiration Date:</label>
             <form:input type="date" class="form-control" path="expirationDate" id="expirationDate" required="required" data-error="Please enter your Expiration Date."/>
@@ -110,4 +113,5 @@
         <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
         <script src="<c:url value="/resources/js/editor.js" />"></script>
+        <script src="<c:url value="/resources/js/bootstrap-tagsinput.js" />"></script>
         <script src="<c:url value="/resources/js/editJobOffer.js" />"></script>

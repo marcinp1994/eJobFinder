@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Candidate implements Serializable {
@@ -123,7 +124,11 @@ public class Candidate implements Serializable {
     }
 
     public Set<JobOfferApplication> getJobOfferApplications() {
-        return jobOfferApplications;
+        return jobOfferApplications.stream().filter(application -> !application.getPotential()).collect(Collectors.toSet());
+    }
+
+    public Set<JobOfferApplication> getProposals() {
+        return jobOfferApplications.stream().filter(application -> application.getPotential() && application.getEmployerAcceptancee() != null && application.getEmployerAcceptancee()).collect(Collectors.toSet());
     }
 
     public void setJobOfferApplications(Set<JobOfferApplication> jobOfferApplications) {
