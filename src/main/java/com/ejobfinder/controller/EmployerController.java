@@ -89,7 +89,8 @@ public class EmployerController {
         employerService.updateEmployer(employer);
 
         List<JobOffer> jobOffers = jobOfferService.getJobOffersByEmployerName(activeUser.getUsername());
-        boolean notificationNeeded = jobOffers.stream().anyMatch(jobOffer -> jobOffer.getJobOfferApplications().stream().anyMatch(application ->
+
+        boolean notificationNeeded = jobOffers != null && jobOffers.stream().anyMatch(jobOffer -> jobOffer.getJobOfferApplications().stream().anyMatch(application ->
                 application.getEmployerAcceptancee() != null &&
                         application.getCandidateAcceptancee() != application.getEmployerAcceptancee()
                         && application.getCandidateAcceptancee()
@@ -113,7 +114,7 @@ public class EmployerController {
         employerService.updateEmployer(employer);
 
         List<JobOffer> jobOffers = jobOfferService.getJobOffersByEmployerName(activeUser.getUsername());
-        boolean notificationNeeded = jobOffers.stream().anyMatch(jobOffer -> jobOffer.getJobOfferApplications().stream().anyMatch(application ->
+        boolean notificationNeeded = jobOffers != null && jobOffers.stream().anyMatch(jobOffer -> jobOffer.getJobOfferApplications().stream().anyMatch(application ->
                 application.getEmployerAcceptancee() != null &&
                         application.getCandidateAcceptancee() != application.getEmployerAcceptancee()
                         && application.getCandidateAcceptancee()
