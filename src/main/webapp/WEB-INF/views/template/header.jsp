@@ -19,16 +19,15 @@
     <link href="<c:url value="/resources/css/editor.css" />" type="text/css" rel="stylesheet"/>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-
 </head>
-<!-- NAVBAR
-================================================== -->
+<!-- NAVBAR================================================== -->
 <body style="background-color:#F5F5F5;">
 <div class="navbar-wrapper">
     <div class="container">
 
         <nav class="navbar navbar-inverse navbar-static-top">
             <div class="container">
+
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
                             aria-expanded="false" aria-controls="navbar">
@@ -39,7 +38,9 @@
                     </button>
                     <a class="navbar-brand" href="<c:url value="/" /> ">Job Offer</a>
                 </div>
+
                 <div id="navbar" class="navbar-collapse collapse">
+
                     <ul class="nav navbar-nav">
                         <li><a href="<c:url value="/" /> ">Home</a></li>
                         <li><a href="<c:url value="/jobOfferList" />">Job Offers</a></li>
@@ -54,7 +55,16 @@
                           <li><a href="<c:url value="/jobOfferList/Logistic" />">Logistic</a></li>
                        </ul>
                     </li>
-                    </ul>
+                    </ul>    <div class="col-sm-3 col-md-3">
+                                      <form  role="search" action="/eJobFinder/search">
+                                       <div class="input-group" style="margin-left:20px; margin-top:8px;">
+                                      <input type="text" style="border-radius: 30px; width:300px;" class="form-control" placeholder="Search..." name="searchString" id="searchString"   >
+                                     <div class="input-group-btn">   <button class="btn" style=" background: none;float: left; type="submit">
+                                     <span style="color:white; " class="glyphicon glyphicon-search">
+                                     </span></button>       </div>
+                                                             </div>
+                                                             </form>
+                                           </div>
                     <ul class="nav navbar-nav pull-right">
                         <c:if test="${pageContext.request.userPrincipal.name != null}">
                             <li><a>Welcome: ${pageContext.request.userPrincipal.name}</a></li>
@@ -66,6 +76,7 @@
                                 <li><a href="<c:url value="/candidate/candidateMainPage" />">MyAccount</a></li>
                             </c:if>
                         </c:if>
+
                         <c:if test="${pageContext.request.userPrincipal.name  == null}">
                             <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Login<span class="caret"></span></a>
@@ -87,7 +98,11 @@
                     </ul>
                 </div>
             </div>
+
         </nav>
+
+    </div>
+
 
     </div>
 </div>

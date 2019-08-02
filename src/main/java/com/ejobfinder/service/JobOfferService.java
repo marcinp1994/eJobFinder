@@ -1,6 +1,8 @@
 package com.ejobfinder.service;
 
+import com.ejobfinder.model.Candidate;
 import com.ejobfinder.model.JobOffer;
+import com.ejobfinder.model.JobOfferApplication;
 
 import java.util.List;
 
@@ -23,4 +25,6 @@ public interface JobOfferService {
     List<JobOffer> getJobOffersByCategory(String category);
 
     List<JobOffer> getJobOffersByEmployerId(int id);
+
+    void matchTagsWithCandidateCV(JobOffer offer, Candidate candidate, JobOfferApplication application);
 }

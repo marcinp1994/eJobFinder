@@ -18,7 +18,9 @@ import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -32,7 +34,6 @@ public class CandidateController {
     @Autowired
     private CandidateFacts candidateFacts;
 
-
     @Autowired
     private JobOfferService jobOfferService;
 
@@ -42,7 +43,7 @@ public class CandidateController {
     @RequestMapping("/candidate")
     public String candidatePage(Model model, @AuthenticationPrincipal User activeUser) {
 
-        Candidate candidate = candidateService.getCandidateByUsername(activeUser.getUsername());
+        Candidate candidate = activeUser != null ? candidateService.getCandidateByUsername(activeUser.getUsername()) : null;
 
         //clear facts in session
         candidateFacts.getEducationFacts().clear();
@@ -57,6 +58,7 @@ public class CandidateController {
         candidateFacts.getWorkingHoursFacts().clear();
 
         //set readed facts from DB to session
+        assert candidate != null;
         candidateFacts.getEducationFacts().addAll(candidate.getEducationFacts());
         candidateFacts.getLanguageFacts().addAll(candidate.getLanguageFacts());
         candidateFacts.getSalaryFacts().addAll(candidate.getSalaryFacts());
@@ -67,7 +69,6 @@ public class CandidateController {
         candidateFacts.getPeriodOfNoticeFacts().addAll(candidate.getPeriodOfNoticeFacts());
         candidateFacts.getTypeOfContractFacts().addAll(candidate.getTypeOfContractFacts());
         candidateFacts.getWorkingHoursFacts().addAll(candidate.getWorkingHoursFacts());
-
 
         //add facts FROM DB to GUI
         model.addAttribute("technologyFacts", candidate.getTechnologyFacts());
@@ -83,26 +84,17 @@ public class CandidateController {
         model.addAttribute("toolFacts", candidate.getToolFacts());
 
         model.addAttribute("technologies", TechnologiesConst.TECHNOLOGY_LIST);
-
         model.addAttribute("skills", SkillsConst.SKILL_LIST);
-
         model.addAttribute("tools", ToolsConst.TOOLS_LIST);
-
         model.addAttribute("languages", LanguagesConst.LANGUAGE_LIST);
         model.addAttribute("languages_levels", LanguagesConst.LANGUAGE_LEVELS);
-
         model.addAttribute("locations", LocationsConst.LOCATION_LIST);
-
         model.addAttribute("workingHours", WorkingHoursConst.VALUES_LIST);
-
         model.addAttribute("typeOfContracts", TypeOfContractsConst.VALUES_LIST);
-
         model.addAttribute("periods", PeriodOfNoticesConst.VALUES_LIST);
-
         model.addAttribute("eduTitles", EducationsConst.PROFESSIONAL_TITLES_LIST);
         model.addAttribute("eduFields", EducationsConst.FIELD_OF_STUDY_LIST);
         model.addAttribute("eduModes", EducationsConst.MODE_OF_STUDY_LIST);
-
         model.addAttribute("jobTitles", JobTitlesConst.JON_TITLE_LIST);
         model.addAttribute("isTemp", Boolean.FALSE);
 
@@ -119,6 +111,7 @@ public class CandidateController {
         model.addAttribute("tools", ToolsConst.TOOLS_LIST);
 
         model.addAttribute("languages", LanguagesConst.LANGUAGE_LIST);
+
         model.addAttribute("languages_levels", LanguagesConst.LANGUAGE_LEVELS);
 
         model.addAttribute("locations", LocationsConst.LOCATION_LIST);
@@ -130,20 +123,26 @@ public class CandidateController {
         model.addAttribute("periods", PeriodOfNoticesConst.VALUES_LIST);
 
         model.addAttribute("eduTitles", EducationsConst.PROFESSIONAL_TITLES_LIST);
+
         model.addAttribute("eduFields", EducationsConst.FIELD_OF_STUDY_LIST);
+
         model.addAttribute("eduModes", EducationsConst.MODE_OF_STUDY_LIST);
 
         model.addAttribute("jobTitles", JobTitlesConst.JON_TITLE_LIST);
+
         model.addAttribute("isTemp", Boolean.TRUE);
+
         model.addAttribute("jobId", jobId);
+
         return "candidate";
     }
 
     @RequestMapping("/candidate/candidateMainPage")
     public String candidateMainPage(Model model, @AuthenticationPrincipal User activeUser) {
 
-        Candidate candidate = candidateService.getCandidateByUsername(activeUser.getUsername());
+        Candidate candidate = activeUser != null ? candidateService.getCandidateByUsername(activeUser.getUsername()) : null;
 
+        assert candidate != null;
         model.addAttribute("name", candidate.getName());
         model.addAttribute("lastName", candidate.getLastName());
         model.addAttribute("candidateId", candidate.getCandidateId());
@@ -171,7 +170,7 @@ public class CandidateController {
         candidateFacts.addTechnologyFact(fact);
 
         int newSize = candidateFacts.getTechnologyFacts().size();
-        return new ResponseEntity<String>("Technology fact created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("Technology fact created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "fact/skill", method = RequestMethod.POST)
@@ -185,7 +184,7 @@ public class CandidateController {
         candidateFacts.addSkillFact(fact);
 
         int newSize = candidateFacts.getSkillFacts().size();
-        return new ResponseEntity<String>("Skill fact created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("Skill fact created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "fact/tool", method = RequestMethod.POST)
@@ -200,7 +199,7 @@ public class CandidateController {
         candidateFacts.addToolFact(fact);
 
         int newSize = candidateFacts.getToolFacts().size();
-        return new ResponseEntity<String>("Tool fact created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("Tool fact created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "fact/language", method = RequestMethod.POST)
@@ -215,7 +214,7 @@ public class CandidateController {
         candidateFacts.addLanguageFact(fact);
 
         int newSize = candidateFacts.getLanguageFacts().size();
-        return new ResponseEntity<String>("Language fact created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("Language fact created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "fact/location", method = RequestMethod.POST)
@@ -227,7 +226,7 @@ public class CandidateController {
         candidateFacts.addLocationFact(fact);
 
         int newSize = candidateFacts.getLocationFacts().size();
-        return new ResponseEntity<String>("Location fact created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("Location fact created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "fact/salary", method = RequestMethod.POST)
@@ -243,7 +242,7 @@ public class CandidateController {
         candidateFacts.addSalaryFact(fact);
 
         int newSize = candidateFacts.getSalaryFacts().size();
-        return new ResponseEntity<String>("Salary ule created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("Salary ule created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "fact/workingHours", method = RequestMethod.POST)
@@ -255,7 +254,7 @@ public class CandidateController {
         candidateFacts.addWorkingHoursFact(fact);
 
         int newSize = candidateFacts.getWorkingHoursFacts().size();
-        return new ResponseEntity<String>("WorkingHours fact created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("WorkingHours fact created with new size=" + newSize, HttpStatus.OK);
 
     }
 
@@ -268,7 +267,7 @@ public class CandidateController {
         candidateFacts.addTypeOfContractFact(fact);
 
         int newSize = candidateFacts.getTypeOfContractFacts().size();
-        return new ResponseEntity<String>("TypeOfContract fact created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("TypeOfContract fact created with new size=" + newSize, HttpStatus.OK);
 
     }
 
@@ -281,7 +280,7 @@ public class CandidateController {
         candidateFacts.addPeriodOfNoticeFact(fact);
 
         int newSize = candidateFacts.getPeriodOfNoticeFacts().size();
-        return new ResponseEntity<String>("PeriodOfNotice fact created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("PeriodOfNotice fact created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "fact/previousEmployerRule", method = RequestMethod.POST)
@@ -296,7 +295,7 @@ public class CandidateController {
         PreviousEmployerFact fact = new PreviousEmployerFact(name, yearDouble, stillWorking, haveProfessionalExperienc);
         candidateFacts.addPreviousEmployerFact(fact);
         int newSize = candidateFacts.getPreviousEmployerFacts().size();
-        return new ResponseEntity<String>("PreviousEmployerfact created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("PreviousEmployerfact created with new size=" + newSize, HttpStatus.OK);
     }
 
 
@@ -312,21 +311,21 @@ public class CandidateController {
 
         candidateFacts.addEducationFact(fact);
         int newSize = candidateFacts.getEducationFacts().size();
-        return new ResponseEntity<String>("Education fact created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("Education fact created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "fact/delete", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> deleteFact(@RequestParam String name) {
         candidateFacts.deleteFact(name);
-        return new ResponseEntity<String>("fact deleted", HttpStatus.OK);
+        return new ResponseEntity<>("fact deleted", HttpStatus.OK);
     }
 
     @RequestMapping(value = "fact/finalize", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> finalizeAndUpdatedProfile(@AuthenticationPrincipal User activeUser) {
         CandidateFacts factsAboutUser = this.candidateFacts;
-        Candidate candidate = candidateService.getCandidateByUsername(activeUser.getUsername());
+        Candidate candidate = activeUser != null ? candidateService.getCandidateByUsername(activeUser.getUsername()) : null;
         if (candidate == null) {
             candidate = new Candidate();
             copyValuesToCandidate(candidate, factsAboutUser);
@@ -356,11 +355,16 @@ public class CandidateController {
                     JobOfferApplication newApplication = new JobOfferApplication();
                     newApplication.setJobOffer(jobOffer);
                     newApplication.setCandidate(finalCandidate);
+
                     Integer score = candidateService.evaluateScoringOnJobOffer(jobOffer.getJobId(), finalCandidate);
                     Double percent = (double) (score * 100 / jobOffer.getMaximalPoints());
+
+                    jobOfferService.matchTagsWithCandidateCV(jobOffer, finalCandidate, newApplication);
+
                     newApplication.setPercentOfMaxScore(percent);
                     newApplication.setCalculatedScore(score);
                     newApplication.setPotential(true);
+
                     jobOffer.addApplication(newApplication);
                     alreadyApply.set(true);
                 }
@@ -372,7 +376,7 @@ public class CandidateController {
         });
 
 
-        return new ResponseEntity<String>("profile successfully updated", HttpStatus.OK);
+        return new ResponseEntity<>("profile successfully updated", HttpStatus.OK);
     }
 
     @RequestMapping(value = "fact/applyWithTempProfile", method = RequestMethod.POST)
@@ -380,7 +384,7 @@ public class CandidateController {
     public ResponseEntity<String> applyWithTempProfile(@AuthenticationPrincipal User activeUser, @RequestParam String jobId) {
         CandidateFacts factsAboutUser = this.candidateFacts;
         JobOffer jobOffer = jobOfferService.getJobOfferById(jobId);
-        Candidate candidate = candidateService.getCandidateByUsername(activeUser.getUsername());
+        Candidate candidate = activeUser != null ? candidateService.getCandidateByUsername(activeUser.getUsername()) : null;
         if (candidate == null) {
             candidate = new Candidate();
             copyValuesToCandidate(candidate, factsAboutUser);
@@ -394,7 +398,9 @@ public class CandidateController {
         application.setCandidateAcceptancee(Boolean.TRUE);
 
         Integer score = candidateService.evaluateScoringOnJobOffer(jobId, candidate);
-        Double percent = Double.valueOf((score / jobOffer.getMaximalPoints()) * 100);
+        Double percent = (double) ((score / jobOffer.getMaximalPoints()) * 100);
+
+        jobOfferService.matchTagsWithCandidateCV(jobOffer, candidate, application);
 
         application.setPercentOfMaxScore(percent);
         application.setCalculatedScore(score);
@@ -405,8 +411,43 @@ public class CandidateController {
         jobOfferService.updateJobOffer(jobOffer);
         // candidateService.updateCandidate(candidate);
 
-        return new ResponseEntity<String>("Applied", HttpStatus.OK);
+        return new ResponseEntity<>("Applied", HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/candidate/uploadCV", method = RequestMethod.POST)
+    public String uploadCV(@AuthenticationPrincipal User activeUser, @RequestParam("file") MultipartFile file) {
+
+        Candidate candidate = activeUser != null ? candidateService.getCandidateByUsername(activeUser.getUsername()) : null;
+        try {
+            assert candidate != null;
+            candidate.setCvFIle(file.getBytes());
+        } catch (IOException ignored) {
+
+        }
+        candidateService.updateCandidate(candidate);
+        List<JobOffer> allJobOffers = jobOfferService.getAllJobOffers();
+
+        updateAllExistingApplications(candidate, allJobOffers);
+
+        return "candidateMainPage";
+    }
+
+    private void updateAllExistingApplications(Candidate candidate, List<JobOffer> allJobOffers) {
+        allJobOffers.forEach(jobOffer -> {
+            AtomicBoolean shouldUpdate = new AtomicBoolean(false);
+            jobOffer.getAllJobOfferApplications().forEach(application -> {
+                //user already applied for job and now his result should be updated
+                if (application.getCandidate().getCandidateId() == candidate.getCandidateId()) {
+                    jobOfferService.matchTagsWithCandidateCV(jobOffer, candidate, application);
+                    shouldUpdate.set(true);
+                }
+            });
+            if (shouldUpdate.get()) {
+                jobOfferService.updateJobOffer(jobOffer);
+            }
+        });
+    }
+
 
     private void copyValuesToCandidate(Candidate candidate, CandidateFacts factsAboutUser) {
         candidate.getEducationFacts().clear();

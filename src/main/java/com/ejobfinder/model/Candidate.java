@@ -33,6 +33,10 @@ public class Candidate implements Serializable {
     @NotEmpty(message = "The candidate password must not be null.")
     private String password;
 
+    @Column(name = "cvFile")
+    @Lob
+    private byte[] cvFIle;
+
     @OneToMany(mappedBy = "candidate", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<JobOfferApplication> jobOfferApplications = new HashSet<>();
     @OneToMany(mappedBy = "candidate", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -57,7 +61,6 @@ public class Candidate implements Serializable {
     private Set<TypeOfContractFact> typeOfContractFacts = new HashSet<>();
     @OneToMany(mappedBy = "candidate", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<WorkingHoursFact> workingHoursFacts = new HashSet<>();
-
 
     private boolean enabled;
     //private CandidateFacts candidateFacts;
@@ -247,6 +250,14 @@ public class Candidate implements Serializable {
         this.workingHoursFacts = workingHoursFacts;
     }
 
+    public byte[] getCvFIle() {
+        return cvFIle;
+    }
+
+    public void setCvFIle(byte[] cvFIle) {
+        this.cvFIle = cvFIle;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -272,12 +283,13 @@ public class Candidate implements Serializable {
                 Objects.equals(periodOfNoticeFacts, candidate.periodOfNoticeFacts) &&
                 Objects.equals(salaryFacts, candidate.salaryFacts) &&
                 Objects.equals(typeOfContractFacts, candidate.typeOfContractFacts) &&
+                Objects.equals(cvFIle, candidate.cvFIle) &&
                 Objects.equals(workingHoursFacts, candidate.workingHoursFacts);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(candidateId, name, lastName, candidateEmail, candidatePhone, username, password, jobOfferApplications, technologyFacts, skillFacts, toolFacts, languageFacts, previousEmployerFacts, educationFacts, locationFacts, periodOfNoticeFacts, salaryFacts, typeOfContractFacts, workingHoursFacts, enabled, score);
+        return Objects.hash(candidateId, name, lastName, candidateEmail, candidatePhone, cvFIle, username, password, jobOfferApplications, technologyFacts, skillFacts, toolFacts, languageFacts, previousEmployerFacts, educationFacts, locationFacts, periodOfNoticeFacts, salaryFacts, typeOfContractFacts, workingHoursFacts, enabled, score);
     }
 }

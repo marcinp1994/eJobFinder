@@ -52,7 +52,7 @@ public class JobOffer {
     @JoinColumn()
     private Location location;
     @OneToMany(mappedBy = "jobOffer", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    private Set<JobOfferApplication> jobOfferApplications = new HashSet<JobOfferApplication>();
+    private Set<JobOfferApplication> jobOfferApplications = new HashSet<>();
     public String getPosition() {
         return position;
     }
@@ -161,6 +161,22 @@ public class JobOffer {
         return tags;
     }
 
+    public void setTags(Set<String> words) {
+        StringJoiner joiner = new StringJoiner(",");
+        words.forEach(joiner::add);
+        setTags(joiner.toString());
+    }
+
+    public Set<String> getUniqueTags() {
+        if (!tags.isEmpty()) {
+            String[] splitted = tags.split(",");
+            if (splitted.length > 0) {
+                return new HashSet<>(Arrays.asList(splitted));
+            }
+        }
+        return new HashSet<>();
+    }
+
     public void setTags(String tags) {
         this.tags = tags;
     }
@@ -208,19 +224,20 @@ public class JobOffer {
     public Set<JobOfferApplication> getAllJobOfferApplications() {
         return jobOfferApplications;
     }
+
     public Set<JobOfferApplication> getJobOfferApplications() {
         return jobOfferApplications.stream().filter(application -> !application.getPotential()).collect(Collectors.toSet());
     }
 
     public Set<JobOfferApplication> getPotentialJobOfferApplications() {
-        return jobOfferApplications.stream().filter(application -> application.getPotential()).collect(Collectors.toSet());
+        return jobOfferApplications.stream().filter(JobOfferApplication::getPotential).collect(Collectors.toSet());
     }
 
     public Set<JobOfferApplication> getPotentialJobOfferApplicationsWithMin() {
         return jobOfferApplications.stream().filter(application -> application.getPotential() && application.getPercentOfMaxScore() > this.getThresholdPercentagePoints()).sorted(Comparator.comparing(JobOfferApplication::getCalculatedScore)).collect(Collectors.toSet());
     }
 
-    public Set<JobOfferApplication> getValidJobOfferApplications() {
+    private Set<JobOfferApplication> getValidJobOfferApplications() {
         return jobOfferApplications.stream().filter(application -> application.getPercentOfMaxScore() >= this.thresholdPercentagePoints && !application.getPotential()).collect(Collectors.toSet());
     }
 

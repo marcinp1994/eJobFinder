@@ -134,6 +134,7 @@
                                                                 <th class="text-center" scope="col">Lastname</th>
                                                                 <th class="text-center" scope="col">Score</th>
                                                                 <th class="text-center" scope="col">Percent</th>
+                                                                <th class="text-center" scope="col">CV</th>
                                                                 <th class="text-center" scope="col">Acceptance</th>
                                                                 <th class="text-center" scope="col">Contact</th>
                                                             </tr>
@@ -147,6 +148,17 @@
                                                                     <td class="text-center">${jobOfferApplication.candidate.lastName}</td>
                                                                     <td class="text-center">${jobOfferApplication.calculatedScore}</td>
                                                                     <td class="text-center">${jobOfferApplication.percentOfMaxScore}</td>
+                                                                          <td>
+                                                                                        <c:choose>
+                                                                                                                                                      <c:when test="${not empty jobOfferApplication.candidate.cvFIle}">
+                                                                                                                                                      <a  type="button" class="btn btn-info btn-sm"  href="<spring:url value=" /eJobFinder/employer/viewCV/${jobOfferApplication.candidate.candidateId} " />" role="button" target="blank_">View CV</a>
+                                                                                                                                                      </c:when>
+                                                                                                                                                      <c:otherwise>
+                                                                                                                                                          <p>Not available</p>
+                                                                                                                                                      </c:otherwise>
+                                                                                                                                                  </c:choose>
+
+                                                                          </td>
                                                                     <td class="text-center">
                                                                         <c:choose>
                                                                             <c:when test="${jobOfferApplication.candidateAcceptancee}">

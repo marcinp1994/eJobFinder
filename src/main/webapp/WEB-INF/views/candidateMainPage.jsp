@@ -47,7 +47,6 @@
                                                 <th scope="col">#</th>
                                                 <th scope="col">Postion</th>
                                                 <th scope="col">Company</th>
-                                                <th scope="col">Description</th>
                                                 <th scope="col">Acceptance</th>
                                                 <th scope="col">My acceptance</th>
                                                 <th scope="col"></th>
@@ -61,7 +60,6 @@
                                                     <th scope="row">${loop.count}</th>
                                                     <td class="text-center">${jobOfferApplication.jobOffer.position}</td>
                                                     <td class="text-center">${jobOfferApplication.jobOffer.companyName}</td>
-                                                    <td class="text-center">${jobOfferApplication.jobOffer.shortDescription}</td>
                                                     <td class="text-center">
                                                         <c:choose>
                                                             <c:when test="${jobOfferApplication.employerAcceptanceeAsInt == -1}">
@@ -83,17 +81,21 @@
                                                                 <p>Yes</p>
                                                                 <c:set var="buttonsEnabled" value="false" />
                                                             </c:when>
-
                                                             <c:otherwise>
                                                                 <p>No</p>
                                                             </c:otherwise>
                                                         </c:choose>
 
                                                     </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-success" onclick="acceptByCandidate('${jobOfferApplication.jobOffer.jobId}','${candidateId}','true','modalList')" <c:if test="${ not buttonsEnabled}">disabled</c:if>>Accept</button>
-                <button type="button" class="btn btn-danger" onclick="acceptByCandidate('${jobOfferApplication.jobOffer.jobId}','${candidateId}','','modalList')">Decline</button>
-                <a type="button" class="btn btn-info" href="<c:url value=" /jobOfferList/viewJobOffer/${jobOfferApplication.jobOffer.jobId} " />">Details</a>
+                                                    <td>       <c:choose>
+                                                           <c:when test="${-1 	!=  jobOfferApplication.employerAcceptanceeAsInt}">
+                                                              <button type="button" class="btn btn-success" onclick="acceptByCandidate('${jobOfferApplication.jobOffer.jobId}','${candidateId}','true','modalList')" <c:if test="${ not buttonsEnabled}">disabled</c:if>>Accept</button>
+                                                              <button type="button" class="btn btn-danger" onclick="acceptByCandidate('${jobOfferApplication.jobOffer.jobId}','${candidateId}','','modalList')">Decline</button>
+                                                           </c:when>
+                                                                            <c:otherwise>
+                                                                            <button type="button" class="btn btn-danger" onclick="acceptByCandidate('${jobOfferApplication.jobOffer.jobId}','${candidateId}','','modalList')">Remove</button>
+                                                                                  </c:otherwise>                </c:choose>
+                <a type="button" class="btn btn-info" href="<c:url value=" /eJobFinder/jobOfferList/viewJobOffer/${jobOfferApplication.jobOffer.jobId} " />">Details</a>
                 </td>
                 </tr>
 
@@ -132,7 +134,6 @@
                                                 <th scope="col">#</th>
                                                 <th scope="col">Postion</th>
                                                 <th scope="col">Company</th>
-                                                <th scope="col">Description</th>
                                                 <th scope="col">Acceptance</th>
                                                 <th scope="col">My acceptance</th>
                                                 <th scope="col"></th>
@@ -146,7 +147,6 @@
                                                     <th scope="row">${loop.count}</th>
                                                     <td class="text-center">${jobOfferPropositions.jobOffer.position}</td>
                                                     <td class="text-center">${jobOfferPropositions.jobOffer.companyName}</td>
-                                                    <td class="text-center">${jobOfferPropositions.jobOffer.shortDescription}</td>
                                                     <td class="text-center">
                                                         <c:choose>
                                                             <c:when test="${jobOfferPropositions.employerAcceptanceeAsInt == -1}">
@@ -178,7 +178,7 @@
                                                     <td>
                                                         <button type="button" class="btn btn-success" onclick="acceptByCandidate('${jobOfferPropositions.jobOffer.jobId}','${candidateId}','true','modalListProp')" <c:if test="${ not buttonsEnabled}">disabled</c:if>>Accept</button>
                 <button type="button" class="btn btn-danger" onclick="acceptByCandidate('${jobOfferPropositions.jobOffer.jobId}','${candidateId}','','modalListProp')">Decline</button>
-                <a type="button" class="btn btn-info" href="<c:url value=" /jobOfferList/viewJobOffer/${jobOfferPropositions.jobOffer.jobId} " />">Details</a>
+                <a type="button" class="btn btn-info" href="<c:url value=" /eJobFinder/jobOfferList/viewJobOffer/${jobOfferPropositions.jobOffer.jobId} " />">Details</a>
                 </td>
                 </tr>
 
@@ -223,10 +223,11 @@
                                                        <br />
                                                            <b>Your applications<b>
                                                         </a></span>
-                    <span style="margin-left:30px;">  <a href="#"  class="btn"><i class="fas fa-10x fa-file-upload"></i>
-                                                  <br />
-                                                      <b>Upload your CV<b>
-                                                  </a></span>
+
+                                                  <span style="margin-left:30px;">  <a href="#" data-toggle="modal" data-target="#modalFileUpload" class="btn "><i class="fas fa-10x fa-file-upload""></i>
+                                                                                                         <br />
+                                                                                                            <b>Upload your CV<b>
+                                                                                                          </a></span>
                     <c:if test="${not empty propositions}">
                         <span style="margin-left:30px;">  <a href="#" data-toggle="modal" data-target="#modalListProp" class="btn "><i class="fas fa-10x fa-hand-holding-usd"></i>
                                                                                     <br />
@@ -235,6 +236,32 @@
                     </c:if>
                 </div>
             </div>
+
+                 <div class="modal fade" id="modalFileUpload" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document" style="width:50%;">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="modalLabel">CV upload</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" style="width:100%;">
+  <form id="cvUpload" action="${pageContext.request.contextPath}/candidate/uploadCV" method="post"
+                   commandName="jobOffer" enctype="multipart/form-data">
+  <div class="form-group">
+    <label for="file">Choose your CV file</label>
+    <input type="file" class="form-control-file" id="file" name="file">
+     <input type="submit" value="Submit" />
+  </div>
+</form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                            </div>
+                            </div>
+                            </div>
             <br/>
             <br/>
             <br/>

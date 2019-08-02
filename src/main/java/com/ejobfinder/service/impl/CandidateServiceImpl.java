@@ -45,7 +45,7 @@ public class CandidateServiceImpl implements CandidateService {
     @Override
     public Integer evaluateScoringOnJobOffer(String jobOfferId, CandidateFacts factsAboutUser, Candidate candidate) {
         StatelessKieSession session = droolsUtility.loadSession(jobOfferId);
-
+        candidate.setScore(0);
         session.setGlobal("candidate", candidate);
 
         session.execute(factsAboutUser.getTechnologyFacts());
@@ -83,5 +83,6 @@ public class CandidateServiceImpl implements CandidateService {
 
         return candidate.getScore();
     }
+
 
 }

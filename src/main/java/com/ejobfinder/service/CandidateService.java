@@ -20,4 +20,5 @@ public interface CandidateService {
     Integer evaluateScoringOnJobOffer(String jobOfferId, CandidateFacts factsAboutUser, Candidate candidate);
 
     Integer evaluateScoringOnJobOffer(String jobOfferId, Candidate candidate);
+
 }

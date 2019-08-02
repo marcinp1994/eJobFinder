@@ -6,6 +6,7 @@ import com.ejobfinder.model.JobOfferApplication;
 import com.ejobfinder.model.Location;
 import com.ejobfinder.service.CandidateService;
 import com.ejobfinder.service.JobOfferService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.SimpleDateFormat;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class HomeController {
@@ -36,7 +39,7 @@ public class HomeController {
     }
 
     @RequestMapping("/jobOfferList")
-    public String getJobOffers(Model model){
+    public String getJobOffers(Model model) {
         List<JobOffer> jobOffers = jobOfferService.getAllJobOffers();
         model.addAttribute("jobOffers", jobOffers);
 
@@ -55,7 +58,7 @@ public class HomeController {
     public String viewJobOffer(@PathVariable String jobId, Model model, @AuthenticationPrincipal User activeUser) {
         JobOffer jobOffer = jobOfferService.getJobOfferById(jobId);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Candidate candidate = candidateService.getCandidateByUsername(activeUser.getUsername());
+        Candidate candidate = activeUser != null ? candidateService.getCandidateByUsername(activeUser.getUsername()) : null;
         Integer candId = candidate != null ? candidate.getCandidateId() : null;
 
         String expirationDate = formatter.format(jobOffer.getExpirationDate());
@@ -74,17 +77,17 @@ public class HomeController {
     @RequestMapping("/candidate/{jobId}/apply")
     public String jobOfferApply(@PathVariable String jobId, Model model, @AuthenticationPrincipal User activeUser) {
         JobOffer jobOffer = jobOfferService.getJobOfferById(jobId);
-        Candidate candidate = candidateService.getCandidateByUsername(activeUser.getUsername());
-
+        Candidate candidate = activeUser != null ? candidateService.getCandidateByUsername(activeUser.getUsername()) : null;
         JobOfferApplication application = new JobOfferApplication();
 
         application.setJobOffer(jobOffer);
         application.setCandidate(candidate);
-
         application.setCandidateAcceptancee(Boolean.TRUE);
 
         Integer score = candidateService.evaluateScoringOnJobOffer(jobId, candidate);
-        Double percent = Double.valueOf((score / jobOffer.getMaximalPoints()) * 100);
+        Double percent = (double) ((score * 100 / jobOffer.getMaximalPoints()));
+
+        jobOfferService.matchTagsWithCandidateCV(jobOffer, candidate, application);
 
         application.setPercentOfMaxScore(percent);
         application.setCalculatedScore(score);
@@ -92,7 +95,6 @@ public class HomeController {
         if (jobOffer.getThresholdPercentagePoints() > percent) {
             application.setEmployerAcceptancee(Boolean.FALSE);
         }
-        candidate.getJobOfferApplications().add(application);
         jobOffer.addApplication(application);
 
         jobOfferService.updateJobOffer(jobOffer);
@@ -112,7 +114,32 @@ public class HomeController {
             jobOfferService.updateJobOffer(jobOffer);
         }
 
-        return new ResponseEntity<String>("Accepted", HttpStatus.OK);
+        return new ResponseEntity<>("Accepted", HttpStatus.OK);
+    }
+
+    @RequestMapping("/search")
+    public String jobOfferAccerptByEmployer(@RequestParam String searchString, Model model) {
+        if (StringUtils.isEmpty(searchString)) {
+            return "redirect:/";
+        }
+        List<JobOffer> jobOffers = jobOfferService.getAllJobOffers();
+        Set<JobOffer> result = new HashSet<>();
+        String[] searchStrings = searchString.split(" ");
+
+        for (JobOffer offer : jobOffers) {
+            boolean containsAll = true;
+            for (String key : searchStrings) {
+                if (!StringUtils.containsIgnoreCase(offer.getTags(), key)) {
+                    containsAll = false;
+                }
+            }
+            if (containsAll) {
+                result.add(offer);
+            }
+        }
+        model.addAttribute("jobOffers", result);
+
+        return "jobOfferList";
     }
 
     @RequestMapping("/candidate/acceptByCandidate")
@@ -127,6 +154,6 @@ public class HomeController {
             }
             jobOfferService.updateJobOffer(jobOffer);
         }
-        return new ResponseEntity<String>("Accepted", HttpStatus.OK);
+        return new ResponseEntity<>("Accepted", HttpStatus.OK);
     }
 }

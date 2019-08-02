@@ -2,6 +2,8 @@ package com.ejobfinder.model;
 
 
 import javax.persistence.*;
+import java.util.Set;
+import java.util.StringJoiner;
 
 @Entity
 public class JobOfferApplication {
@@ -23,6 +25,10 @@ public class JobOfferApplication {
     private Boolean employerAcceptancee;
     @Column(name = "candidateAcceptance")
     private Boolean candidateAcceptancee;
+    @Column(name = "matchedKeyWords")
+    private String matchedKeyWords;
+    @Column(name = "percentOfMatchedKeyWords")
+    private Double percentOfMatchedKeyWords;
 
     public JobOfferApplication() {
         employerAcceptancee = null;
@@ -54,7 +60,7 @@ public class JobOfferApplication {
         this.candidate = candidate;
     }
 
-    public Integer getCalculatedScore() {
+    Integer getCalculatedScore() {
         return calculatedScore;
     }
 
@@ -62,7 +68,7 @@ public class JobOfferApplication {
         this.calculatedScore = calculatedScore;
     }
 
-    public Double getPercentOfMaxScore() {
+    Double getPercentOfMaxScore() {
         return percentOfMaxScore;
     }
 
@@ -103,5 +109,27 @@ public class JobOfferApplication {
 
     public void setPotential(boolean potential) {
         this.potential = potential;
+    }
+
+    public String getMatchedKeyWords() {
+        return matchedKeyWords;
+    }
+
+    public void setMatchedKeyWords(String matchedKeyWords) {
+        this.matchedKeyWords = matchedKeyWords;
+    }
+
+    public Double getPercentOfMatchedKeyWords() {
+        return percentOfMatchedKeyWords;
+    }
+
+    public void setPercentOfMatchedKeyWords(Double percentOfMatchedKeyWords) {
+        this.percentOfMatchedKeyWords = percentOfMatchedKeyWords;
+    }
+
+    public void setMatchedKeyWords(Set<String> matchedKeyWords) {
+        StringJoiner joiner = new StringJoiner(",");
+        matchedKeyWords.forEach(joiner::add);
+        this.matchedKeyWords = joiner.toString();
     }
 }

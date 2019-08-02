@@ -1,14 +1,20 @@
 package com.ejobfinder.controller;
 
+import com.ejobfinder.model.Candidate;
 import com.ejobfinder.model.Employer;
 import com.ejobfinder.model.JobOffer;
 import com.ejobfinder.model.Location;
 import com.ejobfinder.model.rules.PerfectEmployeeRules;
+import com.ejobfinder.service.CandidateService;
 import com.ejobfinder.service.EmployerService;
 import com.ejobfinder.service.JobOfferService;
 import com.ejobfinder.service.LocationService;
 import com.ejobfinder.utils.consts.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -39,6 +45,9 @@ public class EmployerController {
 
     @Autowired
     private JobOfferService jobOfferService;
+
+    @Autowired
+    private CandidateService candidateService;
 
     @Autowired
     private LocationService locationService;
@@ -89,7 +98,6 @@ public class EmployerController {
         employerService.updateEmployer(employer);
 
         List<JobOffer> jobOffers = jobOfferService.getJobOffersByEmployerName(activeUser.getUsername());
-
         boolean notificationNeeded = jobOffers != null && jobOffers.stream().anyMatch(jobOffer -> jobOffer.getJobOfferApplications().stream().anyMatch(application ->
                 application.getEmployerAcceptancee() != null &&
                         application.getCandidateAcceptancee() != application.getEmployerAcceptancee()
@@ -100,6 +108,23 @@ public class EmployerController {
         model.addAttribute("offers", jobOffers);
 
         return "employer";
+    }
+
+    @RequestMapping(value = "/employer/viewCV/{candidateId}", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> getPDF1(@PathVariable String candidateId) {
+
+        Candidate candidate = candidateService.getCandidateById(Integer.parseInt(candidateId));
+
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.setContentType(MediaType.parseMediaType("application/pdf"));
+
+
+        headers.add("content-disposition", "inline;filename=" + "cvFile");
+
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+        return new ResponseEntity<>(candidate.getCvFIle(), headers, HttpStatus.OK);
     }
 
     @RequestMapping("/employer/cancelPremium")
@@ -131,7 +156,9 @@ public class EmployerController {
         JobOffer jobOffer = new JobOffer();
         Location location = new Location();
         Employer employer = employerService.getEmployerByUsername(activeUser.getUsername());
+
         jobOffer.setEmployer(employer);
+
         model.addAttribute("jobOffer", jobOffer);
         model.addAttribute("location", location);
         model.addAttribute("isPremium", employer.getPremiumMember());
@@ -209,7 +236,7 @@ public class EmployerController {
         model.addAttribute("isPremium", employer.getPremiumMember());
 
         List<JobOffer> jobOffers = jobOfferService.getJobOffersByEmployerName(activeUser.getUsername());
-        boolean notificationNeeded = jobOffers.stream().anyMatch(jobOffer -> jobOffer.getJobOfferApplications().stream().anyMatch(application ->
+        boolean notificationNeeded = jobOffers != null && jobOffers.stream().anyMatch(jobOffer -> jobOffer.getJobOfferApplications().stream().anyMatch(application ->
                 application.getEmployerAcceptancee() != null &&
                         application.getCandidateAcceptancee() != application.getEmployerAcceptancee() &&
                         application.getCandidateAcceptancee()
@@ -224,6 +251,7 @@ public class EmployerController {
     @RequestMapping("/employer/jobOfferInventory/editJobOffer/{jobId}")
     public String editJobOffer(@PathVariable("jobId") String jobId, Model model) {
         JobOffer jobOffer = jobOfferService.getJobOfferById(jobId);
+
         model.addAttribute(jobOffer);
 
         return "editJobOffer";

@@ -16,7 +16,7 @@ import com.ejobfinder.service.RulesService;
 import com.ejobfinder.utils.BooleanMapper;
 import com.ejobfinder.utils.LanguageMapper;
 import com.ejobfinder.utils.OperatorConverter;
-import org.h2.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -100,7 +101,7 @@ public class RuleController {
         int lvl = Integer.valueOf(level);
         TechnologyRule rule = new TechnologyRule(name, OperatorConverter.convertTextOperatorToSymbolicOperator(yearOperator), yearDouble, lvl, OperatorConverter.convertTextOperatorToSymbolicOperator(levelOperator), scr);
         Integer newSize = rulesService.addTechnologyRule(rule).size();
-        return new ResponseEntity<String>("Technology rule created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("Technology rule created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "rule/skill", method = RequestMethod.POST)
@@ -110,7 +111,7 @@ public class RuleController {
         int lvl = Integer.valueOf(level);
         SkillRule rule = new SkillRule(name, lvl, OperatorConverter.convertTextOperatorToSymbolicOperator(levelOperator), scr);
         Integer newSize = rulesService.addSkillRule(rule).size();
-        return new ResponseEntity<String>("Skill rule created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("Skill rule created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "rule/tool", method = RequestMethod.POST)
@@ -121,7 +122,7 @@ public class RuleController {
         double yearDouble = Double.valueOf(year);
         ToolRule rule = new ToolRule(name, OperatorConverter.convertTextOperatorToSymbolicOperator(yearOperator), yearDouble, lvl, OperatorConverter.convertTextOperatorToSymbolicOperator(levelOperator), scr);
         Integer newSize = rulesService.addToolRule(rule).size();
-        return new ResponseEntity<String>("Tool rule created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("Tool rule created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "rule/language", method = RequestMethod.POST)
@@ -132,7 +133,7 @@ public class RuleController {
         int lvl = LanguageMapper.getLanguageLvlInt(level);
         LanguageRule rule = new LanguageRule(name, lvl, OperatorConverter.convertTextOperatorToSymbolicOperator(levelOperator), scr);
         Integer newSize = rulesService.addLanguageRule(rule).size();
-        return new ResponseEntity<String>("Language rule created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("Language rule created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "rule/location", method = RequestMethod.POST)
@@ -142,7 +143,7 @@ public class RuleController {
         int scr = Integer.valueOf(score);
         LocationRule locationRule = new LocationRule(name, scr);
         Integer newSize = rulesService.addLocationRule(locationRule).size();
-        return new ResponseEntity<String>("Location rule created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("Location rule created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "rule/salary", method = RequestMethod.POST)
@@ -155,7 +156,7 @@ public class RuleController {
         SalaryRule rule = new SalaryRule(amountDownDouble, Operator.EQUAL_TO,
                 amountUpDouble, Operator.EQUAL_TO, scr);
         Integer newSize = rulesService.addSalaryRule(rule).size();
-        return new ResponseEntity<String>("Salary ule created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("Salary ule created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "rule/workingHours", method = RequestMethod.POST)
@@ -165,7 +166,7 @@ public class RuleController {
         Operator op = OperatorConverter.convertTextOperatorToSymbolicOperator(operator);
         WorkingHoursRule rule = new WorkingHoursRule(name, op, scr);
         Integer newSize = rulesService.addWorkingHoursRule(rule).size();
-        return new ResponseEntity<String>("WorkingHours rule created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("WorkingHours rule created with new size=" + newSize, HttpStatus.OK);
 
     }
 
@@ -176,7 +177,7 @@ public class RuleController {
         Operator op = OperatorConverter.convertTextOperatorToSymbolicOperator(operator);
         TypeOfContractRule rule = new TypeOfContractRule(name, op, scr);
         Integer newSize = rulesService.addTypeOfContractRule(rule).size();
-        return new ResponseEntity<String>("TypeOfContract rule created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("TypeOfContract rule created with new size=" + newSize, HttpStatus.OK);
 
     }
 
@@ -187,7 +188,7 @@ public class RuleController {
         Operator op = OperatorConverter.convertTextOperatorToSymbolicOperator(operator);
         PeriodOfNoticeRule rule = new PeriodOfNoticeRule(name, op, scr);
         Integer newSize = rulesService.addPeriodOfNoticeRule(rule).size();
-        return new ResponseEntity<String>("PeriodOfNotice rule created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("PeriodOfNotice rule created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "rule/previousEmployerRule", method = RequestMethod.POST)
@@ -204,19 +205,19 @@ public class RuleController {
         rule.setStillWorking(stillWorking);
         rule.setHaveProfessionalExperience(haveProfessionalExperienc);
 
-        if (!StringUtils.isNullOrEmpty(year)) {
+        if (!StringUtils.isEmpty(year)) {
             Operator op = OperatorConverter.convertTextOperatorToSymbolicOperator(operator);
             double yearDouble = Double.valueOf(year);
 
             rule.setYearOperator(op);
             rule.setYear(yearDouble);
         }
-        if (!StringUtils.isNullOrEmpty(name)) {
+        if (!StringUtils.isEmpty(name)) {
             rule.setJobTitle(name);
         }
 
         Integer newSize = rulesService.addPreviousEmployerRule(rule).size();
-        return new ResponseEntity<String>("PreviousEmployerRule created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("PreviousEmployerRule created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "rule/education", method = RequestMethod.POST)
@@ -232,20 +233,20 @@ public class RuleController {
         rule.setStudyAbroad(studyAbroad);
         rule.setStudent(isStudent);
 
-        if (!StringUtils.isNullOrEmpty(professionalTitle)) {
+        if (!StringUtils.isEmpty(professionalTitle)) {
             rule.setProfessionalTitle(professionalTitle);
         }
 
-        if (!StringUtils.isNullOrEmpty(fieldOfStudy)) {
+        if (!StringUtils.isEmpty(fieldOfStudy)) {
             rule.setFieldOfStudy(fieldOfStudy);
         }
 
-        if (!StringUtils.isNullOrEmpty(modeOfStudy)) {
+        if (!StringUtils.isEmpty(modeOfStudy)) {
             rule.setModeOfStudy(modeOfStudy);
         }
 
         Integer newSize = rulesService.addEducationRule(rule).size();
-        return new ResponseEntity<String>("Education rule created with new size=" + newSize, HttpStatus.OK);
+        return new ResponseEntity<>("Education rule created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "rule/finalize", method = RequestMethod.POST)
@@ -273,39 +274,88 @@ public class RuleController {
 
         JobOffer offer = jobOfferService.getJobOfferById(perfectEmployeeRules.getJobId());
         int maxPointsValue = perfectEmployeeRuleList.stream().mapToInt(Rule::getScore).sum();
+
         offer.setContainsRules(Boolean.TRUE);
         offer.setThresholdPercentagePoints(thresholdPercentage);
         offer.setMaximalPoints(maxPointsValue);
 
+        addTagsFromRulesAndOffer(perfectEmployeeRules, offer);
+
         if (employer.getPremiumMember()) {
-            List<Candidate> candidates = candidateService.getAllCandidates();
-            candidates.forEach(candidate -> {
-                JobOfferApplication application = new JobOfferApplication();
-
-                application.setJobOffer(offer);
-                application.setCandidate(candidate);
-
-                Integer score = candidateService.evaluateScoringOnJobOffer(offer.getJobId(), candidate);
-                Double percent = Double.valueOf(score * 100 / offer.getMaximalPoints());
-
-
-                application.setPercentOfMaxScore(percent);
-                application.setCalculatedScore(score);
-                application.setPotential(true);
-                offer.addApplication(application);
-            });
-
+            createPotentialApplications(offer);
         }
+
         jobOfferService.updateJobOffer(offer);
         model.addAttribute("potentialApplications", offer.getPotentialJobOfferApplications());
         return "redirect:/employer/jobOfferInventory";
+    }
+
+    private void addTagsFromRulesAndOffer(PerfectEmployeeRules perfectEmployeeRules, JobOffer offer) {
+        Set<String> tags = offer.getUniqueTags();
+        String tagString = offer.getTags();
+        if (!perfectEmployeeRules.getTechnologyRules().isEmpty()) {
+            perfectEmployeeRules.getTechnologyRules().forEach(rule -> {
+                if (!StringUtils.containsIgnoreCase(tagString, rule.getName())) {
+                    tags.add(rule.getName());
+                }
+            });
+        }
+        if (!perfectEmployeeRules.getToolRules().isEmpty()) {
+            perfectEmployeeRules.getToolRules().forEach(rule -> {
+                if (!StringUtils.containsIgnoreCase(tagString, rule.getName())) {
+                    tags.add(rule.getName());
+                }
+            });
+        }
+        if (!perfectEmployeeRules.getLocationRules().isEmpty()) {
+            perfectEmployeeRules.getLocationRules().forEach(rule -> {
+                if (!StringUtils.containsIgnoreCase(tagString, rule.getName())) {
+                    tags.add(rule.getName());
+                }
+            });
+        }
+        if (!perfectEmployeeRules.getLanguageRules().isEmpty()) {
+            perfectEmployeeRules.getLanguageRules().forEach(rule -> {
+                if (!StringUtils.containsIgnoreCase(tagString, rule.getName())) {
+                    tags.add(rule.getName());
+                }
+            });
+        }
+
+        tags.add(offer.getEmployer().getCompanyName());
+        tags.add(offer.getLocation().getCity());
+        tags.add(offer.getLocation().getCountry());
+        tags.add(offer.getPosition());
+        tags.add(offer.getCategory());
+
+        offer.setTags(tags);
+    }
+
+    private void createPotentialApplications(JobOffer offer) {
+        List<Candidate> candidates = candidateService.getAllCandidates();
+        candidates.forEach(candidate -> {
+            JobOfferApplication application = new JobOfferApplication();
+
+            application.setJobOffer(offer);
+            application.setCandidate(candidate);
+
+            Integer score = candidateService.evaluateScoringOnJobOffer(offer.getJobId(), candidate);
+            Double percent = (double) (score * 100 / offer.getMaximalPoints());
+            jobOfferService.matchTagsWithCandidateCV(offer, candidate, application);
+            application.setPercentOfMaxScore(percent);
+            application.setCalculatedScore(score);
+            application.setPotential(true);
+
+
+            offer.addApplication(application);
+        });
     }
 
     @RequestMapping(value = "rule/delete", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> deleteRule(@RequestParam String name) {
         rulesService.deleteRule(name);
-        return new ResponseEntity<String>("rule deleted", HttpStatus.OK);
+        return new ResponseEntity<>("rule deleted", HttpStatus.OK);
     }
 }
 
