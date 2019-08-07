@@ -19,6 +19,8 @@ public class JobOfferApplication {
     private Integer calculatedScore;
     @Column(name = "isPotential", nullable = false)
     private boolean potential;
+    @Column(name = "notify", nullable = false)
+    private boolean notify;
     @Column(name = "percentOfMaxScore")
     private Double percentOfMaxScore;
     @Column(name = "employerAcceptance")
@@ -60,7 +62,7 @@ public class JobOfferApplication {
         this.candidate = candidate;
     }
 
-    Integer getCalculatedScore() {
+    public Integer getCalculatedScore() {
         return calculatedScore;
     }
 
@@ -68,7 +70,7 @@ public class JobOfferApplication {
         this.calculatedScore = calculatedScore;
     }
 
-    Double getPercentOfMaxScore() {
+    public Double getPercentOfMaxScore() {
         return percentOfMaxScore;
     }
 
@@ -78,6 +80,14 @@ public class JobOfferApplication {
 
     public Boolean getEmployerAcceptancee() {
         return employerAcceptancee;
+    }
+
+    public boolean getNotify() {
+        return notify;
+    }
+
+    public void setNotify(boolean notify) {
+        this.notify = notify;
     }
 
     public int getEmployerAcceptanceeAsInt() {

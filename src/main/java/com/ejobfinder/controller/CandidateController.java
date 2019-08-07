@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Controller
@@ -143,6 +144,19 @@ public class CandidateController {
         Candidate candidate = activeUser != null ? candidateService.getCandidateByUsername(activeUser.getUsername()) : null;
 
         assert candidate != null;
+        AtomicBoolean notificationNeeded = new AtomicBoolean(false);
+        Set<JobOfferApplication> jobOfferApplications = candidate.getJobOfferApplications();
+        jobOfferApplications.forEach(application -> {
+            if (application.getNotify()) {
+                notificationNeeded.set(true);
+                application.setNotify(false);
+            }
+        });
+
+        if (notificationNeeded.get()) {
+            candidate.setJobOfferApplications(jobOfferApplications);
+            candidateService.updateCandidate(candidate);
+        }
         model.addAttribute("name", candidate.getName());
         model.addAttribute("lastName", candidate.getLastName());
         model.addAttribute("candidateId", candidate.getCandidateId());
@@ -150,7 +164,11 @@ public class CandidateController {
         model.addAttribute("propositions", candidate.getProposals());
 
         Optional<JobOfferApplication> newProposal = candidate.getProposals().stream().filter(application -> !application.getCandidateAcceptancee()).findAny();
+
+
         model.addAttribute("newProposition", newProposal.isPresent());
+
+        model.addAttribute("notificationNeeded", notificationNeeded.get());
         return "candidateMainPage";
     }
 

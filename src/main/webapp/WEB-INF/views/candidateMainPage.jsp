@@ -48,7 +48,6 @@
                                                 <th scope="col">Postion</th>
                                                 <th scope="col">Company</th>
                                                 <th scope="col">Acceptance</th>
-                                                <th scope="col">My acceptance</th>
                                                 <th scope="col"></th>
                                             </tr>
                                         </thead>
@@ -56,8 +55,16 @@
 
                                             <c:forEach items="${applications}" var="jobOfferApplication" varStatus="loop">
                                                 <c:set var="buttonsEnabled" value="true" />
-                                                <tr>
-                                                    <th scope="row">${loop.count}</th>
+                                                <c:choose>
+                                                    <c:when test="${jobOfferApplication.employerAcceptanceeAsInt == 1 and jobOfferApplication.candidateAcceptancee }">
+                                                        <tr class="success">
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <tr>
+                                                    </c:otherwise>
+                                                </c:choose>
+
+                                                <th scope="row">${loop.count}</th>
                                                     <td class="text-center">${jobOfferApplication.jobOffer.position}</td>
                                                     <td class="text-center">${jobOfferApplication.jobOffer.companyName}</td>
                                                     <td class="text-center">
@@ -75,22 +82,16 @@
                                                         </c:choose>
 
                                                     </td>
-                                                    <td class="text-center">
-                                                        <c:choose>
-                                                            <c:when test="${jobOfferApplication.candidateAcceptancee}">
-                                                                <p>Yes</p>
-                                                                <c:set var="buttonsEnabled" value="false" />
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <p>No</p>
-                                                            </c:otherwise>
-                                                        </c:choose>
-
-                                                    </td>
                                                     <td>       <c:choose>
                                                            <c:when test="${-1 	!=  jobOfferApplication.employerAcceptanceeAsInt}">
-                                                              <button type="button" class="btn btn-success" onclick="acceptByCandidate('${jobOfferApplication.jobOffer.jobId}','${candidateId}','true','modalList')" <c:if test="${ not buttonsEnabled}">disabled</c:if>>Accept</button>
-                                                              <button type="button" class="btn btn-danger" onclick="acceptByCandidate('${jobOfferApplication.jobOffer.jobId}','${candidateId}','','modalList')">Decline</button>
+                                                               <c:if test="${buttonsEnabled}">
+                                                                   <button type="button" class="btn btn-success"
+                                                                           onclick="acceptByCandidate('${jobOfferApplication.jobOffer.jobId}','${candidateId}','true','modalList')">
+                                                                       Accept
+                                                                   </button>
+                                                               </c:if>
+
+                                                               <button type="button" class="btn btn-danger" onclick="acceptByCandidate('${jobOfferApplication.jobOffer.jobId}','${candidateId}','','modalList')">Decline</button>
                                                            </c:when>
                                                                             <c:otherwise>
                                                                             <button type="button" class="btn btn-danger" onclick="acceptByCandidate('${jobOfferApplication.jobOffer.jobId}','${candidateId}','','modalList')">Remove</button>
@@ -103,7 +104,11 @@
                     <c:if test="${not jobOfferApplication.candidateAcceptancee}">
                         <c:set var="notify" value="true" />
                     </c:if>
+
                 </c:if>
+                                                <c:if test="${notificationNeeded}">
+                                                    <c:set var="notify" value="true"/>
+                                                </c:if>
 
                 </c:forEach>
 
@@ -203,7 +208,7 @@
                 <c:if test="${notify}">
 
                     <div class="alert alert-success" role="alert">
-                        You have new acceptance for yours applications!
+                        Yours applications are updated, you can see the news!
                     </div>
 
                 </c:if>
@@ -219,7 +224,17 @@
                               <br />
                                   <b>Fill up your profile<b>
                               </a></span>
-                    <span style="margin-left:30px;">  <a href="#" data-toggle="modal" data-target="#modalList" class="btn "><i class="far fa-10x fa-list-alt"></i>
+
+                    <span style="margin-left:30px;">
+     <c:if test="${not empty applications}">
+                     <a href="#" data-toggle="modal" data-target="#modalList" class="btn "><i
+                             class="far fa-10x fa-list-alt"></i>
+                             </c:if>
+                                  <c:if test="${empty applications}">
+                                             <a href="#" data-toggle="modal" data-target="#modalList"
+                                                style="color:gray;"
+                                                class="btn" disabled><i class="far fa-10x fa-list-alt"></i>
+                                             </c:if>
                                                        <br />
                                                            <b>Your applications<b>
                                                         </a></span>
@@ -261,11 +276,14 @@
                             </div>
                             </div>
                             </div>
+                 </div>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+
+        <%@include file="/WEB-INF/views/template/footer.jsp" %>
                             </div>
-            <br/>
-            <br/>
-            <br/>
 
             <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
             <script type="text/javascript" src="<c:url value=" /eJobFinder/resources/js/candidateMainPage.js " />"></script>
-            <%@include file="/WEB-INF/views/template/footer.jsp" %>

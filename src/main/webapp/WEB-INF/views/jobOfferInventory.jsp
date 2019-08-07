@@ -1,34 +1,18 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
     <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
         <%@include file="/WEB-INF/views/template/header.jsp"%>
-
             <br/>
             <br/>
             <security:authorize access="isAuthenticated()">
                 <security:authentication property="principal.username" var="username" />
             </security:authorize>
 
-            <div class="modal fade" id="modalA" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Success</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Candidate will be informed about your decision.</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
             <div class="container-wrapper">
                 <div class="container">
                     <div class="page-header">
+                        <br/>
+                        <br/>
                         <h1>Job offer Inventory Page</h1>
                         <c:if test="${isPremium}">
                             <h3><span style="float:right">  <i class="fas fa-1x fa-star"></i> Premium member</span></h3>
@@ -90,7 +74,7 @@
 
                         <c:if test="${not empty jobOffer.jobOfferApplications}">
                             <div class="modal fade" id="modal${jobOffer.jobId}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document" style="width:50%;">
+                                <div class="modal-dialog" role="document" style="width:70%;">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="modalLabel${jobOffer.jobId}">Applications for ${jobOffer.position} in ${jobOffer.companyName}</h5>
@@ -106,8 +90,8 @@
                                                         <th scope="col">#</th>
                                                         <th scope="col">Name</th>
                                                         <th scope="col">Lastname</th>
-                                                        <th scope="col">Score</th>
                                                         <th scope="col">Percent</th>
+                                                        <th scope="col">Tags match</th>
                                                          <th class="text-center" scope="col">CV</th>
                                                         <th scope="col">Candidate acceptance</th>
                                                         <th scope="col">My acceptance</th>
@@ -116,15 +100,42 @@
                                                 </thead>
                                                 <tbody>
                                                     <c:forEach items="${jobOffer.jobOfferApplications}" var="jobOfferApplication" varStatus="loop">
-                                                        <tr>
+                                                        <c:choose>
+                                                            <c:when test="${jobOfferApplication.percentOfMaxScore >=  jobOffer.maximalPoints}">
+                                                                <tr class="success">
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <tr>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                             <th scope="row">${loop.count}</th>
                                                             <td>${jobOfferApplication.candidate.name}</td>
                                                             <td>${jobOfferApplication.candidate.lastName}</td>
-                                                            <td>${jobOfferApplication.calculatedScore}</td>
                                                             <td>${jobOfferApplication.percentOfMaxScore}</td>
-                                                             <td>
-                                    <a  type="button" class="btn btn-info btn-sm"  href="<spring:url value=" /eJobFinder/employer/viewCV/${jobOfferApplication.candidate.candidateId} " />" role="button" target="blank_">View CV</a>
-                                                               </td>
+                                                        <td class="text-center">
+                                                            ${jobOfferApplication.percentOfMatchedKeyWords}%
+                                                            <c:if test="${not empty jobOfferApplication.matchedKeyWords}">
+                                                                <a type="button" data-toggle="popover"
+                                                                   title="Matched Tags"
+                                                                   data-content="${jobOfferApplication.matchedKeyWords}"><i
+                                                                        class="fas fa-tags"></i></a>
+
+                                                            </c:if>
+                                                        </td>
+                                                        <td>
+                                                            <c:choose>
+                                                                <c:when test="${not empty jobOfferApplication.candidate.cvFIle}">
+                                                                    <a type="button" class="btn btn-info btn-sm"
+                                                                       href="<spring:url value="
+                                                                    /eJobFinder/employer/viewCV/${jobOfferApplication.candidate.candidateId}
+                                                                    " />" role="button" target="blank_">View CV</a>
+
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <p>Not available</p>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </td>
                                                             <td class="text-center">
                                                                 <c:choose>
                                                                     <c:when test="${jobOfferApplication.candidateAcceptancee}">
@@ -180,28 +191,51 @@
                                             <table class="table">
                                                 <thead class="thead-dark">
                                                     <tr>
-                                                        <th scope="col">#</th>
-                                                        <th scope="col">Name</th>
-                                                        <th scope="col">Lastname</th>
-                                                        <th scope="col">Score</th>
-                                                        <th scope="col">Percent</th>
+                                                        <th class="text-center" scope="col">#</th>
+                                                        <th class="text-center" scope="col">Name</th>
+                                                        <th class="text-center" scope="col">Lastname</th>
+                                                        <th class="text-center" scope="col">Percent</th>
+                                                        <th class="text-center" scope="col">Tags match</th>
                                                         <th class="text-center" scope="col">CV</th>
-                                                        <th scope="col">Candidate acceptance</th>
-                                                        <th scope="col">My acceptance</th>
+                                                        <th class="text-center" scope="col">Candidate acceptance</th>
                                                         <th scope="col"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <c:forEach items="${jobOffer.potentialJobOfferApplicationsWithMin}" var="jobOfferApplication" varStatus="loop">
                                                         <tr>
-                                                            <th scope="row">${loop.count}</th>
-                                                            <td>${jobOfferApplication.candidate.name}</td>
-                                                            <td>${jobOfferApplication.candidate.lastName}</td>
-                                                            <td>${jobOfferApplication.calculatedScore}</td>
-                                                            <td>${jobOfferApplication.percentOfMaxScore}</td>
-                                                                 <td>
-                                                                 <a  type="button" class="btn btn-info btn-sm"  href="<spring:url value=" /eJobFinder/employer/viewCV/${jobOfferApplication.candidate.candidateId} " />" role="button" target="blank_">View CV</a>
-                                                                 </td>
+                                                            <th class="text-center" scope="row">${loop.count}</th>
+                                                            <td class="text-center">
+                                                                ${jobOfferApplication.candidate.name}
+                                                            </td>
+                                                            <td class="text-center">
+                                                                ${jobOfferApplication.candidate.lastName}
+                                                            </td>
+                                                            <td class="text-center">
+                                                                ${jobOfferApplication.percentOfMaxScore}
+                                                            </td>
+                                                            <td class="text-center">
+                                                                ${jobOfferApplication.percentOfMatchedKeyWords}%
+                                                                <c:if test="${not empty jobOfferApplication.matchedKeyWords}">
+                                                                    <a type="button" data-toggle="popover"
+                                                                       title="Matched Tags"
+                                                                       data-content="${jobOfferApplication.matchedKeyWords}"><i
+                                                                            class="fas fa-tags"></i></a>
+                                                                </c:if>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <c:choose>
+                                                                    <c:when test="${not empty jobOfferApplication.candidate.cvFIle}">
+                                                                        <a type="button" class="btn btn-info btn-sm"
+                                                                           href="<spring:url value="
+                                                                        /eJobFinder/employer/viewCV/${jobOfferApplication.candidate.candidateId}
+                                                                        " />" role="button" target="blank_">View CV</a>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <p>Not available</p>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </td>
                                                             <td class="text-center">
                                                                 <c:choose>
                                                                     <c:when test="${jobOfferApplication.candidateAcceptancee}">
@@ -216,16 +250,17 @@
                                                             <td class="text-center">
                                                                 <c:choose>
                                                                     <c:when test="${jobOfferApplication.employerAcceptancee}">
-                                                                        <p>Yes</p>
+                                                                        <p>Already invited</p>
                                                                     </c:when>
                                                                     <c:otherwise>
-                                                                        <p>No</p>
+                                                                        <button type="button" class="btn btn-success"
+                                                                                onclick="acceptByEmployer('${jobOffer.jobId}','${jobOfferApplication.candidate.candidateId}','true','modalPremium${jobOffer.jobId}')">
+                                                                            Invite
+                                                                        </button>
                                                                     </c:otherwise>
                                                                 </c:choose>
                                                             </td>
-                                                            <td>
-                                                                <button type="button" class="btn btn-success" onclick="acceptByEmployer('${jobOffer.jobId}','${jobOfferApplication.candidate.candidateId}','true','modalPremium${jobOffer.jobId}')">Invite</button>
-                                                            </td>
+
                                                         </tr>
                                                     </c:forEach>
                                                 </tbody>
@@ -240,11 +275,33 @@
                         </c:if>
 
                     </c:forEach>
-                    <a href="<spring:url value=" /eJobFinder/employer/jobOfferInventory/addJobOffer " />" class="btn btn-primary">Add Job Offer</a>
 
-                    <br/>
-                    <br/>
-                    <br/>
-                    <script type="text/javascript" src="<c:url value="/resources/js/jobInventory.js " />"></script>
-                    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-                    <%@include file="/WEB-INF/views/template/footer.jsp" %>
+                    <a href="<spring:url value=" /eJobFinder/employer/jobOfferInventory/addJobOffer " />" class="btn btn-primary">Add Job Offer</a>
+                    <div class="modal fade" id="modalA" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Success</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Candidate will be informed about your decision.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+<%@include file="/WEB-INF/views/template/footer.jsp" %>
+
+
+

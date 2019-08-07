@@ -226,19 +226,23 @@ public class JobOffer {
     }
 
     public Set<JobOfferApplication> getJobOfferApplications() {
-        return jobOfferApplications.stream().filter(application -> !application.getPotential()).collect(Collectors.toSet());
+        return jobOfferApplications.stream().filter(application -> !application.getPotential()).collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(JobOfferApplication::getCalculatedScore).reversed())));
     }
 
     public Set<JobOfferApplication> getPotentialJobOfferApplications() {
-        return jobOfferApplications.stream().filter(JobOfferApplication::getPotential).collect(Collectors.toSet());
+        return jobOfferApplications.stream().filter(JobOfferApplication::getPotential).collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(JobOfferApplication::getCalculatedScore).reversed())));
     }
 
     public Set<JobOfferApplication> getPotentialJobOfferApplicationsWithMin() {
-        return jobOfferApplications.stream().filter(application -> application.getPotential() && application.getPercentOfMaxScore() > this.getThresholdPercentagePoints()).sorted(Comparator.comparing(JobOfferApplication::getCalculatedScore)).collect(Collectors.toSet());
+        return jobOfferApplications.stream().filter(application -> application.getPotential() && application.getPercentOfMaxScore() > this.getThresholdPercentagePoints()).collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(JobOfferApplication::getCalculatedScore).reversed())));
     }
 
-    private Set<JobOfferApplication> getValidJobOfferApplications() {
-        return jobOfferApplications.stream().filter(application -> application.getPercentOfMaxScore() >= this.thresholdPercentagePoints && !application.getPotential()).collect(Collectors.toSet());
+    public Set<JobOfferApplication> getValidJobOfferApplications() {
+        return jobOfferApplications.stream().filter(application -> application.getPercentOfMaxScore() >= this.thresholdPercentagePoints && !application.getPotential()).collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(JobOfferApplication::getCalculatedScore).reversed())));
+    }
+
+    public int getNumberOfValidJobOfferApplications() {
+        return jobOfferApplications.stream().filter(application -> application.getPercentOfMaxScore() >= this.thresholdPercentagePoints && !application.getPotential()).collect(Collectors.toSet()).size();
     }
 
     public int getNumberOfValidJobOfferApplicationsWithAcceptance() {
@@ -259,6 +263,10 @@ public class JobOffer {
 
     public int getInvalidJobOfferApplications() {
         return this.getJobOfferApplications().size() - getValidJobOfferApplications().size();
+    }
+
+    public int getValidJobOfferApplicationsNumber() {
+        return this.getValidJobOfferApplications().size();
     }
     public void setJobOfferApplications(Set<JobOfferApplication> jobOfferApplications) {
         this.jobOfferApplications = jobOfferApplications;

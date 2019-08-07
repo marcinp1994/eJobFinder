@@ -20,7 +20,7 @@
                     </div>
                 </c:if>
 
-                <div style="width:90%;margin-left:5%;height:25%; margin-top:5%;">
+                <div style="width:95%;margin-left:5%;height:25%; margin-top:5%;">
 
                     <div>
 
@@ -88,7 +88,8 @@
                                                 <td class="text-center">${jobOffer.position}</td>
                                                 <td class="text-center">${jobOffer.companyName}</td>
                                                 <td class="text-center">${jobOffer.shortDescription}</td>
-                                                <td class="text-center">${fn:length(jobOffer.validJobOfferApplications)}</td>
+                                                <td class="text-center">${jobOffer.numberOfValidJobOfferApplications}
+                                                </td>
                                                 <td class="text-center">${fn:length(jobOffer.jobOfferApplications)}</td>
                                             </tr>
                                         </c:forEach>
@@ -101,4 +102,7 @@
                         </div>
                     </div>
                 </div>
-                <%@include file="/WEB-INF/views/template/footer.jsp" %>
+            </div>
+
+        </div>
+<%@include file="/WEB-INF/views/template/footer.jsp" %>

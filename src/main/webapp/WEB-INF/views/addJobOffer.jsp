@@ -1,11 +1,18 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@include file="/WEB-INF/views/template/header.jsp" %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
+<!-- jQuery -->
 
+<!--  Flatpickr  -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/addJobOffer.js " />"></script>
 <br/>
 <br/>
 <div class="container-wrapper" style="background-color:white;">
     <div class="container">
         <div class="page-header">
+        <br/>
+        <br/>
             <h1>Add job offer</h1>
 
             <p class="lead">Fill the below information to add a job offer:</p>

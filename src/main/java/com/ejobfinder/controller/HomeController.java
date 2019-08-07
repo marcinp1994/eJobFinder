@@ -111,10 +111,11 @@ public class HomeController {
 
         if (application.isPresent()) {
             application.get().setEmployerAcceptancee(isAccepted);
+            application.get().setNotify(true);
             jobOfferService.updateJobOffer(jobOffer);
         }
 
-        return new ResponseEntity<>("Accepted", HttpStatus.OK);
+        return new ResponseEntity<String>("JobOffer updated", HttpStatus.OK);
     }
 
     @RequestMapping("/search")
@@ -152,8 +153,13 @@ public class HomeController {
             if (application.get().getPotential() && application.get().getEmployerAcceptancee()) {
                 application.get().setPotential(false);
             }
+            if (!isAccepted && application.get().getEmployerAcceptancee() != null && !application.get().getEmployerAcceptancee()) {
+                Set<JobOfferApplication> copy = jobOffer.getAllJobOfferApplications();
+                jobOffer.removeApplication(application.get());
+
+            }
             jobOfferService.updateJobOffer(jobOffer);
         }
-        return new ResponseEntity<>("Accepted", HttpStatus.OK);
+        return new ResponseEntity<>("JobOffer updated", HttpStatus.OK);
     }
 }

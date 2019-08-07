@@ -75,9 +75,7 @@ public class EmployerController {
 
         List<JobOffer> jobOffers = jobOfferService.getJobOffersByEmployerName(activeUser.getUsername());
         boolean notificationNeeded = jobOffers != null && jobOffers.stream().anyMatch(jobOffer -> jobOffer.getJobOfferApplications().stream().anyMatch(application ->
-                application.getEmployerAcceptancee() != null &&
-                        application.getCandidateAcceptancee() != application.getEmployerAcceptancee()
-                        && application.getCandidateAcceptancee()
+                (application.getEmployerAcceptancee() == null && application.getCandidateAcceptancee()) || application.getNotify()
         ));
 
         model.addAttribute("notify", notificationNeeded);
@@ -124,7 +122,8 @@ public class EmployerController {
 
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
-        return new ResponseEntity<>(candidate.getCvFIle(), headers, HttpStatus.OK);
+        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(candidate.getCvFIle(), headers, HttpStatus.OK);
+        return response;
     }
 
     @RequestMapping("/employer/cancelPremium")

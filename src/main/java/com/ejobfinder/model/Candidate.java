@@ -127,11 +127,11 @@ public class Candidate implements Serializable {
     }
 
     public Set<JobOfferApplication> getJobOfferApplications() {
-        return jobOfferApplications.stream().filter(application -> !application.getPotential()).collect(Collectors.toSet());
+        return jobOfferApplications.stream().filter(application -> !application.getPotential() && application.getCandidateAcceptancee()).collect(Collectors.toSet());
     }
 
     public Set<JobOfferApplication> getProposals() {
-        return jobOfferApplications.stream().filter(application -> application.getPotential() && application.getEmployerAcceptancee() != null && application.getEmployerAcceptancee()).collect(Collectors.toSet());
+        return jobOfferApplications.stream().filter(application -> application.getPotential() && !application.getCandidateAcceptancee() && application.getEmployerAcceptancee() != null && application.getEmployerAcceptancee()).collect(Collectors.toSet());
     }
 
     public void setJobOfferApplications(Set<JobOfferApplication> jobOfferApplications) {

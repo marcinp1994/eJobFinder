@@ -5,6 +5,8 @@
 
 <!-- Carousel
 ================================================== -->
+
+
 <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
@@ -82,13 +84,15 @@
             <p><a class="btn btn-default" href="<spring:url value="/jobOfferList/Logistic" />" role="button">View logistic offers &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
     </div><!-- /.row -->
+</div>
 
-        <br/>
+
+    <br/>
         <br/>
         <br/>
     <!-- Footer -->
 
 <%@include file="/WEB-INF/views/template/footer.jsp" %>
-
+</div>
 </body>
 </html>

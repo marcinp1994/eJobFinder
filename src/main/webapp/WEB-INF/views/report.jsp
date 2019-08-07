@@ -2,7 +2,12 @@
     <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
         <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
             <%@include file="/WEB-INF/views/template/header.jsp"%>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/popper.min.js " />"></script>
+              <script type="text/javascript" src="<c:url value="/resources/js/jobInventory.js " />"></script>
+
                 <br/>
                 <br/>
 
@@ -82,48 +87,41 @@
                                                             </div>
                                                         </div>
                                                         <script>
-                                                            var chart$ {jobOffer.jobId} = new Chart(document.getElementById("chart${jobOffer.jobId}"), {
-                                                                type: 'pie',
-                                                                data: {
-                                                                    labels: ["Valid", "Not valid"],
-                                                                    datasets: [{
-                                                                        label: "Population (millions)",
-                                                                        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-                                                                        data: [$ {
-                                                                            fn: length(jobOffer.validJobOfferApplications)
-                                                                        }, $ {
-                                                                            jobOffer.invalidJobOfferApplications
-                                                                        }]
-                                                                    }]
-                                                                },
-                                                                options: {
-                                                                    title: {
-                                                                        display: true,
-                                                                        text: 'Applications'
-                                                                    }
-                                                                }
-                                                            });
-                                                            var chart2$ {jobOffer.jobId} = new Chart(document.getElementById("chart2${jobOffer.jobId}"), {
-                                                                type: 'pie',
-                                                                data: {
-                                                                    labels: ["Yes", "No"],
-                                                                    datasets: [{
-                                                                        label: "Population (millions)",
-                                                                        backgroundColor: ["#3cba9f", "#e8c3b9", "#c45850"],
-                                                                        data: [$ {
-                                                                            jobOffer.numberOfJobOfferApplicationsWithAcceptance
-                                                                        }, $ {
-                                                                            jobOffer.numberOfJobOfferApplicationsWithoutAcceptance
-                                                                        }]
-                                                                    }]
-                                                                },
-                                                                options: {
-                                                                    title: {
-                                                                        display: true,
-                                                                        text: 'Applications acceptance'
-                                                                    }
-                                                                }
-                                                            });
+                       var ctx = document.getElementById("chart${jobOffer.jobId}");
+                       var ctx2 = document.getElementById("chart2${jobOffer.jobId}");
+                       var chart${jobOffer.jobId} =new Chart(ctx, {
+                                                       type: 'pie',
+                                                       data: {
+                                                         labels: ["Valid", "Not valid"],
+                                                         datasets: [{
+
+                                                           backgroundColor: ["#3e95cd", "#8e5ea2"],
+                                                       data: [${jobOffer.validJobOfferApplicationsNumber},${jobOffer.invalidJobOfferApplications}]
+                                                         }]
+                                                       },
+                                                       options: {
+                                                         title: {
+                                                           display: true,
+                                                       	    text: 'Applications'
+                                                         }
+                                                       }
+                                                   });
+                                                   var chart2${jobOffer.jobId} = new Chart(ctx2, {
+                                                     type: 'pie',
+                                                                                                          data: {
+                                                                                                                  labels: ["Yes", "No"],
+                                                                                                            datasets: [{
+                                                                                                              backgroundColor: ["#3cba9f","#e8c3b9","#c45850"],
+                                                                                                              data: [${jobOffer.numberOfJobOfferApplicationsWithAcceptance},${jobOffer.numberOfJobOfferApplicationsWithoutAcceptance}]
+                                                                                                            }]
+                                                                                                          },
+                                                                                                          options: {
+                                                                                                            title: {
+                                                                                                              display: true,
+                                                                                                            text: 'Applications acceptance'
+                                                                                                            }
+                                                                                                          }
+                                                                                                      });
                                                         </script>
                                                     </c:if>
                                                     <table class="table">
@@ -132,22 +130,39 @@
                                                                 <th class="text-center" scope="col">#</th>
                                                                 <th class="text-center" scope="col">Name</th>
                                                                 <th class="text-center" scope="col">Lastname</th>
-                                                                <th class="text-center" scope="col">Score</th>
                                                                 <th class="text-center" scope="col">Percent</th>
+                                                                <th class="text-center" scope="col">Match key words</th>
                                                                 <th class="text-center" scope="col">CV</th>
-                                                                <th class="text-center" scope="col">Acceptance</th>
                                                                 <th class="text-center" scope="col">Contact</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
 
                                                             <c:forEach items="${jobOffer.jobOfferApplications}" var="jobOfferApplication" varStatus="loop">
-                                                                <tr>
-                                                                    <th scope="row">${loop.count}</th>
+                                                                <c:choose>
+                                                                    <c:when test="${jobOfferApplication.employerAcceptanceeAsInt == 1 and jobOfferApplication.candidateAcceptancee }">
+                                                                        <tr class="success">
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <tr>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+
+                                                                <th scope="row">${loop.count}</th>
                                                                     <td class="text-center">${jobOfferApplication.candidate.name}</td>
                                                                     <td class="text-center">${jobOfferApplication.candidate.lastName}</td>
-                                                                    <td class="text-center">${jobOfferApplication.calculatedScore}</td>
-                                                                    <td class="text-center">${jobOfferApplication.percentOfMaxScore}</td>
+                                                                <td class="text-center">
+                                                                    ${jobOfferApplication.percentOfMaxScore}%
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    ${jobOfferApplication.percentOfMatchedKeyWords}%
+                                                                    <c:if test="${not empty jobOfferApplication.matchedKeyWords}">
+                                                                        <a type="button" data-toggle="popover"
+                                                                           title="Matched Tags"
+                                                                           data-content="${jobOfferApplication.matchedKeyWords}"><i
+                                                                                class="fas fa-tags"></i></a>
+                                                                    </c:if>
+                                                                </td>
                                                                           <td>
                                                                                         <c:choose>
                                                                                                                                                       <c:when test="${not empty jobOfferApplication.candidate.cvFIle}">
@@ -159,11 +174,8 @@
                                                                                                                                                   </c:choose>
 
                                                                           </td>
-                                                                    <td class="text-center">
                                                                         <c:choose>
                                                                             <c:when test="${jobOfferApplication.candidateAcceptancee}">
-                                                                                <p>Yes</p>
-                                                                    </td>
                                                                     <td>
                                                                         <a href="mailto:${jobOfferApplication.candidate.candidateEmail}" class="btn btn-success btn-sm">
                                                                             <span class="glyphicon glyphicon-envelope"></span> Mail</a>
@@ -175,9 +187,7 @@
                                                                     </td>
                                                                     </c:when>
                                                                     <c:otherwise>
-                                                                        <p>No</p>
-                                                                        </td>
-                                                                        <td> </td>
+                                                                        <td>Not allowed</td>
                                                                     </c:otherwise>
                                                                     </c:choose>
 
@@ -211,24 +221,33 @@
                                                     <table class="table">
                                                         <thead class="thead-dark">
                                                             <tr>
-                                                                <th scope="col">#</th>
-                                                                <th scope="col">Name</th>
-                                                                <th scope="col">Lastname</th>
-                                                                <th scope="col">Score</th>
-                                                                <th scope="col">Percent</th>
-                                                                <th scope="col">Candidate acceptance</th>
-                                                                <th scope="col">My acceptance</th>
+                                                                <th scope="col" class="text-center">#</th>
+                                                                <th scope="col" class="text-center">Name</th>
+                                                                <th scope="col" class="text-center">Lastname</th>
+                                                                <th scope="col" class="text-center">Percent</th>
+                                                                <th scope="col" class="text-center">Candidate
+                                                                    acceptance
+                                                                </th>
+                                                                <th scope="col" class="text-center">Matched key words
+                                                                </th>
+                                                                <th scope="col" class="text-center">CV</th>
                                                                 <th scope="col"></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <c:forEach items="${jobOffer.potentialJobOfferApplicationsWithMin}" var="jobOfferApplication" varStatus="loop">
                                                                 <tr>
-                                                                    <th scope="row">${loop.count}</th>
-                                                                    <td>${jobOfferApplication.candidate.name}</td>
-                                                                    <td>${jobOfferApplication.candidate.lastName}</td>
-                                                                    <td>${jobOfferApplication.calculatedScore}</td>
-                                                                    <td>${jobOfferApplication.percentOfMaxScore}</td>
+                                                                    <th class="text-center" scope="row">${loop.count}
+                                                                    </th>
+                                                                    <td class="text-center">
+                                                                        ${jobOfferApplication.candidate.name}
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        ${jobOfferApplication.candidate.lastName}
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        ${jobOfferApplication.percentOfMaxScore}%
+                                                                    </td>
                                                                     <td class="text-center">
                                                                         <c:choose>
                                                                             <c:when test="${jobOfferApplication.candidateAcceptancee}">
@@ -241,17 +260,45 @@
 
                                                                     </td>
                                                                     <td class="text-center">
+                                                                        ${jobOfferApplication.percentOfMatchedKeyWords}%
+                                                                        <c:if test="${not empty jobOfferApplication.matchedKeyWords}">
+                                                                            <a type="button" data-toggle="popover"
+                                                                               title="Matched Tags"
+                                                                               data-content="${jobOfferApplication.matchedKeyWords}"><i
+                                                                                    class="fas fa-tags"></i></a>
+
+                                                                        </c:if>
+                                                                    </td>
+                                                                    <td class="text-center">
                                                                         <c:choose>
-                                                                            <c:when test="${jobOfferApplication.employerAcceptancee}">
-                                                                                <p>Yes</p>
+                                                                            <c:when test="${not empty jobOfferApplication.candidate.cvFIle}">
+                                                                                <a type="button"
+                                                                                   class="btn btn-info btn-sm"
+                                                                                   href="<spring:url value="
+                                                                                /eJobFinder/employer/viewCV/${jobOfferApplication.candidate.candidateId}
+                                                                                " />" role="button" target="blank_">View
+                                                                                CV</a>
+
                                                                             </c:when>
                                                                             <c:otherwise>
-                                                                                <p>No</p>
+                                                                                <p>Not available</p>
                                                                             </c:otherwise>
                                                                         </c:choose>
                                                                     </td>
-                                                                    <td>
-                                                                        <button type="button" class="btn btn-success" onclick="acceptByEmployer('${jobOffer.jobId}','${jobOfferApplication.candidate.candidateId}','true','modal${jobOffer.jobId}')">Invite for apply</button>
+                                                                    <td class="text-center">
+                                                                        <c:choose>
+                                                                            <c:when test="${jobOfferApplication.employerAcceptanceeAsInt == 1}">
+                                                                                <p>Already invited</p>
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                <button type="button"
+                                                                                        class="btn btn-success"
+                                                                                        onclick="acceptByEmployer('${jobOffer.jobId}','${jobOfferApplication.candidate.candidateId}','true','modalPremium${jobOffer.jobId}')">
+                                                                                    Invite for apply
+                                                                                </button>
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+
                                                                     </td>
                                                                 </tr>
                                                             </c:forEach>
@@ -267,12 +314,34 @@
                                 </c:if>
                             </c:forEach>
                         </div>
+                        <div class="modal fade" id="modalA" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Success</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Candidate will be informed about your decision.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
 
-                        <br/>
-                        <br/>
-                        <br/>
-                        <%@include file="/WEB-INF/views/template/footer.jsp"%>
-                            <script type="text/javascript" src="<c:url value="/resources/js/jobInventory.js " />"></script>
+                    <%@include file="/WEB-INF/views/template/footer.jsp"%>
+                </div>
+
                             <script>
                                 $(document).ready(function() {
                                     $('#list').click(function(event) {

@@ -8,8 +8,10 @@
 <div class="container-wrapper">
 <div class="container">
 <div class="page-header">
-   <h1>Job Offers</h1>
-   <p class="lead">Checkout all the awesome list of job offers now! </p>
+    <br/>
+    <br/>
+    <h1>Job Offers</h1>
+    <p class="lead">Checkout all the awesome list of job offers now! </p>
 </div>
 <div class="well well-sm">
    <div class="btn-group">
@@ -45,12 +47,15 @@
       </div>
 
    </c:forEach>
-</div>
 
+</div>
+</div>
+    <br/>
         <br/>
         <br/>
-        <br/>
-<%@include file="/WEB-INF/views/template/footer.jsp"%>
+    <%@include file="/WEB-INF/views/template/footer.jsp"%>
+
+
 <script>
    $(document).ready(function() {
         $('#list').click(function(event){event.preventDefault();$('#products .item').addClass('list-group-item');});

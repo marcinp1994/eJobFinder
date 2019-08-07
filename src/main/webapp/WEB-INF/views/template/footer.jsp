@@ -1,6 +1,6 @@
 <link rel="stylesheet"  href="<c:url value="/resources/css/footer-with-button-logo.css" />">
     <!-- FOOTER -->
-    <footer id="myFooter">
+<footer id="myFooter" class="footer" style=" width:70%;margin-left:15%;">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-3">
@@ -48,8 +48,9 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <script>window.jQuery ||
-document.write('<script src="<c:url value="/resources/js/jquery-1.11.3.min.js" />"><\/script>')</script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+document.write('<script src="<c:url value="/resources/js/jquery.min.js" />"><\/script>')
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </body>

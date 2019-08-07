@@ -25,5 +25,9 @@ $(document).ready(function() {
 $("#modalA").on('hidden.bs.modal', function (e) {
   location.reload();
 });
+$("#modalList").on('hidden.bs.modal', function (e) {
+  location.reload();
+});
+
 
 });

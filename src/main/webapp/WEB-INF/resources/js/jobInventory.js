@@ -24,6 +24,7 @@ function acceptByEmployer(jobID,candidateID,acceptance, modal) {
       }
 
 $(document).ready(function() {
+ $('[data-toggle="popover"]').popover();
 $("#modalA").on('hidden.bs.modal', function (e) {
   location.reload();
 });

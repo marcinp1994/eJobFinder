@@ -27,7 +27,25 @@ $('#jobForm').on('keyup keypress', function(e) {
     return false;
   }
 });
-$('form input').on('keypress', function(e) {
-    return e.which !== 13;
+
+
+var fp = flatpickr(document.querySelector('#expirationDate'), {
+  altFormat: "j F Y",
+  altInput: true,
+  defaultDate: new Date().fp_incr(14) ,
+  dateFormat: "d-M-Y",
+  locale: {
+                         "firstDayOfWeek": 1 // start week on Monday
+                     },
+  //inline: true,
+  //enableTime: true,
+  //mode: "multiple",
+  onChange: function(selectedDates, dateStr, instance) {
+    console.log('date: ', dateStr);
+  }
 });
+
+    $('form input').on('keypress', function(e) {
+        return e.which !== 13;
+    });
 });
