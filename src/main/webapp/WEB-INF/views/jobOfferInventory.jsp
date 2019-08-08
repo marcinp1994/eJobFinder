@@ -1,6 +1,7 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-    <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
         <%@include file="/WEB-INF/views/template/header.jsp"%>
+        <script type="text/javascript" src="<c:url value=" /eJobFinder/resources/js/jobInventory.js " />"></script>
             <br/>
             <br/>
             <security:authorize access="isAuthenticated()">

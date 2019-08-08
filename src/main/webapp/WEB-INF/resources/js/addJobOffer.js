@@ -33,7 +33,7 @@ var fp = flatpickr(document.querySelector('#expirationDate'), {
   altFormat: "j F Y",
   altInput: true,
   defaultDate: new Date().fp_incr(14) ,
-  dateFormat: "d-M-Y",
+  dateFormat: "Y-m-d",
   locale: {
                          "firstDayOfWeek": 1 // start week on Monday
                      },

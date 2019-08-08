@@ -16,7 +16,7 @@
 
                 <c:if test="${notify}">
                     <div class="alert alert-success" role="alert">
-                        You have new applications for your offers! Please check yours report
+                        You have new applications for your offers! Please check yours reports
                     </div>
                 </c:if>
 
@@ -38,7 +38,7 @@
                                                                                            </a></span>
                         <span style="margin-left:30px;">  <a href="<c:url value="/employer/report/" />"  class="btn"><i class="fas fa-10x fa-file-invoice"></i>
                                               <br />
-                                                  <b>Report<b>
+                                                  <b>Reports<b>
                                               </a></span>
 
                         <c:if test="${isPremium}">

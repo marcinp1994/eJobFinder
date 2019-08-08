@@ -8,7 +8,7 @@
 <script type="text/javascript" src="<c:url value="/resources/js/addJobOffer.js " />"></script>
 <br/>
 <br/>
-<div class="container-wrapper" style="background-color:white;">
+<div class="container-wrapper">
     <div class="container">
         <div class="page-header">
         <br/>
@@ -122,16 +122,13 @@
         <input type="submit" value="Next" class="btn btn-default" id="sendButton">
         <a href="<c:url value="/employer/jobOfferInventory/addJobOffer" />" class="btn btn-default">Cancel</a>
     </form:form>
-
-<br/>
-<br/>
-<br/>
+    </div>
 
 <%@include file="/WEB-INF/views/template/footer.jsp" %>
+</div>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script src="http://1000hz.github.io/bootstrap-validator/dist/validator.min.js"></script>
 <script src="<c:url value="/resources/js/editor.js" />"></script>
 <script src="<c:url value="/resources/js/bootstrap-tagsinput.js" />"></script>
-<script type="text/javascript" src="<c:url value="/resources/js/addJobOffer.js" />"></script>
 

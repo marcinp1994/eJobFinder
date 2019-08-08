@@ -902,6 +902,7 @@
                 <button type="button" id="sendFormButton" class="btn btn-primary" style="position:relative; width:50%; height:50px; left:25%">Create Rules</button>
             </div>
 </form:form>
+</div>
 <%@include file="/WEB-INF/views/template/footer.jsp" %>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>

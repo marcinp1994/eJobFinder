@@ -101,7 +101,7 @@
                                             <c:forEach items="${technologyFacts}" var="fact" varStatus="loop">
                                                 <tr id="row_tech_${loop.count}">
                                                     <td class="index"> ${loop.count}</td>
-                                                    <td>"Candidate should know ${fact.name} at level ${fact.level} with years of experience ${fact.year}"</td>
+                                                    <td>"I know ${fact.name} at level ${fact.level} with years of experience ${fact.year}"</td>
                                                     <td>${fact.name}</td>
                                                     <td>${fact.level}</td>
                                                     <td>${fact.year}</td>

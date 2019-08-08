@@ -35,6 +35,10 @@ You should have received a copy of the GNU General Public License along with thi
   color:#444;
 }
 
+.Editor-editor{
+   background-color: #ffffff;
+}
+
 .jumbotron .container {
     position: relative;
     z-index: 2;

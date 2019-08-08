@@ -1,6 +1,8 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@include file="/WEB-INF/views/template/header.jsp"%>
+<br/>
+<br/>
 <link href="<c:url value="/resources/css/main.css" />" rel="stylesheet">
 	<div class="container-wrapper">
 		<div class="container">
@@ -64,6 +66,8 @@
 					</h4>
 					<p style="font-size:15px;">${jobOffer.benefits}</p>
 					<c:if test="${not empty jobOffer.additionalInfo}">
+					<br/>
+					<br/>
 					<h4>
                     	<b>More info</b>
                     </h4>
@@ -103,9 +107,7 @@
                        </div>
                         </c:if>
     </div>
+    </div>
 
-<br/>
-<br/>
-<br/>
 <%@include file="/WEB-INF/views/template/footer.jsp"%>
-
+</div>
