@@ -3,7 +3,6 @@
         <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
             <%@include file="/WEB-INF/views/template/header.jsp"%>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/popper.min.js " />"></script>
               <script type="text/javascript" src="<c:url value="/resources/js/jobInventory.js " />"></script>
@@ -42,7 +41,7 @@
                                                 ${jobOffer.shortDescription}
                                             </p>
                                             <p class="lead" style="color:#808080;font-size:15px;font-style:italic;">
-                                                All applications: ${fn:length(jobOffer.jobOfferApplications)}
+                                                All applications: ${fn:length(jobOffer.allJobOfferApplications)}
                                             </p>
 
                                             <div class="row">
@@ -75,7 +74,7 @@
                                                 </div>
                                                 <div class="modal-body" style="width:100%;">
                                                     <c:if test="${not empty jobOffer.jobOfferApplications}">
-                                                        <h3>Number of applications for this offer: ${fn:length(jobOffer.jobOfferApplications)} </h3>
+                                                        <h3>Number of applications for this offer: ${fn:length(jobOffer.allJobOfferApplications)} </h3>
                                                         <div class="container">
                                                             <div class="row">
                                                                 <div class="col-md-4 align-middle" style="margin-left:100px;">
@@ -138,7 +137,7 @@
                                                         </thead>
                                                         <tbody>
 
-                                                            <c:forEach items="${jobOffer.jobOfferApplications}" var="jobOfferApplication" varStatus="loop">
+                                                            <c:forEach items="${jobOffer.allJobOfferApplications}" var="jobOfferApplication" varStatus="loop">
                                                                 <c:choose>
                                                                     <c:when test="${jobOfferApplication.employerAcceptanceeAsInt == 1 and jobOfferApplication.candidateAcceptancee }">
                                                                         <tr class="success">

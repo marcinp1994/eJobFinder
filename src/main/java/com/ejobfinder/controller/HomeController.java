@@ -2,14 +2,11 @@ package com.ejobfinder.controller;
 
 import com.ejobfinder.model.Candidate;
 import com.ejobfinder.model.JobOffer;
-import com.ejobfinder.model.JobOfferApplication;
 import com.ejobfinder.model.Location;
 import com.ejobfinder.service.CandidateService;
 import com.ejobfinder.service.JobOfferService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Controller
@@ -74,50 +70,6 @@ public class HomeController {
         return "viewJobOffer";
     }
 
-    @RequestMapping("/candidate/{jobId}/apply")
-    public String jobOfferApply(@PathVariable String jobId, Model model, @AuthenticationPrincipal User activeUser) {
-        JobOffer jobOffer = jobOfferService.getJobOfferById(jobId);
-        Candidate candidate = activeUser != null ? candidateService.getCandidateByUsername(activeUser.getUsername()) : null;
-        JobOfferApplication application = new JobOfferApplication();
-
-        application.setJobOffer(jobOffer);
-        application.setCandidate(candidate);
-        application.setCandidateAcceptancee(Boolean.TRUE);
-
-        Integer score = candidateService.evaluateScoringOnJobOffer(jobId, candidate);
-        Double percent = (double) ((score * 100 / jobOffer.getMaximalPoints()));
-
-        jobOfferService.matchTagsWithCandidateCV(jobOffer, candidate, application);
-
-        application.setPercentOfMaxScore(percent);
-        application.setCalculatedScore(score);
-
-        if (jobOffer.getThresholdPercentagePoints() > percent) {
-            application.setEmployerAcceptancee(Boolean.FALSE);
-        }
-        jobOffer.addApplication(application);
-
-        jobOfferService.updateJobOffer(jobOffer);
-        // candidateService.updateCandidate(candidate);
-
-        return "redirect:/";
-    }
-
-    @RequestMapping("/employer/acceptByEmployer")
-    public ResponseEntity<String> jobOfferAccerptByEmployer(@RequestParam String jobID, @RequestParam Integer candidateID, @RequestParam Boolean isAccepted) {
-        JobOffer jobOffer = jobOfferService.getJobOfferById(jobID);
-
-        Optional<JobOfferApplication> application = jobOffer.getAllJobOfferApplications().stream().filter(application1 -> candidateID == application1.getCandidate().getCandidateId()).findFirst();
-
-        if (application.isPresent()) {
-            application.get().setEmployerAcceptancee(isAccepted);
-            application.get().setNotify(true);
-            jobOfferService.updateJobOffer(jobOffer);
-        }
-
-        return new ResponseEntity<String>("JobOffer updated", HttpStatus.OK);
-    }
-
     @RequestMapping("/search")
     public String jobOfferAccerptByEmployer(@RequestParam String searchString, Model model) {
         if (StringUtils.isEmpty(searchString)) {
@@ -143,23 +95,4 @@ public class HomeController {
         return "jobOfferList";
     }
 
-    @RequestMapping("/candidate/acceptByCandidate")
-    public ResponseEntity<String> jobOfferAccerptByCandidate(@RequestParam String jobID, @RequestParam Integer candidateID, @RequestParam Boolean isAccepted) {
-        JobOffer jobOffer = jobOfferService.getJobOfferById(jobID);
-        Optional<JobOfferApplication> application = jobOffer.getAllJobOfferApplications().stream().filter(application1 -> candidateID == application1.getCandidate().getCandidateId()).findFirst();
-
-        if (application.isPresent()) {
-            application.get().setCandidateAcceptancee(isAccepted);
-            if (application.get().getPotential() && application.get().getEmployerAcceptancee()) {
-                application.get().setPotential(false);
-            }
-            if (!isAccepted && application.get().getEmployerAcceptancee() != null && !application.get().getEmployerAcceptancee()) {
-                Set<JobOfferApplication> copy = jobOffer.getAllJobOfferApplications();
-                jobOffer.removeApplication(application.get());
-
-            }
-            jobOfferService.updateJobOffer(jobOffer);
-        }
-        return new ResponseEntity<>("JobOffer updated", HttpStatus.OK);
-    }
 }

@@ -55,9 +55,6 @@
         <input type="submit" value="submit" class="btn btn-default">
         <a href="<c:url value="/" />" class="btn btn-default">Cancel</a>
         </form:form>
-        </div>
-        </div>
-        </br></br></br></br></br></br></br></br>
-
+    </div>
         <%@include file="/WEB-INF/views/template/footer.jsp" %>
-        </div>
+</div>

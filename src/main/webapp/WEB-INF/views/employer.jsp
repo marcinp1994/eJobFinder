@@ -24,7 +24,7 @@
 
                     <div>
 
-                        <span style="">  <a href=" #"  class="btn"><i class="fas fa-10x fa-user-edit"></i>
+                        <span style="">  <a href="<c:url value="/employer/editProfilePage" />"    class="btn"><i class="fas fa-10x fa-user-edit"></i>
                                                    <br />
                                                        <b>Edit your profile<b>
                                                     </a></span>
@@ -105,4 +105,6 @@
             </div>
 
         </div>
+        </div>
 <%@include file="/WEB-INF/views/template/footer.jsp" %>
+</div>

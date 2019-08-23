@@ -1,5 +1,6 @@
 package com.ejobfinder.model;
 
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,22 +23,28 @@ public class JobOffer {
     @NotEmpty(message = "Short description must not be empty!")
     private String shortDescription;
     @NotNull
+    @Type(type = "text")
     private String description;
     @NotNull
     @NotEmpty(message = "Category must not be empty!")
     private String category;
     private String jobOfferStatus;
     @NotNull
+    @Type(type = "text")
     private String requirements;
     @NotNull
+    @Type(type = "text")
     private String responsibilities;
     @NotNull
+    @Type(type = "text")
     private String preferredSkills;
     private Integer thresholdPercentagePoints;
     private Integer maximalPoints;
     @NotNull
+    @Type(type = "text")
     private String benefits;
     private Boolean containsRules = Boolean.FALSE;
+    @Type(type = "text")
     private String additionalInfo;
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -222,7 +229,8 @@ public class JobOffer {
     }
 
     public Set<JobOfferApplication> getAllJobOfferApplications() {
-        return jobOfferApplications;
+        return jobOfferApplications.stream().filter(application -> !application.getPotential()).collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(JobOfferApplication::getPercentOfMaxScore).reversed())));
+
     }
 
     public Set<JobOfferApplication> getJobOfferApplications() {
@@ -234,11 +242,14 @@ public class JobOffer {
     }
 
     public Set<JobOfferApplication> getPotentialJobOfferApplicationsWithMin() {
-        return jobOfferApplications.stream().filter(application -> application.getPotential() && application.getPercentOfMaxScore() > this.getThresholdPercentagePoints()).collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(JobOfferApplication::getCalculatedScore).reversed())));
+        return jobOfferApplications.stream().filter(application -> application.getPotential() && application.getPercentOfMaxScore() > this.getThresholdPercentagePoints()).collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(JobOfferApplication::getCalculatedScore))));
     }
 
     public Set<JobOfferApplication> getValidJobOfferApplications() {
-        return jobOfferApplications.stream().filter(application -> application.getPercentOfMaxScore() >= this.thresholdPercentagePoints && !application.getPotential()).collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(JobOfferApplication::getCalculatedScore).reversed())));
+        return jobOfferApplications
+                .stream()
+                .filter(application -> application.getPercentOfMaxScore() >= this.thresholdPercentagePoints && !application.getPotential())
+                .collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(JobOfferApplication::getCalculatedScore).reversed())));
     }
 
     public int getNumberOfValidJobOfferApplications() {
@@ -246,19 +257,19 @@ public class JobOffer {
     }
 
     public int getNumberOfValidJobOfferApplicationsWithAcceptance() {
-        return jobOfferApplications.stream().filter(application -> application.getPercentOfMaxScore() >= this.thresholdPercentagePoints && application.getCandidateAcceptancee() && !application.getPotential()).collect(Collectors.toSet()).size();
+        return jobOfferApplications.stream().filter(application -> application.getPercentOfMaxScore() >= this.thresholdPercentagePoints && application.getEmployerAcceptancee() && !application.getPotential()).collect(Collectors.toSet()).size();
     }
 
     public int getNumberOfJobOfferApplicationsWithAcceptance() {
-        return jobOfferApplications.stream().filter(application -> application.getCandidateAcceptancee() && !application.getPotential()).collect(Collectors.toSet()).size();
+        return jobOfferApplications.stream().filter(application -> application.getEmployerAcceptancee() && !application.getPotential()).collect(Collectors.toSet()).size();
     }
 
     public int getNumberOfJobOfferApplicationsWithoutAcceptance() {
-        return jobOfferApplications.stream().filter(application -> !application.getCandidateAcceptancee() && !application.getPotential()).collect(Collectors.toSet()).size();
+        return jobOfferApplications.stream().filter(application -> !application.getEmployerAcceptancee() && !application.getPotential()).collect(Collectors.toSet()).size();
     }
 
     public int getNumberOfValidJobOfferApplicationsWithoutAcceptance() {
-        return jobOfferApplications.stream().filter(application -> application.getPercentOfMaxScore() >= this.thresholdPercentagePoints && !application.getPotential() && !application.getCandidateAcceptancee()).collect(Collectors.toSet()).size();
+        return jobOfferApplications.stream().filter(application -> application.getPercentOfMaxScore() >= this.thresholdPercentagePoints && !application.getPotential() && !application.getEmployerAcceptancee()).collect(Collectors.toSet()).size();
     }
 
     public int getInvalidJobOfferApplications() {

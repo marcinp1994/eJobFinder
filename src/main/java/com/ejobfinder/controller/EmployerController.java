@@ -1,9 +1,6 @@
 package com.ejobfinder.controller;
 
-import com.ejobfinder.model.Candidate;
-import com.ejobfinder.model.Employer;
-import com.ejobfinder.model.JobOffer;
-import com.ejobfinder.model.Location;
+import com.ejobfinder.model.*;
 import com.ejobfinder.model.rules.PerfectEmployeeRules;
 import com.ejobfinder.service.CandidateService;
 import com.ejobfinder.service.EmployerService;
@@ -20,10 +17,7 @@ import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +28,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Controller
 public class EmployerController {
@@ -73,15 +69,58 @@ public class EmployerController {
         model.addAttribute("lastName", employer.getLastName());
         model.addAttribute("isPremium", employer.getPremiumMember());
 
+        AtomicBoolean notificationNeeded = new AtomicBoolean(false);
+        AtomicBoolean updateOffer = new AtomicBoolean(false);
         List<JobOffer> jobOffers = jobOfferService.getJobOffersByEmployerName(activeUser.getUsername());
-        boolean notificationNeeded = jobOffers != null && jobOffers.stream().anyMatch(jobOffer -> jobOffer.getJobOfferApplications().stream().anyMatch(application ->
-                (application.getEmployerAcceptancee() == null && application.getCandidateAcceptancee()) || application.getNotify()
-        ));
 
-        model.addAttribute("notify", notificationNeeded);
+        if (jobOffers != null) {
+            for (JobOffer offer : jobOffers) {
+                updateOffer.set(false);
+                for (JobOfferApplication application : offer.getAllJobOfferApplications()) {
+                    if (application.getNotify()) {
+                        application.setNotify(false);
+                        notificationNeeded.set(true);
+                    }
+                }
+                if (updateOffer.get()) {
+                    jobOfferService.updateJobOffer(offer);
+                }
+            }
+        }
+
+        model.addAttribute("notify", notificationNeeded.get());
         model.addAttribute("offers", jobOffers);
 
         return "employer";
+    }
+
+    @RequestMapping("/employer/editProfilePage")
+    public String editProfilePage(@AuthenticationPrincipal User activeUser, Model model) {
+        Employer employer = employerService.getEmployerByUsername(activeUser.getUsername());
+
+        model.addAttribute("employerProfile", employer);
+
+        return "editProfile";
+    }
+
+    @RequestMapping(value = "/employer/updateMyProfile", method = RequestMethod.POST)
+    public String updateProfile(@Valid @ModelAttribute("employerProfile") Employer updatedProfile, BindingResult result, Model model,
+                                HttpServletRequest request, @AuthenticationPrincipal User activeUser) {
+        Employer employerFromDB = employerService.getEmployerByUsername(activeUser.getUsername());
+
+        if (result.hasErrors()) {
+            return "editProfile";
+        }
+
+        employerFromDB.setCompanyName(updatedProfile.getCompanyName());
+        employerFromDB.setEmployerPhone(updatedProfile.getEmployerPhone());
+        employerFromDB.setEmployerEmail(updatedProfile.getEmployerEmail());
+        employerFromDB.setName(updatedProfile.getName());
+        employerFromDB.setLastName(updatedProfile.getLastName());
+
+        employerService.updateEmployer(employerFromDB);
+
+        return "redirect:/employer/";
     }
 
     @RequestMapping("/employer/buyPremium")
@@ -309,6 +348,21 @@ public class EmployerController {
         model.addAttribute("isPremium", employer.getPremiumMember());
 
         return "perfectEmployee";
+    }
+
+    @RequestMapping("/employer/acceptByEmployer")
+    public ResponseEntity<String> jobOfferAccerptByEmployer(@RequestParam String jobID, @RequestParam Integer candidateID, @RequestParam Boolean isAccepted) {
+        JobOffer jobOffer = jobOfferService.getJobOfferById(jobID);
+
+        Optional<JobOfferApplication> application = jobOffer.getAllJobOfferApplications().stream().filter(application1 -> candidateID == application1.getCandidate().getCandidateId()).findFirst();
+
+        if (application.isPresent()) {
+            application.get().setEmployerAcceptancee(isAccepted);
+            application.get().setNotify(true);
+            jobOfferService.updateJobOffer(jobOffer);
+        }
+
+        return new ResponseEntity<String>("JobOffer updated", HttpStatus.OK);
     }
 
 }

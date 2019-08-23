@@ -1,4 +1,5 @@
 <%@include file="/WEB-INF/views/template/header.jsp"%>
+<script type="text/javascript" src="<c:url value=" /eJobFinder/resources/js/candidateMainPage.js " />"></script>
     <br/>
     <br/>
 
@@ -75,6 +76,7 @@
                                                             </c:when>
                                                             <c:when test="${jobOfferApplication.employerAcceptanceeAsInt == 1}">
                                                                 <p>Yes</p>
+                                                                <c:set var="buttonsEnabled" value="false" />
                                                             </c:when>
                                                             <c:otherwise>
                                                                 <p>No decision yet</p>
@@ -181,7 +183,11 @@
 
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-success" onclick="acceptByCandidate('${jobOfferPropositions.jobOffer.jobId}','${candidateId}','true','modalListProp')" <c:if test="${ not buttonsEnabled}">disabled</c:if>>Accept</button>
+                                                     <c:if test="${buttonsEnabled}">
+                                                              <button type="button" class="btn btn-success" onclick="acceptByCandidate('${jobOfferPropositions.jobOffer.jobId}','${candidateId}','true','modalListProp')">Accept</button>
+                                                      </c:if>
+
+
                 <button type="button" class="btn btn-danger" onclick="acceptByCandidate('${jobOfferPropositions.jobOffer.jobId}','${candidateId}','','modalListProp')">Decline</button>
                 <a type="button" class="btn btn-info" href="<c:url value=" /eJobFinder/jobOfferList/viewJobOffer/${jobOfferPropositions.jobOffer.jobId} " />">Details</a>
                 </td>
@@ -283,7 +289,4 @@
         <br/>
 
         <%@include file="/WEB-INF/views/template/footer.jsp" %>
-                            </div>
-
-            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-            <script type="text/javascript" src="<c:url value=" /eJobFinder/resources/js/candidateMainPage.js " />"></script>
+        </div>
