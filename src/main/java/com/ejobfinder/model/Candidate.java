@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -17,7 +18,6 @@ public class Candidate implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "candidateId")
     private int candidateId;
     @NotEmpty(message = "The candidate name must not be null.")
     private String name;
@@ -283,7 +283,7 @@ public class Candidate implements Serializable {
                 Objects.equals(periodOfNoticeFacts, candidate.periodOfNoticeFacts) &&
                 Objects.equals(salaryFacts, candidate.salaryFacts) &&
                 Objects.equals(typeOfContractFacts, candidate.typeOfContractFacts) &&
-                Objects.equals(cvFIle, candidate.cvFIle) &&
+                Arrays.equals(cvFIle, candidate.cvFIle) &&
                 Objects.equals(workingHoursFacts, candidate.workingHoursFacts);
     }
 

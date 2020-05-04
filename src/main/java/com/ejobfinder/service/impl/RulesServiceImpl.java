@@ -4,355 +4,205 @@ import com.ejobfinder.drools.Condition;
 import com.ejobfinder.drools.Rule;
 import com.ejobfinder.model.facts.*;
 import com.ejobfinder.model.rules.*;
-import com.ejobfinder.service.RulesService;
 import org.h2.util.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class RulesServiceImpl implements RulesService {
+public class RulesServiceImpl {
 
-    @Autowired
     private PerfectEmployeeRules perfectEmployeeRules;
 
-    @Override
+    public RulesServiceImpl(PerfectEmployeeRules perfectEmployeeRules) {
+        this.perfectEmployeeRules = perfectEmployeeRules;
+    }
+
     public List<Rule> createRulesForSkills(List<SkillRule> skillRuleList) {
         List<Rule> rules = new ArrayList<>();
         for (SkillRule skillRule : skillRuleList) {
-            Rule rule = new Rule("Skill Rule");
-            rule.setDataObject(SkillFact.class.getName());
+            Rule rule = createRule("Skill Rule", SkillFact.class.getName());
             List<Condition> conditionList = new ArrayList<>();
-            Condition condition = new Condition();
-            condition.setProperty("name");
-            condition.setOperator(Condition.Operator.EQUAL_TO);
-            condition.setValue(skillRule.getName());
-            conditionList.add(condition);
+            createCondition("name", Condition.Operator.EQUAL_TO, skillRule.getName(), conditionList);
             if (skillRule.getLevel() != 0) {
-                Condition condition2 = new Condition();
-                condition2.setProperty("level");
-                condition2.setOperator(skillRule.getLevelOperator());
-                condition2.setValue(skillRule.getLevel());
-                conditionList.add(condition2);
+                createCondition("level", skillRule.getLevelOperator(), skillRule.getLevel(), conditionList);
             }
-            rule.setConditions(conditionList);
-            rule.setAction(String.valueOf(skillRule.getScore()));
-            rule.setScore(skillRule.getScore());
-            rules.add(rule);
+            rules.add(updateRule(skillRule.getScore(), rule, conditionList));
+
         }
         return rules;
     }
 
-    @Override
     public List<Rule> createRulesForTechnology(List<TechnologyRule> technologyRuleList) {
         List<Rule> rules = new ArrayList<>();
         for (TechnologyRule technologyRule : technologyRuleList) {
-            Rule rule = new Rule("Technology Rule");
-            rule.setDataObject(TechnologyFact.class.getName());
+            Rule rule = createRule("Technology Rule", TechnologyFact.class.getName());
             List<Condition> conditionList = new ArrayList<>();
-            Condition condition = new Condition();
-            condition.setProperty("name");
-            condition.setOperator(Condition.Operator.EQUAL_TO);
-            condition.setValue(technologyRule.getName());
-            conditionList.add(condition);
+            createCondition("name", Condition.Operator.EQUAL_TO, technologyRule.getName(), conditionList);
             if (technologyRule.getLevel() != 0) {
-                Condition condition2 = new Condition();
-                condition2.setProperty("level");
-                condition2.setOperator(technologyRule.getLevelOperator());
-                condition2.setValue(technologyRule.getLevel());
-                conditionList.add(condition2);
+                createCondition("level", technologyRule.getLevelOperator(), technologyRule.getLevel(), conditionList);
             }
             if (technologyRule.getYear() != 0) {
-                Condition condition3 = new Condition();
-                condition3.setProperty("year");
-                condition3.setOperator(technologyRule.getYearOperator());
-                condition3.setValue(technologyRule.getYear());
-                conditionList.add(condition3);
+                createCondition("year", technologyRule.getYearOperator(), technologyRule.getYear(), conditionList);
             }
-            rule.setConditions(conditionList);
-            rule.setAction(String.valueOf(technologyRule.getScore()));
-            rule.setScore(technologyRule.getScore());
-            rules.add(rule);
+            rules.add(updateRule(technologyRule.getScore(), rule, conditionList));
         }
         return rules;
     }
 
-    @Override
     public List<Rule> createRulesForWorkingHours(List<WorkingHoursRule> workingHoursRuleList) {
         List<Rule> rules = new ArrayList<>();
         for (WorkingHoursRule workingHoursRule : workingHoursRuleList) {
             if (workingHoursRule.getWorkingHours() != null) {
-                Rule rule = new Rule("Working Hours Rule");
-                rule.setDataObject(WorkingHoursFact.class.getName());
+                Rule rule = createRule("Working Hours Rule", WorkingHoursFact.class.getName());
                 List<Condition> conditionList = new ArrayList<>();
-                Condition condition = new Condition();
-                condition.setProperty("workingHours");
-                condition.setOperator(workingHoursRule.getWorkingHoursOperator());
-                condition.setValue(workingHoursRule.getWorkingHours());
-                conditionList.add(condition);
-                rule.setConditions(conditionList);
-                rule.setAction(String.valueOf(workingHoursRule.getScore()));
-                rule.setScore(workingHoursRule.getScore());
-                rules.add(rule);
+                createCondition("workingHours", workingHoursRule.getWorkingHoursOperator(), workingHoursRule.getWorkingHours(), conditionList);
+                rules.add(updateRule(workingHoursRule.getScore(), rule, conditionList));
             }
         }
         return rules;
     }
 
-    @Override
     public List<Rule> createRulesForEducation(List<EducationRule> educationRuleList) {
         List<Rule> rules = new ArrayList<>();
         for (EducationRule educationRule : educationRuleList) {
-            Rule rule = new Rule("Education Rule");
-            rule.setDataObject(EducationFact.class.getName());
+            Rule rule = createRule("Education Rule", EducationFact.class.getName());
             List<Condition> conditionList = new ArrayList<>();
             if (educationRule.getFieldOfStudy() != null) {
-                Condition condition1 = new Condition();
-                condition1.setProperty("fieldOfStudy");
-                condition1.setOperator(Condition.Operator.EQUAL_TO);
-                condition1.setValue(educationRule.getFieldOfStudy());
-                conditionList.add(condition1);
+                createCondition("fieldOfStudy", Condition.Operator.EQUAL_TO, educationRule.getFieldOfStudy(), conditionList);
             }
             if (educationRule.getModeOfStudy() != null) {
-                Condition condition2 = new Condition();
-                condition2.setProperty("modeOfStudy");
-                condition2.setOperator(Condition.Operator.EQUAL_TO);
-                condition2.setValue(educationRule.getModeOfStudy());
-                conditionList.add(condition2);
+                createCondition("modeOfStudy", Condition.Operator.EQUAL_TO, educationRule.getModeOfStudy(), conditionList);
             }
-
             if (educationRule.getProfessionalTitle() != null) {
-                Condition condition3 = new Condition();
-                condition3.setProperty("professionalTitle");
-                condition3.setOperator(Condition.Operator.EQUAL_TO);
-                condition3.setValue(educationRule.getProfessionalTitle());
-                conditionList.add(condition3);
+                createCondition("professionalTitle", Condition.Operator.EQUAL_TO, educationRule.getProfessionalTitle(), conditionList);
             }
-
             if (educationRule.isStudent() != null) {
-                Condition condition4 = new Condition();
-                condition4.setProperty("student");
-                condition4.setOperator(Condition.Operator.EQUAL_TO);
-                condition4.setValue(educationRule.isStudent());
-                conditionList.add(condition4);
+                createCondition("student", Condition.Operator.EQUAL_TO, educationRule.isStudent(), conditionList);
             }
-
             if (educationRule.isStudyAbroad() != null) {
-                Condition condition5 = new Condition();
-                condition5.setProperty("studyAbroad");
-                condition5.setOperator(Condition.Operator.EQUAL_TO);
-                condition5.setValue(educationRule.isStudyAbroad());
-                conditionList.add(condition5);
+                createCondition("studyAbroad", Condition.Operator.EQUAL_TO, educationRule.isStudyAbroad(), conditionList);
             }
-
-            rule.setConditions(conditionList);
-            rule.setAction(String.valueOf(educationRule.getScore()));
-            rule.setScore(educationRule.getScore());
-            rules.add(rule);
+            rules.add(updateRule(educationRule.getScore(), rule, conditionList));
         }
         return rules;
     }
 
-    @Override
     public List<Rule> createRulesForLanguage(List<LanguageRule> languageRuleList) {
         List<Rule> rules = new ArrayList<>();
         for (LanguageRule languageRule : languageRuleList) {
-            Rule rule = new Rule("Language Rule");
-            rule.setDataObject(LanguageFact.class.getName());
+            Rule rule = createRule("Language Rule", LanguageFact.class.getName());
             List<Condition> conditionList = new ArrayList<>();
-            Condition condition = new Condition();
-            condition.setProperty("name");
-            condition.setOperator(Condition.Operator.EQUAL_TO);
-            condition.setValue(languageRule.getName());
-            conditionList.add(condition);
+            createCondition("name", Condition.Operator.EQUAL_TO, languageRule.getName(), conditionList);
             if (languageRule.getLevel() != 0) {
-                Condition condition2 = new Condition();
-                condition2.setProperty("level");
-                condition2.setOperator(languageRule.getLevelOperator());
-                condition2.setValue(languageRule.getLevel());
-                conditionList.add(condition2);
+                createCondition("level", languageRule.getLevelOperator(), languageRule.getLevel(), conditionList);
             }
-            rule.setConditions(conditionList);
-            rule.setAction(String.valueOf(languageRule.getScore()));
-            rule.setScore(languageRule.getScore());
-            rules.add(rule);
+            rules.add(updateRule(languageRule.getScore(), rule, conditionList));
         }
         return rules;
     }
 
-    @Override
     public List<Rule> createRulesForLocation(List<LocationRule> locationRuleList) {
         List<Rule> rules = new ArrayList<>();
         for (LocationRule locationRule : locationRuleList) {
             if (locationRule.getName() != null) {
-                Rule rule = new Rule("Location Rule");
-                rule.setDataObject(LocationFact.class.getName());
+                Rule rule = createRule("Location Rule", LocationFact.class.getName());
                 List<Condition> conditionList = new ArrayList<>();
-                Condition condition = new Condition();
-                condition.setProperty("name");
-                condition.setOperator(Condition.Operator.EQUAL_TO);
-                condition.setValue(locationRule.getName());
-                conditionList.add(condition);
-                rule.setConditions(conditionList);
-                rule.setAction(String.valueOf(locationRule.getScore()));
-                rule.setScore(locationRule.getScore());
-                rules.add(rule);
+                createCondition("name", Condition.Operator.EQUAL_TO, locationRule.getName(), conditionList);
+                rules.add(updateRule(locationRule.getScore(), rule, conditionList));
             }
         }
         return rules;
     }
 
-    @Override
     public List<Rule> createRulesForPeriodOfNotice(List<PeriodOfNoticeRule> periodOfNoticeRuleList) {
         List<Rule> rules = new ArrayList<>();
         for (PeriodOfNoticeRule periodOfNoticeRule : periodOfNoticeRuleList) {
             if (periodOfNoticeRule.getPeriodOfNotice() != null) {
-                Rule rule = new Rule("Period of Notice Rule");
-                rule.setDataObject(PeriodOfNoticeFact.class.getName());
+                Rule rule = createRule("Period of Notice Rule", PeriodOfNoticeFact.class.getName());
                 List<Condition> conditionList = new ArrayList<>();
-                Condition condition = new Condition();
-                condition.setProperty("periodOfNotice");
-                condition.setOperator(periodOfNoticeRule.getPeriodOfNoticeOperator());
-                condition.setValue(periodOfNoticeRule.getPeriodOfNotice());
-                conditionList.add(condition);
-                rule.setConditions(conditionList);
-                rule.setAction(String.valueOf(periodOfNoticeRule.getScore()));
-                rule.setScore(periodOfNoticeRule.getScore());
-                rules.add(rule);
+                createCondition("periodOfNotice", periodOfNoticeRule.getPeriodOfNoticeOperator(), periodOfNoticeRule.getPeriodOfNotice(), conditionList);
+                rules.add(updateRule(periodOfNoticeRule.getScore(), rule, conditionList));
             }
         }
         return rules;
     }
 
-    @Override
     public List<Rule> createRulesForPreviousEmployee(List<PreviousEmployerRule> previousEmployerRuleList) {
         List<Rule> rules = new ArrayList<>();
         for (PreviousEmployerRule previousEmployerRule : previousEmployerRuleList) {
-            Rule rule = new Rule("Previous Employer Rule");
-            rule.setDataObject(PreviousEmployerFact.class.getName());
+            Rule rule = createRule("Previous Employer Rule", PreviousEmployerFact.class.getName());
             List<Condition> conditionList = new ArrayList<>();
             if (previousEmployerRule.getJobTitle() != null) {
-                Condition condition = new Condition();
-                condition.setProperty("jobTitle");
-                condition.setOperator(Condition.Operator.EQUAL_TO);
-                condition.setValue(previousEmployerRule.getJobTitle());
-                conditionList.add(condition);
+                createCondition("jobTitle", Condition.Operator.EQUAL_TO, previousEmployerRule.getJobTitle(), conditionList);
             }
 
             if (previousEmployerRule.isStillWorking() != null) {
-                Condition condition2 = new Condition();
-                condition2.setProperty("stillWorking");
-                condition2.setOperator(Condition.Operator.EQUAL_TO);
-                condition2.setValue(previousEmployerRule.isStillWorking());
-                conditionList.add(condition2);
+                createCondition("stillWorking", Condition.Operator.EQUAL_TO, previousEmployerRule.isStillWorking(), conditionList);
             }
             if (previousEmployerRule.isHaveProfessionalExperience() != null) {
-                Condition condition3 = new Condition();
-                condition3.setProperty("haveProfessionalExperience");
-                condition3.setOperator(Condition.Operator.EQUAL_TO);
-                condition3.setValue(previousEmployerRule.isHaveProfessionalExperience());
-                conditionList.add(condition3);
+                createCondition("haveProfessionalExperience", Condition.Operator.EQUAL_TO, previousEmployerRule.isHaveProfessionalExperience(), conditionList);
             }
             if (previousEmployerRule.getYear() != 0) {
-                Condition condition4 = new Condition();
-                condition4.setProperty("year");
-                condition4.setOperator(previousEmployerRule.getYearOperator());
-                condition4.setValue(previousEmployerRule.getYear());
-                conditionList.add(condition4);
+                createCondition("year", previousEmployerRule.getYearOperator(), previousEmployerRule.getYear(), conditionList);
             }
-            rule.setConditions(conditionList);
-            rule.setAction(String.valueOf(previousEmployerRule.getScore()));
-            rule.setScore(previousEmployerRule.getScore());
-            rules.add(rule);
+            rules.add(updateRule(previousEmployerRule.getScore(), rule, conditionList));
         }
         return rules;
     }
 
-    @Override
     public List<Rule> createRulesForSalary(List<SalaryRule> salaryRuleList) {
         List<Rule> rules = new ArrayList<>();
         for (SalaryRule salaryRule : salaryRuleList) {
-            Rule rule = new Rule("Salary Rule");
-            rule.setDataObject(SalaryFact.class.getName());
+            Rule rule = createRule("Salary Rule", SalaryFact.class.getName());
             List<Condition> conditionList = new ArrayList<>();
             if (salaryRule.getAmountDown() != 0) {
-                Condition condition2 = new Condition();
-                condition2.setProperty("amountDown");
-                condition2.setOperator(salaryRule.getAmountDownOperator());
-                condition2.setValue(salaryRule.getAmountDown());
-                conditionList.add(condition2);
+                createCondition("amountDown", salaryRule.getAmountDownOperator(), salaryRule.getAmountDown(), conditionList);
             }
             if (salaryRule.getAmountUp() != 0) {
-                Condition condition3 = new Condition();
-                condition3.setProperty("amountUp");
-                condition3.setOperator(salaryRule.getAmountUpOperator());
-                condition3.setValue(salaryRule.getAmountUp());
-                conditionList.add(condition3);
+                createCondition("amountUp", salaryRule.getAmountUpOperator(), salaryRule.getAmountUp(), conditionList);
             }
-            rule.setConditions(conditionList);
-            rule.setAction(String.valueOf(salaryRule.getScore()));
-            rule.setScore(salaryRule.getScore());
-            rules.add(rule);
+            rules.add(updateRule(salaryRule.getScore(), rule, conditionList));
         }
         return rules;
     }
 
-    @Override
     public List<Rule> createRulesForTool(List<ToolRule> toolRuleList) {
         List<Rule> rules = new ArrayList<>();
         for (ToolRule toolRule : toolRuleList) {
-            Rule rule = new Rule("Tool Rule");
-            rule.setDataObject(ToolFact.class.getName());
+            Rule rule = createRule("Tool Rule", ToolFact.class.getName());
             List<Condition> conditionList = new ArrayList<>();
-            Condition condition = new Condition();
-            condition.setProperty("name");
-            condition.setOperator(Condition.Operator.EQUAL_TO);
-            condition.setValue(toolRule.getName());
-            conditionList.add(condition);
+            createCondition("name", Condition.Operator.EQUAL_TO, toolRule.getName(), conditionList);
             if (toolRule.getLevel() != 0) {
-                Condition condition2 = new Condition();
-                condition2.setProperty("level");
-                condition2.setOperator(toolRule.getLevelOperator());
-                condition2.setValue(toolRule.getLevel());
-                conditionList.add(condition2);
+                createCondition("level", toolRule.getLevelOperator(), toolRule.getLevel(), conditionList);
             }
             if (toolRule.getYear() != 0) {
-                Condition condition3 = new Condition();
-                condition3.setProperty("year");
-                condition3.setOperator(toolRule.getYearOperator());
-                condition3.setValue(toolRule.getYear());
-                conditionList.add(condition3);
+                createCondition("year", toolRule.getYearOperator(), toolRule.getYear(), conditionList);
             }
-            rule.setConditions(conditionList);
-            rule.setAction(String.valueOf(toolRule.getScore()));
-            rule.setScore(toolRule.getScore());
-            rules.add(rule);
+            rules.add(updateRule(toolRule.getScore(), rule, conditionList));
         }
         return rules;
     }
 
-    @Override
     public List<Rule> createRulesForTypeOfContract(List<TypeOfContractRule> typeOfContractRuleList) {
         List<Rule> rules = new ArrayList<>();
         for (TypeOfContractRule typeOfContractRule : typeOfContractRuleList) {
             if (typeOfContractRule.getTypeOfContract() != null) {
-                Rule rule = new Rule("Type Of Contract Rule");
-                rule.setDataObject(TypeOfContractFact.class.getName());
+                Rule rule = createRule("Type Of Contract Rule", TypeOfContractFact.class.getName());
                 List<Condition> conditionList = new ArrayList<>();
-                Condition condition = new Condition();
-                condition.setProperty("typeOfContract");
-                condition.setOperator(typeOfContractRule.getTypeOfContractOperator());
-                condition.setValue(typeOfContractRule.getTypeOfContract());
-                conditionList.add(condition);
-                rule.setConditions(conditionList);
-                rule.setAction(String.valueOf(typeOfContractRule.getScore()));
-                rule.setScore(typeOfContractRule.getScore());
-                rules.add(rule);
+                createCondition("typeOfContract", typeOfContractRule.getTypeOfContractOperator(), typeOfContractRule.getTypeOfContract(), conditionList);
+                rules.add(updateRule(typeOfContractRule.getScore(), rule, conditionList));
             }
         }
         return rules;
+    }
+
+    private Rule updateRule(int score, Rule rule, List<Condition> conditionList) {
+        rule.setConditions(conditionList);
+        rule.setAction(String.valueOf(score));
+        rule.setScore(score);
+        return rule;
     }
 
 
@@ -411,7 +261,6 @@ public class RulesServiceImpl implements RulesService {
         return perfectEmployeeRules.getWorkingHoursRules();
     }
 
-    @Override
     public void deleteRule(String name) {
         Integer idx = getIndexFromName(name);
         if (idx != null) {
@@ -424,65 +273,67 @@ public class RulesServiceImpl implements RulesService {
                 perfectEmployeeRules.getSkillRules().remove(index);
                 return;
             }
-
             if (name.contains("_tool_")) {
                 perfectEmployeeRules.getToolRules().remove(index);
                 return;
             }
-
             if (name.contains("_lang_")) {
                 perfectEmployeeRules.getLanguageRules().remove(index);
                 return;
             }
-
             if (name.contains("_loc_")) {
                 perfectEmployeeRules.getLocationRules().remove(index);
                 return;
             }
-
             if (name.contains("_workH_")) {
                 perfectEmployeeRules.getWorkingHoursRules().remove(index);
                 return;
             }
-
             if (name.contains("_contr_")) {
                 perfectEmployeeRules.getTypeOfContractRules().remove(index);
                 return;
             }
-
             if (name.contains("_period_")) {
                 perfectEmployeeRules.getPeriodOfNoticeRules().remove(index);
                 return;
             }
-
             if (name.contains("_edu_")) {
                 perfectEmployeeRules.getEducationRules().remove(index);
                 return;
             }
-
             if (name.contains("_prev_")) {
                 perfectEmployeeRules.getPreviousEmployerRules().remove(index);
                 return;
             }
-
             if (name.contains("_salary_")) {
                 perfectEmployeeRules.getSalaryRules().remove(index);
-                return;
             }
-
         }
     }
 
     private Integer getIndexFromName(String name) {
         if (name != null) {
             String[] split = name.split("_");
-            if (split != null) {
-                String last = split[split.length - 1];
-                if (StringUtils.isNumber(last)) {
-                    return Integer.valueOf(last);
-                }
+            String last = split[split.length - 1];
+            if (StringUtils.isNumber(last)) {
+                return Integer.valueOf(last);
             }
         }
         return null;
     }
+
+    private Rule createRule(String ruleName, String factNameClass){
+        Rule rule = new Rule(ruleName);
+        rule.setDataObject(factNameClass);
+        return rule;
+    }
+
+    private void createCondition(String property, Condition.Operator operator, Object value, List<Condition> conditionList){
+        Condition condition = new Condition();
+        condition.setProperty(property);
+        condition.setOperator(operator);
+        condition.setValue(value);
+        conditionList.add(condition);
+    }
+
 }

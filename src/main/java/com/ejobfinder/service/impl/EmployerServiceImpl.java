@@ -11,8 +11,11 @@ import java.util.List;
 @Service
 public class EmployerServiceImpl implements EmployerService {
 
-    @Autowired
     private EmployerDao employerDao;
+
+    public EmployerServiceImpl(EmployerDao employerDao) {
+        this.employerDao = employerDao;
+    }
 
     public void addEmployer(Employer employer) {
         employerDao.addEmployer(employer);
@@ -31,7 +34,7 @@ public class EmployerServiceImpl implements EmployerService {
     }
 
     @Override
-    public Employer updateEmployer(Employer employer) {
-        return employerDao.updateEmployer(employer);
+    public void updateEmployer(Employer employer) {
+        employerDao.updateEmployer(employer);
     }
 }

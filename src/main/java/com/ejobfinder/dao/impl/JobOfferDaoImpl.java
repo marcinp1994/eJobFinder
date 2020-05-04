@@ -18,8 +18,11 @@ import java.util.List;
 @Transactional
 public class JobOfferDaoImpl implements JobOfferDao {
 
-    @Autowired
     private SessionFactory sessionFactory;
+
+    public JobOfferDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public String addJobOffer(JobOffer jobOffer) {
@@ -72,12 +75,7 @@ public class JobOfferDaoImpl implements JobOfferDao {
         JobOffer jobOffer = getJobOfferById(id);
         Location location = jobOffer.getLocation();
 
-        for (Iterator<JobOffer> i = location.getJobOffers().iterator(); i.hasNext(); ) {
-            JobOffer jobOffer1 = i.next();
-            if (jobOffer.equals(jobOffer1)) {
-                i.remove();
-            }
-        }
+        location.getJobOffers().removeIf(jobOffer::equals);
         jobOffer.setLocation(null);
         session.saveOrUpdate(location);
         session.delete(getJobOfferById(id));

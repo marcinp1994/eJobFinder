@@ -7,18 +7,15 @@ import com.ejobfinder.model.Candidate;
 import com.ejobfinder.model.Employer;
 import com.ejobfinder.model.JobOffer;
 import com.ejobfinder.model.JobOfferApplication;
-import com.ejobfinder.model.facts.TechnologyFact;
 import com.ejobfinder.model.rules.*;
 import com.ejobfinder.service.CandidateService;
 import com.ejobfinder.service.EmployerService;
 import com.ejobfinder.service.JobOfferService;
-import com.ejobfinder.service.RulesService;
+import com.ejobfinder.service.impl.RulesServiceImpl;
 import com.ejobfinder.utils.BooleanMapper;
 import com.ejobfinder.utils.LanguageMapper;
 import com.ejobfinder.utils.OperatorConverter;
 import org.apache.commons.lang3.StringUtils;
-import org.kie.api.runtime.StatelessKieSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
@@ -27,7 +24,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -37,102 +33,68 @@ import java.util.stream.Stream;
 @Controller
 public class RuleController {
 
-    @Autowired
-    private DroolsUtility droolsUtility;
+    private final DroolsUtility droolsUtility;
+    private final EmployerService employerService;
+    private final CandidateService candidateService;
+    private final PerfectEmployeeRules perfectEmployeeRules;
+    private final RulesServiceImpl rulesService;
+    private final JobOfferService jobOfferService;
 
-    @Autowired
-    private EmployerService employerService;
-
-    @Autowired
-    private CandidateService candidateService;
-
-    @Autowired
-    private PerfectEmployeeRules perfectEmployeeRules;
-
-    @Autowired
-    private RulesService rulesService;
-
-    @Autowired
-    private JobOfferService jobOfferService;
-
-
-    @RequestMapping("/employer/jobOfferInventory/perfectEmployeeRules/{jobId}")
-    public String rule(Model model, @PathVariable("jobId") String jobId, @AuthenticationPrincipal User activeUser) throws Exception {
-        TechnologyRule technologyRule1 = new TechnologyRule("Java", Operator.GREATER_THAN_OR_EQUAL_TO, 2.0, 3, Operator.GREATER_THAN_OR_EQUAL_TO, 2);
-        TechnologyRule technologyRule2 = new TechnologyRule("Spring", Operator.GREATER_THAN_OR_EQUAL_TO, 1.0, 2, Operator.GREATER_THAN_OR_EQUAL_TO, 3);
-        TechnologyRule technologyRule3 = new TechnologyRule("SQL", Operator.GREATER_THAN_OR_EQUAL_TO, 3.0, 3, Operator.GREATER_THAN_OR_EQUAL_TO, 1);
-        List<TechnologyRule> technologyRuleList = Arrays.asList(technologyRule1, technologyRule2, technologyRule3);
-
-        List<Rule> rules = rulesService.createRulesForTechnology(technologyRuleList);
-
-        droolsUtility.createRules(rules, "rules/template/PerfectEmployeeRules.drl", jobId);
-
-        return "candidate";
+    public RuleController(DroolsUtility droolsUtility, EmployerService employerService, CandidateService candidateService, PerfectEmployeeRules perfectEmployeeRules, RulesServiceImpl rulesService, JobOfferService jobOfferService) {
+        this.droolsUtility = droolsUtility;
+        this.employerService = employerService;
+        this.candidateService = candidateService;
+        this.perfectEmployeeRules = perfectEmployeeRules;
+        this.rulesService = rulesService;
+        this.jobOfferService = jobOfferService;
     }
-
-    @RequestMapping("/fireRule/{jobId}")
-    public String fireRule(Model model, @PathVariable("jobId") String jobId, @AuthenticationPrincipal User activeUser) {
-        StatelessKieSession session = droolsUtility.loadSession(jobId);
-
-        Candidate candidate = new Candidate();
-        TechnologyFact technologyFact = new TechnologyFact("Java", 4, 5);
-        TechnologyFact technologyFact2 = new TechnologyFact("Spring", 1, 5);
-        TechnologyFact technologyFact3 = new TechnologyFact("SQL", 1, 5);
-        List<TechnologyFact> technologyFactList = Arrays.asList(technologyFact, technologyFact2, technologyFact3);
-
-        System.out.println("Technology name = '" + technologyFact.getName() + "' and level = '" + technologyFact.getLevel() + "' and years = '" + technologyFact.getYear() + "'.");
-        System.out.println("Technology name = '" + technologyFact2.getName() + "' and level = '" + technologyFact2.getLevel() + "' and years = '" + technologyFact2.getYear() + "'.");
-        System.out.println("Technology name = '" + technologyFact3.getName() + "' and level = '" + technologyFact3.getLevel() + "' and years = '" + technologyFact3.getYear() + "'.");
-
-        session.setGlobal("candidate", candidate);
-        session.execute(technologyFactList);
-        System.out.println("Candidate SCORE = '" + candidate.getScore() + "' points");
-
-        return "candidate";
-    }
-
 
     @RequestMapping(value = "rule/technology", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> addTechnologyRule(@RequestParam String name, @RequestParam String level, @RequestParam String year, @RequestParam String yearOperator,
+    public ResponseEntity<String> addTechnologyRule(@RequestParam String name, @RequestParam String level,
+                                                    @RequestParam String year, @RequestParam String yearOperator,
                                                     @RequestParam String levelOperator, @RequestParam String score) {
-        double yearDouble = Double.valueOf(year);
-        int scr = Integer.valueOf(score);
-        int lvl = Integer.valueOf(level);
+        double yearDouble = Double.parseDouble(year);
+        int scr = Integer.parseInt(score);
+        int lvl = Integer.parseInt(level);
         TechnologyRule rule = new TechnologyRule(name, OperatorConverter.convertTextOperatorToSymbolicOperator(yearOperator), yearDouble, lvl, OperatorConverter.convertTextOperatorToSymbolicOperator(levelOperator), scr);
-        Integer newSize = rulesService.addTechnologyRule(rule).size();
+        int newSize = rulesService.addTechnologyRule(rule).size();
         return new ResponseEntity<>("Technology rule created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "rule/skill", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> addSkillRule(@RequestParam String name, @RequestParam String level, @RequestParam String levelOperator, @RequestParam String score) {
-        int scr = Integer.valueOf(score);
-        int lvl = Integer.valueOf(level);
+    public ResponseEntity<String> addSkillRule(@RequestParam String name, @RequestParam String level,
+                                               @RequestParam String levelOperator, @RequestParam String score) {
+        int scr = Integer.parseInt(score);
+        int lvl = Integer.parseInt(level);
         SkillRule rule = new SkillRule(name, lvl, OperatorConverter.convertTextOperatorToSymbolicOperator(levelOperator), scr);
-        Integer newSize = rulesService.addSkillRule(rule).size();
+        int newSize = rulesService.addSkillRule(rule).size();
         return new ResponseEntity<>("Skill rule created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "rule/tool", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> addToolyRule(@RequestParam String name, @RequestParam String level, @RequestParam String levelOperator, @RequestParam String score, @RequestParam String year, @RequestParam String yearOperator) {
-        int scr = Integer.valueOf(score);
-        int lvl = Integer.valueOf(level);
-        double yearDouble = Double.valueOf(year);
+    public ResponseEntity<String> addToolyRule(@RequestParam String name, @RequestParam String level,
+                                               @RequestParam String levelOperator, @RequestParam String score,
+                                               @RequestParam String year, @RequestParam String yearOperator) {
+        int scr = Integer.parseInt(score);
+        int lvl = Integer.parseInt(level);
+        double yearDouble = Double.parseDouble(year);
         ToolRule rule = new ToolRule(name, OperatorConverter.convertTextOperatorToSymbolicOperator(yearOperator), yearDouble, lvl, OperatorConverter.convertTextOperatorToSymbolicOperator(levelOperator), scr);
-        Integer newSize = rulesService.addToolRule(rule).size();
+        int newSize = rulesService.addToolRule(rule).size();
         return new ResponseEntity<>("Tool rule created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "rule/language", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> addLanguageRule(@RequestParam String name, @RequestParam String level, @RequestParam String levelOperator, @RequestParam String score) {
+    public ResponseEntity<String> addLanguageRule(@RequestParam String name, @RequestParam String level,
+                                                  @RequestParam String levelOperator, @RequestParam String score) {
 
-        int scr = Integer.valueOf(score);
+        int scr = Integer.parseInt(score);
         int lvl = LanguageMapper.getLanguageLvlInt(level);
         LanguageRule rule = new LanguageRule(name, lvl, OperatorConverter.convertTextOperatorToSymbolicOperator(levelOperator), scr);
-        Integer newSize = rulesService.addLanguageRule(rule).size();
+        int newSize = rulesService.addLanguageRule(rule).size();
         return new ResponseEntity<>("Language rule created with new size=" + newSize, HttpStatus.OK);
     }
 
@@ -140,9 +102,9 @@ public class RuleController {
     @ResponseBody
     public ResponseEntity<String> addLocationeRule(@RequestParam String name, @RequestParam String score) {
 
-        int scr = Integer.valueOf(score);
+        int scr = Integer.parseInt(score);
         LocationRule locationRule = new LocationRule(name, scr);
-        Integer newSize = rulesService.addLocationRule(locationRule).size();
+        int newSize = rulesService.addLocationRule(locationRule).size();
         return new ResponseEntity<>("Location rule created with new size=" + newSize, HttpStatus.OK);
     }
 
@@ -150,55 +112,58 @@ public class RuleController {
     @ResponseBody
     public ResponseEntity<String> addSalaryeRule(@RequestParam String amountDown, @RequestParam String amountUp,
                                                  @RequestParam String score) {
-        int scr = Integer.valueOf(score);
-        double amountDownDouble = Double.valueOf(amountDown);
-        double amountUpDouble = Double.valueOf(amountUp);
+        int scr = Integer.parseInt(score);
+        double amountDownDouble = Double.parseDouble(amountDown);
+        double amountUpDouble = Double.parseDouble(amountUp);
         SalaryRule rule = new SalaryRule(amountDownDouble, Operator.EQUAL_TO,
                 amountUpDouble, Operator.EQUAL_TO, scr);
-        Integer newSize = rulesService.addSalaryRule(rule).size();
+        int newSize = rulesService.addSalaryRule(rule).size();
         return new ResponseEntity<>("Salary ule created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "rule/workingHours", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> addWorkingHoursRule(@RequestParam String name, @RequestParam String operator, @RequestParam String score) {
-        int scr = Integer.valueOf(score);
+    public ResponseEntity<String> addWorkingHoursRule(@RequestParam String name, @RequestParam String operator,
+                                                      @RequestParam String score) {
+        int scr = Integer.parseInt(score);
         Operator op = OperatorConverter.convertTextOperatorToSymbolicOperator(operator);
         WorkingHoursRule rule = new WorkingHoursRule(name, op, scr);
-        Integer newSize = rulesService.addWorkingHoursRule(rule).size();
+        int newSize = rulesService.addWorkingHoursRule(rule).size();
         return new ResponseEntity<>("WorkingHours rule created with new size=" + newSize, HttpStatus.OK);
 
     }
 
     @RequestMapping(value = "rule/typeOfContract", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> addTypeOfContractRule(@RequestParam String name, @RequestParam String operator, @RequestParam String score) {
-        int scr = Integer.valueOf(score);
+    public ResponseEntity<String> addTypeOfContractRule(@RequestParam String name, @RequestParam String operator,
+                                                        @RequestParam String score) {
+        int scr = Integer.parseInt(score);
         Operator op = OperatorConverter.convertTextOperatorToSymbolicOperator(operator);
         TypeOfContractRule rule = new TypeOfContractRule(name, op, scr);
-        Integer newSize = rulesService.addTypeOfContractRule(rule).size();
+        int newSize = rulesService.addTypeOfContractRule(rule).size();
         return new ResponseEntity<>("TypeOfContract rule created with new size=" + newSize, HttpStatus.OK);
 
     }
 
     @RequestMapping(value = "rule/periodOfNotice", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> addPeriodOfNoticeRule(@RequestParam String name, @RequestParam String operator, @RequestParam String score) {
-        int scr = Integer.valueOf(score);
+    public ResponseEntity<String> addPeriodOfNoticeRule(@RequestParam String name, @RequestParam String operator,
+                                                        @RequestParam String score) {
+        int scr = Integer.parseInt(score);
         Operator op = OperatorConverter.convertTextOperatorToSymbolicOperator(operator);
         PeriodOfNoticeRule rule = new PeriodOfNoticeRule(name, op, scr);
-        Integer newSize = rulesService.addPeriodOfNoticeRule(rule).size();
+        int newSize = rulesService.addPeriodOfNoticeRule(rule).size();
         return new ResponseEntity<>("PeriodOfNotice rule created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "rule/previousEmployerRule", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> addPreviousEmployerRule(@RequestParam String name, @RequestParam String year, @RequestParam String operator, @RequestParam String isStillWorkingParam, @RequestParam String haveProfessionalExperienceParam, @RequestParam String score) {
-        int scr = Integer.valueOf(score);
-
+    public ResponseEntity<String> addPreviousEmployerRule(@RequestParam String name, @RequestParam String year,
+                                                          @RequestParam String operator, @RequestParam String isStillWorkingParam,
+                                                          @RequestParam String haveProfessionalExperienceParam, @RequestParam String score) {
+        int scr = Integer.parseInt(score);
         Boolean stillWorking = BooleanMapper.getBoolean(isStillWorkingParam);
         Boolean haveProfessionalExperienc = BooleanMapper.getBoolean(haveProfessionalExperienceParam);
-
         PreviousEmployerRule rule = new PreviousEmployerRule();
 
         rule.setScore(scr);
@@ -207,7 +172,7 @@ public class RuleController {
 
         if (!StringUtils.isEmpty(year)) {
             Operator op = OperatorConverter.convertTextOperatorToSymbolicOperator(operator);
-            double yearDouble = Double.valueOf(year);
+            double yearDouble = Double.parseDouble(year);
 
             rule.setYearOperator(op);
             rule.setYear(yearDouble);
@@ -216,15 +181,16 @@ public class RuleController {
             rule.setJobTitle(name);
         }
 
-        Integer newSize = rulesService.addPreviousEmployerRule(rule).size();
+        int newSize = rulesService.addPreviousEmployerRule(rule).size();
         return new ResponseEntity<>("PreviousEmployerRule created with new size=" + newSize, HttpStatus.OK);
     }
 
     @RequestMapping(value = "rule/education", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> addEducationRule(@RequestParam String professionalTitle, @RequestParam String fieldOfStudy, @RequestParam String modeOfStudy,
-                                                   @RequestParam String isAbroadStudent, @RequestParam String isStudentParam, @RequestParam String score) {
-        int scr = Integer.valueOf(score);
+    public ResponseEntity<String> addEducationRule(@RequestParam String professionalTitle, @RequestParam String fieldOfStudy,
+                                                   @RequestParam String modeOfStudy, @RequestParam String isAbroadStudent,
+                                                   @RequestParam String isStudentParam, @RequestParam String score) {
+        int scr = Integer.parseInt(score);
         Boolean studyAbroad = BooleanMapper.getBoolean(isAbroadStudent);
         Boolean isStudent = BooleanMapper.getBoolean(isStudentParam);
         EducationRule rule = new EducationRule();
@@ -245,7 +211,7 @@ public class RuleController {
             rule.setModeOfStudy(modeOfStudy);
         }
 
-        Integer newSize = rulesService.addEducationRule(rule).size();
+        int newSize = rulesService.addEducationRule(rule).size();
         return new ResponseEntity<>("Education rule created with new size=" + newSize, HttpStatus.OK);
     }
 

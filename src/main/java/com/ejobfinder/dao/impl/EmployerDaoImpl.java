@@ -17,8 +17,11 @@ import java.util.List;
 @Transactional
 public class EmployerDaoImpl implements EmployerDao {
 
-    @Autowired
     private SessionFactory sessionFactory;
+
+    public EmployerDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     public void addEmployer(Employer employer) {
         Session session = sessionFactory.getCurrentSession();
@@ -56,9 +59,8 @@ public class EmployerDaoImpl implements EmployerDao {
     public List<Employer> getAllEmployers() {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from Employer");
-        List<Employer> employerList = query.list();
 
-        return employerList;
+        return (List<Employer>) query.list();
     }
 
     public Employer getEmployerByUsername(String username) {

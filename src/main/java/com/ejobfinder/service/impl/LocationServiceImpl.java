@@ -11,8 +11,11 @@ import java.util.List;
 @Service
 public class LocationServiceImpl implements LocationService {
 
-    @Autowired
     private LocationDao locationDao;
+
+    public LocationServiceImpl(LocationDao locationDao) {
+        this.locationDao = locationDao;
+    }
 
     @Override
     public void addLocation(Location location) {

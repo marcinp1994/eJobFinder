@@ -14,12 +14,13 @@ import java.util.List;
 @Service
 public class CandidateServiceImpl implements CandidateService {
 
-    @Autowired
     private CandidateDao candidateDao;
-
-    @Autowired
     private DroolsUtility droolsUtility;
 
+    public CandidateServiceImpl(CandidateDao candidateDao, DroolsUtility droolsUtility) {
+        this.candidateDao = candidateDao;
+        this.droolsUtility = droolsUtility;
+    }
 
     public void addCandidate(Candidate candidate) {
         candidateDao.addCandidate(candidate);
@@ -42,26 +43,6 @@ public class CandidateServiceImpl implements CandidateService {
         return candidateDao.getCandidateByUsername(username);
     }
 
-    @Override
-    public Integer evaluateScoringOnJobOffer(String jobOfferId, CandidateFacts factsAboutUser, Candidate candidate) {
-        StatelessKieSession session = droolsUtility.loadSession(jobOfferId);
-        candidate.setScore(0);
-        session.setGlobal("candidate", candidate);
-
-        session.execute(factsAboutUser.getTechnologyFacts());
-        session.execute(factsAboutUser.getTypeOfContractFacts());
-        session.execute(factsAboutUser.getEducationFacts());
-        session.execute(factsAboutUser.getLanguageFacts());
-        session.execute(factsAboutUser.getLocationFacts());
-        session.execute(factsAboutUser.getPeriodOfNoticeFacts());
-        session.execute(factsAboutUser.getPreviousEmployerFacts());
-        session.execute(factsAboutUser.getSalaryFacts());
-        session.execute(factsAboutUser.getToolFacts());
-        session.execute(factsAboutUser.getWorkingHoursFacts());
-        session.execute(factsAboutUser.getSkillFacts());
-
-        return candidate.getScore();
-    }
 
     @Override
     public Integer evaluateScoringOnJobOffer(String jobOfferId, Candidate candidate) {

@@ -29,7 +29,7 @@ rule "@{row.rowNumber} - @{name}"
 when
   @{object}(@{conditional})
 then
-  candidate.score(@{action});
+  candidate.score(@{action})
 end
 
 end template

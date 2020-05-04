@@ -6,7 +6,6 @@ import com.ejobfinder.model.Location;
 import com.ejobfinder.service.CandidateService;
 import com.ejobfinder.service.JobOfferService;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -23,11 +22,13 @@ import java.util.Set;
 @Controller
 public class HomeController {
 
-    @Autowired
-    private JobOfferService jobOfferService;
+    private final JobOfferService jobOfferService;
+    private final CandidateService candidateService;
 
-    @Autowired
-    private CandidateService candidateService;
+    public HomeController(JobOfferService jobOfferService, CandidateService candidateService) {
+        this.jobOfferService = jobOfferService;
+        this.candidateService = candidateService;
+    }
 
     @RequestMapping("/")
     public String home() {
@@ -66,7 +67,6 @@ public class HomeController {
         model.addAttribute("location", location);
         model.addAttribute("candidate", candId);
 
-
         return "viewJobOffer";
     }
 
@@ -79,6 +79,13 @@ public class HomeController {
         Set<JobOffer> result = new HashSet<>();
         String[] searchStrings = searchString.split(" ");
 
+        calculateTags(jobOffers, result, searchStrings);
+        model.addAttribute("jobOffers", result);
+
+        return "jobOfferList";
+    }
+
+    private void calculateTags(List<JobOffer> jobOffers, Set<JobOffer> result, String[] searchStrings) {
         for (JobOffer offer : jobOffers) {
             boolean containsAll = true;
             for (String key : searchStrings) {
@@ -90,9 +97,6 @@ public class HomeController {
                 result.add(offer);
             }
         }
-        model.addAttribute("jobOffers", result);
-
-        return "jobOfferList";
     }
 
 }

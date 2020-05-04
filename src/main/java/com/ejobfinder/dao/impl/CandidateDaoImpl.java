@@ -17,8 +17,11 @@ import java.util.List;
 @Transactional
 public class CandidateDaoImpl implements CandidateDao {
 
-    @Autowired
     private SessionFactory sessionFactory;
+
+    public CandidateDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     public void addCandidate(Candidate candidate) {
         Session session = sessionFactory.getCurrentSession();
@@ -36,7 +39,6 @@ public class CandidateDaoImpl implements CandidateDao {
 
         session.saveOrUpdate(newUser);
         session.saveOrUpdate(newAuthority);
-
         session.flush();
     }
 
@@ -54,9 +56,7 @@ public class CandidateDaoImpl implements CandidateDao {
     public List<Candidate> getAllCandidates() {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from Candidate");
-        List<Candidate> candidateList = query.list();
-
-        return candidateList;
+        return (List<Candidate>)query.list();
     }
 
     public Candidate getCandidateByUsername(String username) {

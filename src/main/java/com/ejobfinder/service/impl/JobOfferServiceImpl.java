@@ -21,8 +21,11 @@ import java.util.Set;
 @Service
 public class JobOfferServiceImpl implements JobOfferService {
 
-    @Autowired
     private JobOfferDao jobOfferDao;
+
+    public JobOfferServiceImpl(JobOfferDao jobOfferDao) {
+        this.jobOfferDao = jobOfferDao;
+    }
 
     @Override
     public String addJobOffer(JobOffer jobOffer) {
@@ -35,8 +38,8 @@ public class JobOfferServiceImpl implements JobOfferService {
     }
 
     @Override
-    public JobOffer updateJobOffer(JobOffer jobOffer) {
-        return jobOfferDao.updateJobOffer(jobOffer);
+    public void updateJobOffer(JobOffer jobOffer) {
+        jobOfferDao.updateJobOffer(jobOffer);
     }
 
     @Override
@@ -87,11 +90,8 @@ public class JobOfferServiceImpl implements JobOfferService {
             if (is != null) try {
                 PDDocument document = PDDocument.load(is);
                 PDFTextStripper pdfStripper = new PDFTextStripper();
-                //Retrieving text from PDF document
                 String cvText = pdfStripper.getText(document);
                 matchWords(matchedKeyWords, offerTags, cvText);
-
-                //Closing the document
                 document.close();
             } catch (IOException ignored) {
             }

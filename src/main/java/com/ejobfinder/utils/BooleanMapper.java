@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class BooleanMapper {
 
-    private static final Map<String, Boolean> BOOLEAN_MAPPER = new HashMap<String, Boolean>();
+    private static final Map<String, Boolean> BOOLEAN_MAPPER = new HashMap<>();
 
     static {
         BOOLEAN_MAPPER.put("YES", true);

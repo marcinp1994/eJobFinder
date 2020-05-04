@@ -8,59 +8,23 @@ import java.util.Map;
 
 
 public class Rule {
-    /**
-     * Rule's friendly name.
-     */
-    private final String name;
-    /**
-     * Class qualified name for which the rule will be applied.
-     */
-    private String object;
-    /**
-     * Conditionals of this rule.
-     */
-    private List<Condition> conditions = new ArrayList<Condition>();
-    /**
-     * Action to be executed.
-     */
-    private String action;
 
+    private final String name;
+    private String object;
+    private List<Condition> conditions = new ArrayList<>();
+    private String action;
     private int score;
 
-    /**
-     * Creates a new rule.
-     *
-     * @param name Friendly name.
-     */
     public Rule(String name) {
         this.name = name;
     }
 
-    /**
-     * List of attributes available to use in template.<br>
-     * These names must be the same used to write the .drl file template, which is compiled in runtime.
-     */
     public enum Attribute {
-        /**
-         * Name of the rule.
-         */
         RULE_NAME("name"),
-        /**
-         * Object with data to be processed.
-         */
         DATA_OBJECT("object"),
-        /**
-         * Conditional expression.
-         */
         CONDITIONAL("conditional"),
-        /**
-         * Action to take.
-         */
         ACTION("action");
 
-        /**
-         * Name used in template to assign each attirbute.
-         */
         private final String name;
 
         Attribute(String name) {
@@ -75,28 +39,19 @@ public class Rule {
 
     @Override
     public String toString() {
-        StringBuilder me = new StringBuilder("[" + this.getClass().getName());
-        me.append(" | name = ");
-        me.append(name);
-        me.append(" | object = ");
-        me.append(object);
-        me.append(" | conditions = ");
-        me.append(((conditions == null) ? "null" : conditions.size()));
-        me.append(" | action = ");
-        me.append(action);
-        me.append("]");
 
-        return me.toString();
+        String me = "[" + this.getClass().getName() + " | name = " +
+                name +
+                " | object = " +
+                object +
+                " | conditions = " +
+                ((conditions == null) ? "null" : conditions.size()) +
+                " | action = " +
+                action +
+                "]";
+        return me;
     }
 
-    /**
-     * Converts these conditionals to Drools Rule Language (DRL) format.<br>
-     * The formatted conditional is in dialect Java (<i>dialect "java"</i>).
-     *
-     * @return Rule's conditional expression.
-     * @throws IllegalStateException    Indicates none conditional declared.
-     * @throws IllegalArgumentException Indicates the use of invalid pair of value and condition.
-     */
     public String conditionAsDRL() throws IllegalStateException, IllegalArgumentException {
         if ((conditions == null) || (conditions.isEmpty())) {
             throw new IllegalStateException("You must declare at least one condition to be evaluated.");
@@ -116,18 +71,12 @@ public class Rule {
         return drl.toString();
     }
 
-    /**
-     * Returns the created rule as a map of its properties to be compiled with template.
-     *
-     * @return Map of rule's properties.
-     * @throws IllegalStateException Indicate a non valid rule.
-     */
     public Map<String, Object> asMap() throws IllegalStateException {
         if ((name == null) || (object == null) || (action == null)) {
             throw new IllegalArgumentException("The rule has no name, object to be evaluated or action to be accomplished.");
         }
 
-        Map<String, Object> attributes = new HashMap<String, Object>();
+        Map<String, Object> attributes = new HashMap<>();
         attributes.put(Rule.Attribute.RULE_NAME.toString(), name);
         attributes.put(Rule.Attribute.DATA_OBJECT.toString(), object);
         attributes.put(Rule.Attribute.CONDITIONAL.toString(), conditionAsDRL());
@@ -136,14 +85,6 @@ public class Rule {
         return attributes;
     }
 
-    /**
-     * Create new condition and add it to this rule.
-     *
-     * @param property Object property to be evaluated.
-     * @param operator Operator used to compare the data.
-     * @param value    Value to be evaluated.
-     * @return Condition created.
-     */
     public Condition addCondition(String property, Condition.Operator operator, Object value) {
         Condition condition = new Condition(property, operator, value);
         conditions.add(condition);
@@ -176,7 +117,7 @@ public class Rule {
     }
 
     public void setCondition(Condition condition) {
-        conditions = new ArrayList<Condition>();
+        conditions = new ArrayList<>();
         conditions.add(condition);
     }
 
@@ -191,7 +132,6 @@ public class Rule {
     public void setAction(String action) {
         this.action = action;
     }
-
 
     public int getScore() {
         return score;

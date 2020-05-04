@@ -7,7 +7,6 @@ import com.ejobfinder.service.EmployerService;
 import com.ejobfinder.service.JobOfferService;
 import com.ejobfinder.service.LocationService;
 import com.ejobfinder.utils.consts.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -35,21 +34,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class EmployerController {
 
     private Path path;
+    private final EmployerService employerService;
+    private final JobOfferService jobOfferService;
+    private final CandidateService candidateService;
+    private final LocationService locationService;
+    private final PerfectEmployeeRules perfectEmployeeRules;
 
-    @Autowired
-    private EmployerService employerService;
-
-    @Autowired
-    private JobOfferService jobOfferService;
-
-    @Autowired
-    private CandidateService candidateService;
-
-    @Autowired
-    private LocationService locationService;
-
-    @Autowired
-    private PerfectEmployeeRules perfectEmployeeRules;
+    public EmployerController(EmployerService employerService, JobOfferService jobOfferService, CandidateService candidateService, LocationService locationService, PerfectEmployeeRules perfectEmployeeRules) {
+        this.employerService = employerService;
+        this.jobOfferService = jobOfferService;
+        this.candidateService = candidateService;
+        this.locationService = locationService;
+        this.perfectEmployeeRules = perfectEmployeeRules;
+    }
 
     @RequestMapping("/employer/jobOfferInventory")
     public String employerPageInventory(@AuthenticationPrincipal User activeUser, Model model) {
@@ -97,15 +94,13 @@ public class EmployerController {
     @RequestMapping("/employer/editProfilePage")
     public String editProfilePage(@AuthenticationPrincipal User activeUser, Model model) {
         Employer employer = employerService.getEmployerByUsername(activeUser.getUsername());
-
         model.addAttribute("employerProfile", employer);
-
         return "editProfile";
     }
 
     @RequestMapping(value = "/employer/updateMyProfile", method = RequestMethod.POST)
-    public String updateProfile(@Valid @ModelAttribute("employerProfile") Employer updatedProfile, BindingResult result, Model model,
-                                HttpServletRequest request, @AuthenticationPrincipal User activeUser) {
+    public String updateProfile(@Valid @ModelAttribute("employerProfile") Employer updatedProfile,
+                                BindingResult result, @AuthenticationPrincipal User activeUser) {
         Employer employerFromDB = employerService.getEmployerByUsername(activeUser.getUsername());
 
         if (result.hasErrors()) {
@@ -151,18 +146,11 @@ public class EmployerController {
     public ResponseEntity<byte[]> getPDF1(@PathVariable String candidateId) {
 
         Candidate candidate = candidateService.getCandidateById(Integer.parseInt(candidateId));
-
         HttpHeaders headers = new HttpHeaders();
-
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
-
-
         headers.add("content-disposition", "inline;filename=" + "cvFile");
-
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-
-        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(candidate.getCvFIle(), headers, HttpStatus.OK);
-        return response;
+        return new ResponseEntity<byte[]>(candidate.getCvFIle(), headers, HttpStatus.OK);
     }
 
     @RequestMapping("/employer/cancelPremium")
@@ -240,12 +228,13 @@ public class EmployerController {
     }
 
     @Override
-    protected void finalize() throws Throwable {
+    public void finalize() throws Throwable {
         super.finalize();
     }
 
     @RequestMapping(value = "/employer/jobOfferInventory/deleteJobOffer/{jobId}")
-    public String deleteJobOffer(@PathVariable String jobId, @AuthenticationPrincipal User activeUser, Model model, HttpServletRequest request) {
+    public String deleteJobOffer(@PathVariable String jobId, @AuthenticationPrincipal User activeUser, Model model,
+                                 HttpServletRequest request) throws IOException {
         Employer employer = employerService.getEmployerByUsername(activeUser.getUsername());
 
         model.addAttribute("isPremium", employer.getPremiumMember());
@@ -253,11 +242,7 @@ public class EmployerController {
         path = Paths.get(rootDirectory + "\\WEB-INF\\resources\\images\\" + jobId + ".png");
 
         if (Files.exists(path)) {
-            try {
-                Files.delete(path);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Files.delete(path);
         }
 
         jobOfferService.deleteJobOffer(jobId);
@@ -326,12 +311,36 @@ public class EmployerController {
     }
 
     @RequestMapping("/employer/jobOfferInventory/perfectEmployee/{jobId}")
-    public String perfectEmployee(@PathVariable("jobId") String jobId, @AuthenticationPrincipal User activeUser, Model model, HttpServletRequest request) {
+    public String perfectEmployee(@PathVariable("jobId") String jobId, @AuthenticationPrincipal User activeUser,
+                                  Model model) {
         JobOffer jobOffer = jobOfferService.getJobOfferById(jobId);
         Employer employer = employerService.getEmployerByUsername(activeUser.getUsername());
 
         perfectEmployeeRules.setJobId(jobId);
         model.addAttribute(jobOffer);
+        updateModelWithStaticAttributes(model);
+        model.addAttribute("isPremium", employer.getPremiumMember());
+
+        return "perfectEmployee";
+    }
+
+    @RequestMapping("/employer/acceptByEmployer")
+    public ResponseEntity<String> jobOfferAccerptByEmployer(@RequestParam String jobID, @RequestParam Integer candidateID,
+                                                            @RequestParam Boolean isAccepted) {
+        JobOffer jobOffer = jobOfferService.getJobOfferById(jobID);
+
+        Optional<JobOfferApplication> application = jobOffer.getAllJobOfferApplications().stream().filter(application1 -> candidateID == application1.getCandidate().getCandidateId()).findFirst();
+
+        if (application.isPresent()) {
+            application.get().setEmployerAcceptancee(isAccepted);
+            application.get().setNotify(true);
+            jobOfferService.updateJobOffer(jobOffer);
+        }
+
+        return new ResponseEntity<>("JobOffer updated", HttpStatus.OK);
+    }
+
+    private void updateModelWithStaticAttributes(Model model) {
         model.addAttribute("technologies", TechnologiesConst.TECHNOLOGY_LIST);
         model.addAttribute("skills", SkillsConst.SKILL_LIST);
         model.addAttribute("tools", ToolsConst.TOOLS_LIST);
@@ -345,24 +354,6 @@ public class EmployerController {
         model.addAttribute("eduFields", EducationsConst.FIELD_OF_STUDY_LIST);
         model.addAttribute("eduModes", EducationsConst.MODE_OF_STUDY_LIST);
         model.addAttribute("jobTitles", JobTitlesConst.JON_TITLE_LIST);
-        model.addAttribute("isPremium", employer.getPremiumMember());
-
-        return "perfectEmployee";
-    }
-
-    @RequestMapping("/employer/acceptByEmployer")
-    public ResponseEntity<String> jobOfferAccerptByEmployer(@RequestParam String jobID, @RequestParam Integer candidateID, @RequestParam Boolean isAccepted) {
-        JobOffer jobOffer = jobOfferService.getJobOfferById(jobID);
-
-        Optional<JobOfferApplication> application = jobOffer.getAllJobOfferApplications().stream().filter(application1 -> candidateID == application1.getCandidate().getCandidateId()).findFirst();
-
-        if (application.isPresent()) {
-            application.get().setEmployerAcceptancee(isAccepted);
-            application.get().setNotify(true);
-            jobOfferService.updateJobOffer(jobOffer);
-        }
-
-        return new ResponseEntity<String>("JobOffer updated", HttpStatus.OK);
     }
 
 }

@@ -1,5 +1,5 @@
 function acceptByCandidate(jobID,candidateID,acceptance,modal) {
-    var acc = new Boolean(acceptance);
+    var acc = Boolean(acceptance);
     var targetUrl = "/eJobFinder/candidate/acceptByCandidate";
      $.ajax({
               type: "POST",

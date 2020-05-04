@@ -12,7 +12,7 @@ public interface JobOfferService {
 
     String editJobOffer(JobOffer jobOffer);
 
-    JobOffer updateJobOffer(JobOffer jobOffer);
+    void updateJobOffer(JobOffer jobOffer);
 
     JobOffer getJobOfferById(String jobId);
 

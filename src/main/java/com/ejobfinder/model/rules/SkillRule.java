@@ -2,7 +2,7 @@ package com.ejobfinder.model.rules;
 
 import com.ejobfinder.drools.Condition.Operator;
 
-public class SkillRule {
+public class SkillRule{
     private String name;
     private int level;
     private Operator levelOperator;

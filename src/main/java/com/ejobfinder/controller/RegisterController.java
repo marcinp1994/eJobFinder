@@ -4,7 +4,6 @@ import com.ejobfinder.model.Candidate;
 import com.ejobfinder.model.Employer;
 import com.ejobfinder.service.CandidateService;
 import com.ejobfinder.service.EmployerService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,11 +16,13 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class RegisterController {
 
-    @Autowired
-    private EmployerService employerService;
+    private final EmployerService employerService;
+    private final CandidateService candidateService;
 
-    @Autowired
-    private CandidateService candidateService;
+    public RegisterController(EmployerService employerService, CandidateService candidateService) {
+        this.employerService = employerService;
+        this.candidateService = candidateService;
+    }
 
     @RequestMapping("/registerCandidate")
     public String registerCandidate(Model model) {
@@ -42,7 +43,7 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/registerEmp", method = RequestMethod.POST)
-    public String registerEmployerPost(@ModelAttribute("employer") Employer employer, Model model, HttpServletRequest request) {
+    public String registerEmployerPost(@ModelAttribute("employer") Employer employer, HttpServletRequest request) {
         employer.setEnabled(true);
         employerService.addEmployer(employer);
         try {
@@ -56,7 +57,7 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/registerCan", method = RequestMethod.POST)
-    public String registerCandidatePost(@ModelAttribute("candidate") Candidate candidate, Model model, HttpServletRequest request) {
+    public String registerCandidatePost(@ModelAttribute("candidate") Candidate candidate, HttpServletRequest request) {
         candidate.setEnabled(true);
         candidateService.addCandidate(candidate);
         try {

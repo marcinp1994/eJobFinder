@@ -88,10 +88,6 @@ public class EducationFact {
         return candidate.getCandidateId();
     }
 
-    public void setCandidateId(int candidateId) {
-        //this.candidateId = candidateId;
-    }
-
     public boolean isStudyAbroad() {
         return studyAbroad;
     }

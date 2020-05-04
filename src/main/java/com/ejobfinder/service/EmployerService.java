@@ -14,5 +14,5 @@ public interface EmployerService {
 
     Employer getEmployerByUsername(String username);
 
-    Employer updateEmployer(Employer employer);
+    void updateEmployer(Employer employer);
 }

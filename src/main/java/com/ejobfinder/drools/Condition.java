@@ -8,26 +8,13 @@ import java.util.List;
 
 
 public class Condition {
-    /**
-     * Object property to be evaluated.
-     */
+
     private String property;
-    /**
-     * Value to be evaluated.
-     */
     private Object value;
-    /**
-     * Operator used to compare the data.
-     */
     private Operator operator;
 
-    /**
-     * Type of available operator.
-     */
     public enum Operator {
-        /**
-         * The value is not equal to
-         */
+
         NOT_EQUAL_TO("Not equal to", "!=", (new ArrayList<Class>() {
             {
                 add(String.class);
@@ -39,9 +26,7 @@ public class Condition {
                 add(Date.class);
             }
         })),
-        /**
-         * The value is equal to
-         */
+
         EQUAL_TO("Equal to", "==", (new ArrayList<Class>() {
             {
                 add(String.class);
@@ -54,17 +39,13 @@ public class Condition {
                 add(Boolean.class);
             }
         })),
-        /**
-         * The value contains
-         */
+
         CONTAINS("Contains this", "?", (new ArrayList<Class>() {
             {
                 add(String.class);
             }
         })),
-        /**
-         * The value is greater than
-         */
+
         GREATER_THAN("Greater than", ">", (new ArrayList<Class>() {
             {
                 add(Double.class);
@@ -75,9 +56,7 @@ public class Condition {
                 add(Date.class);
             }
         })),
-        /**
-         * The value is less than
-         */
+
         LESS_THAN("Less than", "<", (new ArrayList<Class>() {
             {
                 add(Double.class);
@@ -88,9 +67,7 @@ public class Condition {
                 add(Date.class);
             }
         })),
-        /**
-         * The value is greater or equal to
-         */
+
         GREATER_THAN_OR_EQUAL_TO("Greater or equal to", ">=", (new ArrayList<Class>() {
             {
                 add(Double.class);
@@ -101,9 +78,7 @@ public class Condition {
                 add(Date.class);
             }
         })),
-        /**
-         * The value is less or equal to
-         */
+
         LESS_THAN_OR_EQUAL_TO("Less or equal to", "<=", (new ArrayList<Class>() {
             {
                 add(Double.class);
@@ -115,17 +90,9 @@ public class Condition {
             }
         }));
 
-        /**
-         * Description for operator
-         */
+
         private final String description;
-        /**
-         * Language operation
-         */
         private final String operation;
-        /**
-         * List of applicable classes.
-         */
         private final List<Class> acceptables;
 
         Operator(String description, String operation, List<Class> acceptables) {
@@ -158,12 +125,6 @@ public class Condition {
             return operation;
         }
 
-        /**
-         * Indicates when the specified Class is comparable using this operator.
-         *
-         * @param clazz Class to verify.
-         * @return True when this operator can be used.
-         */
         public boolean isComparable(Class clazz) {
             for (Class accept : acceptables) {
                 if (accept.equals(clazz)) {
@@ -174,13 +135,6 @@ public class Condition {
             return false;
         }
 
-        /**
-         * Gets the operator related to description.
-         *
-         * @param description Description for an operation.
-         * @return Type of operator.
-         * @throws EnumConstantNotPresentException When the description is not related to a valid operator.
-         */
         public static Operator fromDescription(String description) throws EnumConstantNotPresentException {
             for (Operator operator : Operator.values()) {
                 if (operator.getDescription().equals(description)) {
@@ -191,13 +145,6 @@ public class Condition {
             throw new EnumConstantNotPresentException(Operator.class, "? (" + description + ")");
         }
 
-        /**
-         * Gets the operator related to operation.
-         *
-         * @param operation Operation for an operation.
-         * @return Type of operator.
-         * @throws EnumConstantNotPresentException When the operation is not related to a valid operator.
-         */
         public static Operator fromOperation(String operation) throws EnumConstantNotPresentException {
             for (Operator operator : Operator.values()) {
                 if (operator.getOperation().equals(operation)) {
@@ -209,31 +156,15 @@ public class Condition {
         }
     }
 
-    /**
-     * Create a new empty condition.
-     */
     public Condition() {
     }
 
-    /**
-     * Create a complete condition.
-     *
-     * @param property Data property to be evaluated.
-     * @param operator Operator used to compare the data.
-     * @param value    Value to be evaluated.
-     */
     public Condition(String property, Operator operator, Object value) {
         this.property = property;
         this.operator = operator;
         this.value = value;
     }
 
-    /**
-     * Convert the condition to textual expression.
-     *
-     * @return The expression of this condition in dialect.
-     * @throws IllegalArgumentException Indicates the use of invalid pair of value and condition.
-     */
     public String buildExpression() throws IllegalArgumentException {
         StringBuilder drl = new StringBuilder();
 
@@ -252,12 +183,6 @@ public class Condition {
         return drl.toString();
     }
 
-    /**
-     * Convert the condition for <b>String</b> value in expression.
-     *
-     * @return Expression in dialect.
-     * @throws IllegalArgumentException Indicates the use of invalid pair of value and condition.
-     */
     private String expressionForStringValue() throws IllegalArgumentException {
         StringBuilder drl = new StringBuilder();
 
@@ -274,12 +199,6 @@ public class Condition {
         return drl.toString();
     }
 
-    /**
-     * Convert the condition for <b>Integer</b>, <b>Double</b> or <b>Float</b> value in expression.
-     *
-     * @return Expression in dialect.
-     * @throws IllegalArgumentException Indicates the use of invalid pair of value and condition.
-     */
     private String expressionForNumberValue() throws IllegalArgumentException {
         StringBuilder drl = new StringBuilder();
 
@@ -293,17 +212,11 @@ public class Condition {
         return drl.toString();
     }
 
-    /**
-     * Convert the condition for <b>Date</b> value in expression.
-     *
-     * @return Expression in dialect.
-     * @throws IllegalArgumentException Indicates the use of invalid pair of value and condition.
-     */
     private String expressionForDateValue() throws IllegalArgumentException {
         StringBuilder drl = new StringBuilder();
 
         if (operator.isComparable(Date.class)) {
-            drl.append(property).append(" ").append(operator.getOperation()).append(" (new SimpleDateFormat(\"dd/MM/yyyy HH:mm:ss\")).parse(\"" + (new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")).format((Date) value) + "\")");
+            drl.append(property).append(" ").append(operator.getOperation()).append(" (new SimpleDateFormat(\"dd/MM/yyyy HH:mm:ss\")).parse(\"").append((new SimpleDateFormat("dd/MM/yyyy HH:mm:ss")).format((Date) value)).append("\")");
         } else {
             throw new IllegalArgumentException("Is not possible to use the operator " + operator.getDescription() + " to a " + value.getClass().getSimpleName() + " object.");
         }
@@ -311,12 +224,6 @@ public class Condition {
         return drl.toString();
     }
 
-    /**
-     * Convert the condition for <b>Boolean</b> value in expression.
-     *
-     * @return Expression in dialect.
-     * @throws IllegalArgumentException Indicates the use of invalid pair of value and condition.
-     */
     private String expressionForBooleanValue() throws IllegalArgumentException {
         StringBuilder drl = new StringBuilder();
 

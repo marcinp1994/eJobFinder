@@ -27,17 +27,17 @@ public class PerfectEmployeeRules implements Serializable {
     private List<WorkingHoursRule> workingHoursRules;
 
     public PerfectEmployeeRules() {
-        technologyRules = new ArrayList<TechnologyRule>();
-        skillRules = new ArrayList<SkillRule>();
-        toolRules = new ArrayList<ToolRule>();
-        languageRules = new ArrayList<LanguageRule>();
-        previousEmployerRules = new ArrayList<PreviousEmployerRule>();
-        locationRules = new ArrayList<LocationRule>();
-        periodOfNoticeRules = new ArrayList<PeriodOfNoticeRule>();
-        educationRules = new ArrayList<EducationRule>();
-        salaryRules = new ArrayList<SalaryRule>();
-        typeOfContractRules = new ArrayList<TypeOfContractRule>();
-        workingHoursRules = new ArrayList<WorkingHoursRule>();
+        technologyRules = new ArrayList<>();
+        skillRules = new ArrayList<>();
+        toolRules = new ArrayList<>();
+        languageRules = new ArrayList<>();
+        previousEmployerRules = new ArrayList<>();
+        locationRules = new ArrayList<>();
+        periodOfNoticeRules = new ArrayList<>();
+        educationRules = new ArrayList<>();
+        salaryRules = new ArrayList<>();
+        typeOfContractRules = new ArrayList<>();
+        workingHoursRules = new ArrayList<>();
     }
 
     public int getPerfectEmployeeId() {

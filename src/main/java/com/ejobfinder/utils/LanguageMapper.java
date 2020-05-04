@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class LanguageMapper {
 
-    private static final Map<String, Integer> LANGUAGE_MAP = new HashMap<String, Integer>();
+    private static final Map<String, Integer> LANGUAGE_MAP = new HashMap<>();
 
     static {
         LANGUAGE_MAP.put("A1", 11);

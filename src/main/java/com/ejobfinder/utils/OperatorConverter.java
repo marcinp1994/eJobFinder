@@ -13,9 +13,6 @@ public class OperatorConverter {
             case "at least": {
                 return Operator.GREATER_THAN_OR_EQUAL_TO;
             }
-            case "equal": {
-                return Operator.EQUAL_TO;
-            }
             case "greater than": {
                 return Operator.GREATER_THAN;
             }

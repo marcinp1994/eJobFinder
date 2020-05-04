@@ -17,22 +17,18 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 public class DroolsUtility {
 
     public void createRules(List<Rule> rules, String templatePath, String jobId) throws Exception {
-        List<Map<String, Object>> rulesAsParameters = new ArrayList<Map<String, Object>>(rules.size());
-
+        List<Map<String, Object>> rulesAsParameters = new ArrayList<>(rules.size());
         for (Rule rule : rules) {
             rulesAsParameters.add(rule.asMap());
         }
-
         ObjectDataCompiler compiler = new ObjectDataCompiler();
-        //Compiles the list of rules using the template to create a readable Drools Rules Language
         String drl = compiler.compile(rulesAsParameters, Thread.currentThread().getContextClassLoader().getResourceAsStream(templatePath));
-
-
         KieServices services = KieServices.Factory.get();
         KieFileSystem system = services.newKieFileSystem();
         system.write("src/main/resources/simple.drl", services.getResources().newReaderResource(new StringReader(drl)));
@@ -42,7 +38,7 @@ public class DroolsUtility {
         ClassLoader classLoader = getClass().getClassLoader();
 
         URL resource = classLoader.getResource("/rules");
-        File rulesFile = new File(resource.getFile() + fileName);
+        File rulesFile = new File(Objects.requireNonNull(resource).getFile() + fileName);
         FileOutputStream is = new FileOutputStream(rulesFile);
         OutputStreamWriter osw = new OutputStreamWriter(is);
         Writer w = new BufferedWriter(osw);
@@ -56,7 +52,7 @@ public class DroolsUtility {
         ClassLoader classLoader = getClass().getClassLoader();
         String fileName = "/rules/" + jobId + ".drl";
         URL resourceURL = classLoader.getResource(fileName);
-        File file = new File(resourceURL.getFile());
+        File file = new File(Objects.requireNonNull(resourceURL).getFile());
         Resource resource = kieServices.getResources().newFileSystemResource(file).setResourceType(ResourceType.DRL);
         kfs.write(resource);
         KieBuilder kb = kieServices.newKieBuilder(kfs);
@@ -65,12 +61,7 @@ public class DroolsUtility {
         KieContainer container = kieServices.newKieContainer(kieServices.getRepository().getDefaultReleaseId());
         return container.getKieBase().newStatelessKieSession();
     }
-    /**
-     * Debug tool to show what is happening over each triggered execution.<br>
-     * Name of rule trigger as well the object inspected are printed.
-     *
-     * @param helper Injected when a consequence is fired.
-     */
+
     public static void debug(final KnowledgeHelper helper) {
         System.out.println("Triggered rule: " + helper.getRule().getName());
         if (helper.getMatch() != null && helper.getMatch().getObjects() != null) {

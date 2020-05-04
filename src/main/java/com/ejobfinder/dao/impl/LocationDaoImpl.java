@@ -15,8 +15,11 @@ import java.util.List;
 @Transactional
 public class LocationDaoImpl implements LocationDao {
 
-    @Autowired
     private SessionFactory sessionFactory;
+
+    public LocationDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public void addLocation(Location location) {
