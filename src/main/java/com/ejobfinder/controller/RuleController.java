@@ -16,6 +16,7 @@ import com.ejobfinder.utils.BooleanMapper;
 import com.ejobfinder.utils.LanguageMapper;
 import com.ejobfinder.utils.OperatorConverter;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
@@ -40,6 +41,7 @@ public class RuleController {
     private final RulesServiceImpl rulesService;
     private final JobOfferService jobOfferService;
 
+    @Autowired
     public RuleController(DroolsUtility droolsUtility, EmployerService employerService, CandidateService candidateService, PerfectEmployeeRules perfectEmployeeRules, RulesServiceImpl rulesService, JobOfferService jobOfferService) {
         this.droolsUtility = droolsUtility;
         this.employerService = employerService;

@@ -17,6 +17,7 @@ public class CandidateServiceImpl implements CandidateService {
     private CandidateDao candidateDao;
     private DroolsUtility droolsUtility;
 
+    @Autowired
     public CandidateServiceImpl(CandidateDao candidateDao, DroolsUtility droolsUtility) {
         this.candidateDao = candidateDao;
         this.droolsUtility = droolsUtility;

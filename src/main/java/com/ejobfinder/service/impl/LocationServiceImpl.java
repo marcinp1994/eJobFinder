@@ -13,6 +13,7 @@ public class LocationServiceImpl implements LocationService {
 
     private LocationDao locationDao;
 
+    @Autowired
     public LocationServiceImpl(LocationDao locationDao) {
         this.locationDao = locationDao;
     }

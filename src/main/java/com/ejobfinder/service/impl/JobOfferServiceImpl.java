@@ -23,6 +23,7 @@ public class JobOfferServiceImpl implements JobOfferService {
 
     private JobOfferDao jobOfferDao;
 
+    @Autowired
     public JobOfferServiceImpl(JobOfferDao jobOfferDao) {
         this.jobOfferDao = jobOfferDao;
     }

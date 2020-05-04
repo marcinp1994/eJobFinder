@@ -13,6 +13,7 @@ public class EmployerServiceImpl implements EmployerService {
 
     private EmployerDao employerDao;
 
+    @Autowired
     public EmployerServiceImpl(EmployerDao employerDao) {
         this.employerDao = employerDao;
     }

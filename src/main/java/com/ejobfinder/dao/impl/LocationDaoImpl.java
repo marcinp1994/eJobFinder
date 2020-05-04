@@ -17,6 +17,7 @@ public class LocationDaoImpl implements LocationDao {
 
     private SessionFactory sessionFactory;
 
+    @Autowired
     public LocationDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }

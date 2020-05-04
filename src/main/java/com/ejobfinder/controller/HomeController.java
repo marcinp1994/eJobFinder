@@ -6,6 +6,7 @@ import com.ejobfinder.model.Location;
 import com.ejobfinder.service.CandidateService;
 import com.ejobfinder.service.JobOfferService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ public class HomeController {
     private final JobOfferService jobOfferService;
     private final CandidateService candidateService;
 
+    @Autowired
     public HomeController(JobOfferService jobOfferService, CandidateService candidateService) {
         this.jobOfferService = jobOfferService;
         this.candidateService = candidateService;

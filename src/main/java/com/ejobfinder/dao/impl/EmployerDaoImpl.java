@@ -19,6 +19,7 @@ public class EmployerDaoImpl implements EmployerDao {
 
     private SessionFactory sessionFactory;
 
+    @Autowired
     public EmployerDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }

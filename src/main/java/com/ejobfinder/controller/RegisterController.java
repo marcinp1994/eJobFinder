@@ -4,6 +4,7 @@ import com.ejobfinder.model.Candidate;
 import com.ejobfinder.model.Employer;
 import com.ejobfinder.service.CandidateService;
 import com.ejobfinder.service.EmployerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,6 +20,7 @@ public class RegisterController {
     private final EmployerService employerService;
     private final CandidateService candidateService;
 
+    @Autowired
     public RegisterController(EmployerService employerService, CandidateService candidateService) {
         this.employerService = employerService;
         this.candidateService = candidateService;

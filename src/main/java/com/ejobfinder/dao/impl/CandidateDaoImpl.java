@@ -19,6 +19,7 @@ public class CandidateDaoImpl implements CandidateDao {
 
     private SessionFactory sessionFactory;
 
+    @Autowired
     public CandidateDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }

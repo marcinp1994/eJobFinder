@@ -9,6 +9,7 @@ import com.ejobfinder.service.JobOfferService;
 import com.ejobfinder.utils.BooleanMapper;
 import com.ejobfinder.utils.LanguageMapper;
 import com.ejobfinder.utils.consts.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
@@ -30,6 +31,7 @@ public class CandidateController {
     private final JobOfferService jobOfferService;
     private final CandidateService candidateService;
 
+    @Autowired
     public CandidateController(CandidateFacts candidateFacts, JobOfferService jobOfferService, CandidateService candidateService) {
         this.candidateFacts = candidateFacts;
         this.jobOfferService = jobOfferService;

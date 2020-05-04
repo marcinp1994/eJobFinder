@@ -20,6 +20,7 @@ public class JobOfferDaoImpl implements JobOfferDao {
 
     private SessionFactory sessionFactory;
 
+    @Autowired
     public JobOfferDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }

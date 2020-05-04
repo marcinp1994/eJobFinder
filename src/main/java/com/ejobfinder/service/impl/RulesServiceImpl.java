@@ -5,6 +5,7 @@ import com.ejobfinder.drools.Rule;
 import com.ejobfinder.model.facts.*;
 import com.ejobfinder.model.rules.*;
 import org.h2.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class RulesServiceImpl {
 
     private PerfectEmployeeRules perfectEmployeeRules;
 
+    @Autowired
     public RulesServiceImpl(PerfectEmployeeRules perfectEmployeeRules) {
         this.perfectEmployeeRules = perfectEmployeeRules;
     }

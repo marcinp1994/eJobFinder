@@ -7,6 +7,7 @@ import com.ejobfinder.service.EmployerService;
 import com.ejobfinder.service.JobOfferService;
 import com.ejobfinder.service.LocationService;
 import com.ejobfinder.utils.consts.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,6 +41,7 @@ public class EmployerController {
     private final LocationService locationService;
     private final PerfectEmployeeRules perfectEmployeeRules;
 
+    @Autowired
     public EmployerController(EmployerService employerService, JobOfferService jobOfferService, CandidateService candidateService, LocationService locationService, PerfectEmployeeRules perfectEmployeeRules) {
         this.employerService = employerService;
         this.jobOfferService = jobOfferService;
